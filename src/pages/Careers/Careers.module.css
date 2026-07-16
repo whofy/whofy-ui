@@ -1,0 +1,139 @@
+.hero {
+  padding: 80px 0 60px;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.pageHeader {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text);
+  margin: 0 0 24px;
+}
+.hero p {
+  color: var(--text-muted);
+  font-size: 20px;
+  line-height: 1.6;
+  margin: 0 0 32px;
+}
+
+.values {
+  padding: 80px 0;
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.sectionTitle {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 48px;
+  letter-spacing: -0.02em;
+}
+.valuesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+@media (min-width: 768px) {
+  .valuesGrid { grid-template-columns: repeat(3, 1fr); }
+}
+.valueCard {
+  background: var(--surface);
+  padding: 32px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  text-align: left;
+}
+.valueCard svg {
+  width: 32px; height: 32px;
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+.valueCard h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--text);
+}
+.valueCard p {
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.roles { padding: 80px 0; }
+.rolesList {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.roleCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: box-shadow 0.2s var(--ease), border-color 0.2s var(--ease);
+  text-decoration: none;
+  color: var(--text);
+}
+.roleCard:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--primary);
+}
+.roleInfo h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+.roleInfo p {
+  color: var(--text-muted);
+  font-size: 15px;
+  margin: 0;
+}
+.roleAction {
+  font-weight: 600;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.generalApp {
+  margin-top: 48px;
+  padding: 40px;
+  text-align: center;
+  background: var(--bg-subtle);
+  border-radius: var(--radius);
+  border: 1px dashed var(--border);
+}
+.generalApp h4 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--text);
+}
+.generalApp p {
+  color: var(--text-muted);
+  margin: 0 0 24px;
+}
+
+@media (max-width: 640px) {
+  .hero { padding: 56px 0 40px; }
+  .pageHeader { font-size: 32px; }
+  .hero p { font-size: 16px; }
+  .values, .roles { padding: 56px 0; }
+  .sectionTitle { font-size: 26px; margin: 0 0 32px; }
+  .valueCard { padding: 24px; }
+  .roleCard { padding: 20px; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .generalApp { padding: 28px 20px; margin-top: 32px; }
+}
