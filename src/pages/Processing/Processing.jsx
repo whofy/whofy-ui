@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { saveResumePrefs, MOCK_EXTRACTED } from '../../utils/resumePreferences.js';
 import styles from './Processing.module.css';
 
 const EXTRACTED_SKILLS = ['JavaScript', 'React', 'Python', 'SQL', 'Git', 'HTML/CSS'];
@@ -58,6 +59,9 @@ export default function Processing() {
         i++;
         timeoutId = setTimeout(advance, STEP_DELAY);
       } else {
+        // Persist the "extracted" preferences so Results can auto-select filters.
+        // Backend will replace MOCK_EXTRACTED with a real parse later.
+        saveResumePrefs(MOCK_EXTRACTED);
         timeoutId = setTimeout(() => navigate('/results'), 300);
       }
     }

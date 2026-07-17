@@ -3,6 +3,7 @@ import Navbar from './components/Navbar/Navbar.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import Chatbot from './components/Chatbot/Chatbot.jsx';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop.jsx';
+import ResumeGate from './components/ResumeGate/ResumeGate.jsx';
 import Home from './pages/Home/Home.jsx';
 import Results from './pages/Results/Results.jsx';
 import Processing from './pages/Processing/Processing.jsx';
@@ -21,6 +22,7 @@ export default function App() {
   return (
     <div className="fade-in app-content">
       <ScrollToTop />
+      <ResumeGate />
       {!isProcessing && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />

@@ -16,11 +16,12 @@
   height: 56px;
   margin: 0 auto 16px;
   border-radius: 14px;
-  background: var(--primary-light);
-  color: var(--primary);
+  background: var(--primary);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(31, 71, 224, 0.25);
 }
 .icon svg { width: 26px; height: 26px; }
 .title {

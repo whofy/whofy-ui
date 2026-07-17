@@ -1,22 +1,26 @@
 .hero {
-  padding: 80px 0 60px;
+  padding: 80px 24px 60px;
   text-align: center;
   max-width: 800px;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 .pageHeader {
-  font-size: 48px;
+  font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.1;
+  line-height: 1.15;
   color: var(--text);
-  margin: 0 0 24px;
+  margin: 0 auto 24px;
+  max-width: 720px;
+  text-wrap: balance;
 }
 .hero p {
   color: var(--text-muted);
-  font-size: 20px;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
   line-height: 1.6;
-  margin: 0 0 32px;
+  margin: 0 auto 32px;
+  max-width: 680px;
 }
 
 .values {
@@ -66,7 +70,7 @@
   margin: 0;
 }
 
-.roles { padding: 80px 0; }
+.roles { padding: 80px 0 40px; }
 .rolesList {
   max-width: 800px;
   margin: 0 auto;
@@ -82,13 +86,17 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  transition: box-shadow 0.2s var(--ease), border-color 0.2s var(--ease);
-  text-decoration: none;
+  transition: box-shadow 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.15s var(--ease);
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
   color: var(--text);
 }
 .roleCard:hover {
   box-shadow: var(--shadow);
   border-color: var(--primary);
+  transform: translateY(-1px);
 }
 .roleInfo h4 {
   font-size: 18px;
@@ -108,23 +116,132 @@
   align-items: center;
   gap: 4px;
 }
-.generalApp {
-  margin-top: 48px;
-  padding: 40px;
-  text-align: center;
-  background: var(--bg-subtle);
-  border-radius: var(--radius);
-  border: 1px dashed var(--border);
+
+/* Apply form section */
+.apply {
+  padding: 60px 0 80px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
 }
-.generalApp h4 {
-  font-size: 20px;
+.applyHead {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+.applyHead h2 {
+  font-size: clamp(1.75rem, 3.4vw, 2.25rem);
   font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
   margin: 0 0 12px;
+}
+.applyHead p {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 560px;
+}
+
+.form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: var(--shadow-sm);
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.formGroup label {
+  font-size: 13px;
+  font-weight: 600;
   color: var(--text);
 }
-.generalApp p {
+.formGroup input, .formGroup select, .formGroup textarea {
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--bg-subtle);
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.formGroup input:focus, .formGroup select:focus, .formGroup textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(31, 71, 224, 0.1);
+}
+.formGroup select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20' stroke='%2364748B'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  padding-right: 40px;
+}
+.fileInput {
+  padding: 10px 14px !important;
+  cursor: pointer;
+}
+.fileHint {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 4px;
+}
+.submitBtn {
+  margin-top: 6px;
+  justify-content: center;
+}
+
+.thanks {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 48px 28px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+.thanksCheck {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 16px;
+}
+.thanksCheck svg { width: 26px; height: 26px; }
+.thanks h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+.thanks p {
   color: var(--text-muted);
-  margin: 0 0 24px;
+  font-size: 14px;
+  margin: 0;
 }
 
 @media (max-width: 640px) {
@@ -135,5 +252,7 @@
   .sectionTitle { font-size: 26px; margin: 0 0 32px; }
   .valueCard { padding: 24px; }
   .roleCard { padding: 20px; flex-direction: column; align-items: flex-start; gap: 12px; }
-  .generalApp { padding: 28px 20px; margin-top: 32px; }
+  .apply { padding: 40px 0 56px; }
+  .form { padding: 20px; }
+  .grid2 { grid-template-columns: 1fr; }
 }

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useRef, useState } from 'react';
 import styles from './Careers.module.css';
 
 const VALUES = [
@@ -14,8 +14,8 @@ const VALUES = [
 ];
 
 const ROLES = [
-  { title: 'Senior Full-Stack Engineer', meta: 'Engineering • Remote (India) or Bangalore' },
-  { title: 'Machine Learning Engineer (NLP)', meta: 'Data • Bangalore' }
+  { value: 'Senior Full-Stack Engineer', title: 'Senior Full-Stack Engineer', meta: 'Engineering • Remote (India) or Bangalore' },
+  { value: 'Machine Learning Engineer (NLP)', title: 'Machine Learning Engineer (NLP)', meta: 'Data • Bangalore' }
 ];
 
 function Arrow() {
@@ -25,6 +25,18 @@ function Arrow() {
 }
 
 export default function Careers() {
+  const formRef = useRef(null);
+  const positionRef = useRef(null);
+  const [selectedPosition, setSelectedPosition] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  function scrollToApply(position) {
+    if (position) setSelectedPosition(position);
+    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Focus the position dropdown after scroll settles
+    setTimeout(() => positionRef.current?.focus(), 500);
+  }
+
   return (
     <>
       <section className={`${styles.hero} container`}>
@@ -52,7 +64,12 @@ export default function Careers() {
           <h2 className={styles.sectionTitle}>Open Positions</h2>
           <div className={styles.rolesList}>
             {ROLES.map((r, i) => (
-              <a key={i} href="#" className={styles.roleCard}>
+              <button
+                key={i}
+                type="button"
+                className={styles.roleCard}
+                onClick={() => scrollToApply(r.value)}
+              >
                 <div className={styles.roleInfo}>
                   <h4>{r.title}</h4>
                   <p>{r.meta}</p>
@@ -60,14 +77,109 @@ export default function Careers() {
                 <div className={styles.roleAction}>
                   View Role <Arrow />
                 </div>
-              </a>
+              </button>
             ))}
-            <div className={styles.generalApp}>
-              <h4>Don't see a fit?</h4>
-              <p>We're a resume-first platform. Upload yours, and if there's a match internally, we'll reach out.</p>
-              <Link to="/" className="btn btn-theme">Drop your resume</Link>
-            </div>
           </div>
+        </div>
+      </section>
+
+      <section className={styles.apply} ref={formRef}>
+        <div className="container" style={{ maxWidth: 720 }}>
+          <div className={styles.applyHead}>
+            <div className={styles.eyebrow}>Apply now</div>
+            <h2>Tell us about yourself.</h2>
+            <p>We read every application. Don't see a perfect fit? Pick "General / Other" below and drop your resume — we'll reach out if something matches.</p>
+          </div>
+
+          {submitted ? (
+            <div className={styles.thanks}>
+              <div className={styles.thanksCheck}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <h3>Application received!</h3>
+              <p>Thanks for applying. We'll be in touch within a few days.</p>
+            </div>
+          ) : (
+            <form
+              className={styles.form}
+              action="https://api.web3forms.com/submit"
+              method="POST"
+              encType="multipart/form-data"
+              onSubmit={() => setTimeout(() => setSubmitted(true), 100)}
+            >
+              {/* Sign up at web3forms.com and paste your access key here */}
+              <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+              <input type="hidden" name="subject" value="Whofy — New Job Application" />
+              <input type="hidden" name="from_name" value="Whofy Careers" />
+              {/* Web3Forms delivers submissions to the address on the account,
+                  which you'll configure as whofyteam@gmail.com. */}
+
+              <div className={styles.grid2}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="apply-name">Full name</label>
+                  <input type="text" id="apply-name" name="name" required placeholder="Jane Doe" />
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="apply-email">Email</label>
+                  <input type="email" id="apply-email" name="email" required placeholder="jane@example.com" />
+                </div>
+              </div>
+
+              <div className={styles.grid2}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="apply-phone">Phone (optional)</label>
+                  <input type="tel" id="apply-phone" name="phone" placeholder="+91 98765 43210" />
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="apply-linkedin">LinkedIn (optional)</label>
+                  <input type="url" id="apply-linkedin" name="linkedin" placeholder="linkedin.com/in/janedoe" />
+                </div>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="apply-position">Position</label>
+                <select
+                  id="apply-position"
+                  name="position"
+                  ref={positionRef}
+                  required
+                  value={selectedPosition}
+                  onChange={(e) => setSelectedPosition(e.target.value)}
+                >
+                  <option value="" disabled>Select a position...</option>
+                  {ROLES.map(r => (
+                    <option key={r.value} value={r.value}>{r.title}</option>
+                  ))}
+                  <option value="General / Other">General / Other</option>
+                </select>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="apply-message">Why you'd be a great fit (optional)</label>
+                <textarea id="apply-message" name="message" rows={4} placeholder="A few sentences about your background and why you're interested in Whofy." />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="apply-resume">Resume (PDF or DOCX)</label>
+                <input
+                  type="file"
+                  id="apply-resume"
+                  name="resume"
+                  accept=".pdf,.docx,.doc"
+                  required
+                  className={styles.fileInput}
+                />
+                <div className={styles.fileHint}>Max 5&nbsp;MB. PDF preferred.</div>
+              </div>
+
+              <input type="checkbox" name="botcheck" style={{ display: 'none' }} tabIndex={-1} />
+
+              <button type="submit" className={`btn btn-theme btn-lg ${styles.submitBtn}`}>
+                Submit application
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </form>
+          )}
         </div>
       </section>
     </>

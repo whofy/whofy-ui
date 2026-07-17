@@ -1,4 +1,9 @@
-.page { padding: 0 0 32px; }
+.page {
+  padding: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--header-h));
+}
 
 .stickyToolbar {
   position: sticky;
@@ -80,9 +85,8 @@
   grid-template-columns: 360px 1fr;
   gap: 18px;
   margin-top: 18px;
-  height: calc(100vh - var(--header-h) - 160px);
-  min-height: 600px;
-  max-height: 820px;
+  height: calc(100vh - var(--header-h) - 190px);
+  min-height: 560px;
 }
 .listPane {
   overflow-y: auto;

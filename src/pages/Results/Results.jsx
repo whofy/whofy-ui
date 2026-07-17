@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { getMatches } from '../../api/jobs.js';
 import { useJobFilters } from '../../hooks/useJobFilters.js';
 import { sortJobs } from '../../utils/sortJobs.js';
+import { readResumePrefs } from '../../utils/resumePreferences.js';
 import FilterBar from '../../components/FilterBar/FilterBar.jsx';
 import JobCard from '../../components/JobCard/JobCard.jsx';
 import DetailPane from '../../components/DetailPane/DetailPane.jsx';
@@ -24,7 +25,30 @@ export default function Results() {
       .finally(() => setLoading(false));
   }, []);
 
-  const { filterState, toggle, clearAll, visible } = useJobFilters(jobs, query);
+  const { filterState, clearAll, setGroup, visible } = useJobFilters(jobs, query);
+  const applyGroup = (group, values) => setGroup(group, [...values]);
+
+  // Auto-apply filters extracted from the uploaded resume — only on first mount
+  // after jobs load, and only if the user hasn't manually touched anything yet.
+  const autoApplied = useRef(false);
+  useEffect(() => {
+    if (autoApplied.current || jobs.length === 0) return;
+    const prefs = readResumePrefs();
+    if (!prefs) return;
+    autoApplied.current = true;
+
+    if (prefs.skills?.length) {
+      const validSkills = new Set(jobs.flatMap(j => j.matchedSkills));
+      const matched = prefs.skills.filter(s => validSkills.has(s));
+      if (matched.length) setGroup('skills', matched);
+    }
+    if (prefs.location) {
+      const validLocations = new Set(jobs.map(j => j.location));
+      if (validLocations.has(prefs.location)) setGroup('location', [prefs.location]);
+    }
+    if (prefs.experience) setGroup('experience', [prefs.experience]);
+    if (prefs.type)       setGroup('type', [prefs.type]);
+  }, [jobs, setGroup]);
   const sorted = useMemo(() => sortJobs(visible, sortMode), [visible, sortMode]);
   const selected = selectedId ? sorted.find(j => j.id === selectedId) : null;
 
@@ -61,7 +85,7 @@ export default function Results() {
           <FilterBar
             jobs={jobs}
             filterState={filterState}
-            onToggle={toggle}
+            onApplyGroup={applyGroup}
             onClearAll={clearAll}
           />
         </div>

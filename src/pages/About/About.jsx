@@ -24,7 +24,7 @@ export default function About() {
               <h2>Make the first job easier to find than the wrong one.</h2>
             </div>
             <p>
-              India adds millions of freshers to the workforce every year, but the tools they use to find work
+              Every year, millions of freshers step into the workforce — but the tools they use to find work
               were built for people who already have five years of experience. We're building a resume-first
               platform where the ranking is honest, the shortlist is short, and the roles are real.
             </p>

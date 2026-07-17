@@ -55,6 +55,14 @@ export function useJobFilters(jobs, query = '') {
 
   const clearAll = useCallback(() => setFilterState(emptyState()), []);
 
+  const resetGroup = useCallback((group) => {
+    setFilterState(prev => ({ ...prev, [group]: new Set() }));
+  }, []);
+
+  const setGroup = useCallback((group, values) => {
+    setFilterState(prev => ({ ...prev, [group]: new Set(values) }));
+  }, []);
+
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
     return jobs.filter(j => {
@@ -81,5 +89,5 @@ export function useJobFilters(jobs, query = '') {
     });
   }, [jobs, filterState, query]);
 
-  return { filterState, toggle, clearAll, visible };
+  return { filterState, toggle, clearAll, resetGroup, setGroup, visible };
 }

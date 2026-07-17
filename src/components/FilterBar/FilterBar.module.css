@@ -9,9 +9,9 @@
   font-family: inherit;
   font-size: 12px;
   font-weight: 500;
-  padding: 7px 12px;
+  padding: 7px 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   background: var(--surface);
   color: var(--text-secondary);
   cursor: pointer;
@@ -52,15 +52,69 @@
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  min-width: 180px;
-  max-height: 280px;
-  overflow-y: auto;
+  min-width: 220px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 6px;
+  padding: 6px 6px 0;
   box-shadow: var(--shadow-lg);
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+.menuList {
+  max-height: 240px;
+  overflow-y: auto;
+}
+.menuEmpty {
+  padding: 12px;
+  font-size: 12px;
+  color: var(--text-faint);
+  text-align: center;
+}
+.menuFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px 6px;
+  margin-top: 6px;
+  border-top: 1px solid var(--border-subtle);
+}
+.resetBtn {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+.resetBtn:hover:not(:disabled) {
+  border-color: var(--text);
+}
+.resetBtn:disabled {
+  color: var(--text-faint);
+  cursor: not-allowed;
+  border-color: var(--border-subtle);
+}
+.showBtn {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+.showBtn:hover {
+  background: var(--primary-hover);
 }
 .option {
   display: flex;
