@@ -1,0 +1,203 @@
+.page {
+  padding: 0 0 32px;
+}
+
+.hero {
+  padding: 72px 0 56px;
+  text-align: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+.pageHeader {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text);
+  max-width: 780px;
+  margin: 0 auto 20px;
+}
+.subtitle {
+  font-size: 17px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.mission {
+  padding: 64px 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.missionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  align-items: start;
+}
+.smallEyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+.missionGrid h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+.missionGrid p {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.howItWorks {
+  padding: 80px 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.head {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 48px;
+}
+.head h2 {
+  font-size: clamp(1.75rem, 3.4vw, 2.25rem);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
+  margin: 0 0 12px;
+}
+.head p {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+.pipelineGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.step {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  transition: all 0.15s var(--ease);
+}
+.step:hover {
+  border-color: var(--primary-tint);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.stepIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+}
+.stepIcon svg { width: 22px; height: 22px; }
+.step h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+}
+.step p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.values {
+  padding: 80px 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.valueCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+}
+.valueMark {
+  font-size: 24px;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.valueCard h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+.valueCard p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.cta {
+  padding: 80px 0 32px;
+}
+.ctaCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 48px 32px;
+  text-align: center;
+}
+.ctaCard h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+}
+.ctaCard p {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin: 0 0 24px;
+}
+
+@media (max-width: 900px) {
+  .missionGrid { grid-template-columns: 1fr; gap: 20px; }
+  .pipelineGrid { grid-template-columns: 1fr; }
+  .valuesGrid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .hero { padding: 56px 0 40px; }
+  .mission, .howItWorks, .values { padding: 56px 0; }
+  .ctaCard { padding: 32px 20px; }
+  .subtitle { font-size: 15px; }
+}

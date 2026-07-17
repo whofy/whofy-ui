@@ -1,0 +1,169 @@
+.header {
+  padding: 24px 24px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.top {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.logo {
+  width: 52px; height: 52px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 20px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.titleBlock { flex: 1; min-width: 0; }
+.role {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.co {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+.close {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s var(--ease);
+}
+.close:hover { border-color: var(--primary); color: var(--primary); }
+.close svg { width: 14px; height: 14px; }
+
+.metaRow {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.meta {
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  background: var(--bg);
+  border-radius: 8px;
+}
+.meta svg { width: 13px; height: 13px; color: var(--primary); flex-shrink: 0; }
+.meta b { color: var(--text); font-weight: 600; }
+
+.actions { display: flex; gap: 8px; }
+.primary {
+  font-family: inherit;
+  font-size: 13px; font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius);
+  padding: 10px 20px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: all 0.15s var(--ease);
+}
+.primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-theme-hover);
+}
+.primary svg { width: 13px; height: 13px; }
+.ghost {
+  font-family: inherit;
+  font-size: 13px; font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: all 0.15s var(--ease);
+}
+.ghost:hover { border-color: var(--primary); color: var(--primary); }
+.ghost svg { width: 14px; height: 14px; }
+
+.body { padding: 18px 24px 24px; }
+
+.fitCard {
+  background: var(--primary-light);
+  border: 1px solid var(--primary-tint);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.fitHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.fitTitle { font-size: 13px; font-weight: 600; color: var(--text); }
+.fitBadge {
+  font-size: 11px; font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  color: #fff;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.fitBadge svg { width: 11px; height: 11px; }
+.fitBadge.strong { background: #10b981; }
+.fitBadge.good { background: #f59e0b; }
+.fitBadge.weak { background: #ef4444; }
+.fitCaption {
+  font-size: 10px; font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chipY {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: var(--surface);
+  color: #059669;
+  display: inline-flex; align-items: center; gap: 4px;
+  font-weight: 500;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.chipY svg { width: 11px; height: 11px; }
+
+.section { margin-bottom: 20px; }
+.section:last-child { margin-bottom: 0; }
+.sectionTitle {
+  font-size: 12px; font-weight: 600; color: var(--text);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.sectionTitle svg { width: 14px; height: 14px; color: var(--primary); }
+.p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .header { padding: 16px 16px 14px; }
+  .body { padding: 14px 16px 20px; }
+  .top { gap: 10px; }
+  .logo { width: 44px; height: 44px; font-size: 17px; }
+  .role { font-size: 17px; }
+  .metaRow { gap: 4px; }
+  .meta { font-size: 10px; padding: 4px 8px; }
+  .actions { flex-wrap: wrap; }
+  .primary, .ghost { flex: 1; justify-content: center; padding: 10px 14px; }
+}
