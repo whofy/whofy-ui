@@ -1,0 +1,24 @@
+/* ============================================================================
+   The one stylesheet the app imports (see src/main.jsx).
+
+   Cascade order is declared explicitly with @layer, so a rule's origin — not
+   its position in the bundle — decides who wins:
+
+     reset      → browser normalisation
+     base       → bare element defaults
+     layout     → page scaffolding (.container, .section)
+     utilities  → small global helpers (.btn, .fade-in)
+     (unlayered)→ CSS Modules — always win, because component intent is the
+                  most specific thing we have
+
+   Docs: systemDesign.md at the repo root.
+   ========================================================================= */
+
+@layer reset, base, layout, utilities;
+
+@import './tokens.css';
+@import './reset.css';
+@import './base.css';
+@import './animations.css';
+@import './layout.css';
+@import './utilities.css';

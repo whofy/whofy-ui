@@ -5,22 +5,28 @@
   text-decoration: none;
   color: var(--text);
 }
+
 .mark {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-md);
   background: var(--primary);
-  color: #fff;
+  color: var(--text-on-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 15px;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
 }
+
 .name {
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-snug);
 }
-.name b { font-weight: 700; }
-.logoImg { height: 32px; width: auto; }
+.name b { font-weight: var(--fw-bold); }
+
+.logoImg {
+  height: var(--space-8);
+  width: auto;
+}

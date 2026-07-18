@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { getMatches } from '../../api/jobs.js';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { getMatches, searchJobs } from '../../api/jobs.js';
 import { useJobFilters } from '../../hooks/useJobFilters.js';
 import { sortJobs } from '../../utils/sortJobs.js';
 import { readResumePrefs } from '../../utils/resumePreferences.js';
@@ -12,52 +13,106 @@ import { SkeletonList } from '../../components/SkeletonCard/SkeletonCard.jsx';
 import styles from './Results.module.css';
 
 export default function Results() {
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const routeLocation = useLocation();
+  const [prefs] = useState(() => readResumePrefs());
+
+  const prefetched = routeLocation.state?.prefetchedJobs;
+  const [jobs, setJobs] = useState(() => prefetched || []);
+  const [loading, setLoading] = useState(!prefetched);
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState(null);
-  const [sortMode, setSortMode] = useState('best');
+  const [sortMode, setSortMode] = useState(prefs?.skills?.length ? 'relevance' : 'newest');
+  const baseJobsRef = useRef(prefetched || null);
+  const debounceRef = useRef(null);
 
-  useEffect(() => {
-    getMatches()
-      .then(setJobs)
-      .catch(() => setJobs([]))
-      .finally(() => setLoading(false));
+  const fetchJobs = useCallback(async (skills = [], filters = {}) => {
+    setLoading(true);
+    try {
+      const data = await getMatches(skills, filters);
+      setJobs(data);
+      baseJobsRef.current = data;
+      setSortMode(skills.length ? 'relevance' : 'newest');
+    } catch {
+      setJobs([]);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const { filterState, clearAll, setGroup, visible } = useJobFilters(jobs, query);
-  const applyGroup = (group, values) => setGroup(group, [...values]);
+  useEffect(() => {
+    if (prefetched) {
+      baseJobsRef.current = prefetched;
+      return;
+    }
+    fetchJobs(prefs?.skills || []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Auto-apply filters extracted from the uploaded resume — only on first mount
-  // after jobs load, and only if the user hasn't manually touched anything yet.
+  const { filterState, clearAll, setGroup, visible } = useJobFilters(jobs, '');
+
+  const SERVER_FILTER_GROUPS = new Set(['source', 'company', 'location', 'type', 'experience']);
+
+  async function applyGroup(group, values) {
+    const arr = [...values];
+    setGroup(group, arr);
+
+    if (group === 'skills' || SERVER_FILTER_GROUPS.has(group)) {
+      const nextState = { ...filterState, [group]: new Set(arr) };
+      const skills = group === 'skills' ? arr : [...(nextState.skills || [])];
+      const filters = {};
+      for (const key of SERVER_FILTER_GROUPS) {
+        const vals = key === group ? arr : [...(nextState[key] || [])];
+        if (vals.length) filters[key] = vals.join(',');
+      }
+      await fetchJobs(skills, filters);
+    }
+  }
+
+  function handleClearAll() {
+    clearAll();
+    setQuery('');
+    fetchJobs([]);
+  }
+
+  function handleSearch(e) {
+    const val = e.target.value;
+    setQuery(val);
+    clearTimeout(debounceRef.current);
+
+    const trimmed = val.trim();
+    if (trimmed.length < 2) {
+      if (baseJobsRef.current) setJobs(baseJobsRef.current);
+      return;
+    }
+
+    debounceRef.current = setTimeout(async () => {
+      setLoading(true);
+      try {
+        const results = await searchJobs(trimmed);
+        setJobs(results);
+        setSortMode('relevance');
+      } catch {
+        // keep current jobs on search failure
+      } finally {
+        setLoading(false);
+      }
+    }, 400);
+  }
+
   const autoApplied = useRef(false);
   useEffect(() => {
     if (autoApplied.current || jobs.length === 0) return;
-    const prefs = readResumePrefs();
-    if (!prefs) return;
     autoApplied.current = true;
 
-    if (prefs.skills?.length) {
-      const validSkills = new Set(jobs.flatMap(j => j.matchedSkills));
-      const matched = prefs.skills.filter(s => validSkills.has(s));
-      if (matched.length) setGroup('skills', matched);
-    }
-    if (prefs.location) {
+    if (prefs?.location) {
       const validLocations = new Set(jobs.map(j => j.location));
       if (validLocations.has(prefs.location)) setGroup('location', [prefs.location]);
     }
-    if (prefs.experience) setGroup('experience', [prefs.experience]);
-    if (prefs.type)       setGroup('type', [prefs.type]);
-  }, [jobs, setGroup]);
+    if (prefs?.skills?.length) setGroup('skills', prefs.skills);
+  }, [jobs, prefs, setGroup]);
+
   const sorted = useMemo(() => sortJobs(visible, sortMode), [visible, sortMode]);
   const selected = selectedId ? sorted.find(j => j.id === selectedId) : null;
-
-  function handleSelect(id) {
-    setSelectedId(id);
-  }
-  function handleClose() {
-    setSelectedId(null);
-  }
 
   return (
     <div className={styles.page}>
@@ -74,7 +129,7 @@ export default function Results() {
                 <input
                   type="text"
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={handleSearch}
                   className={styles.searchInput}
                   placeholder="Search by role, company or skill..."
                 />
@@ -86,7 +141,7 @@ export default function Results() {
             jobs={jobs}
             filterState={filterState}
             onApplyGroup={applyGroup}
-            onClearAll={clearAll}
+            onClearAll={handleClearAll}
           />
         </div>
       </div>
@@ -122,15 +177,15 @@ export default function Results() {
                   key={job.id}
                   job={job}
                   active={job.id === selectedId}
-                  onClick={() => handleSelect(job.id)}
+                  onClick={() => setSelectedId(job.id)}
                 />
               ))}
             </div>
             <div className={styles.detailPane}>
               {selected ? (
-                <DetailPane job={selected} onClose={handleClose} />
+                <DetailPane key={selected.id} job={selected} onClose={() => setSelectedId(null)} />
               ) : (
-                <EmptyState jobs={sorted} onPick={handleSelect} />
+                <EmptyState jobs={sorted} onPick={setSelectedId} />
               )}
             </div>
           </div>

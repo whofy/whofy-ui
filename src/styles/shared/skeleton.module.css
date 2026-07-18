@@ -1,0 +1,24 @@
+/* ============================================================================
+   Shared loading-placeholder recipe.
+
+   SkeletonCard and Results each defined their own shimmer keyframes with
+   identical bodies (`shimmer` / `skShimmer`) plus five near-duplicate bar
+   rules. The keyframes now live in styles/animations.css.
+
+   Width and height are always set by the consumer — they are the whole point
+   of a placeholder — so this file deliberately does not declare them.
+   ========================================================================= */
+
+.bar {
+  background: var(--border-subtle);
+  border-radius: var(--sk-radius, var(--radius-sm));
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* Block placeholder for a logo/avatar. */
+.block {
+  background: var(--border-subtle);
+  border-radius: var(--sk-radius, var(--radius-md));
+  flex-shrink: 0;
+  animation: shimmer 1.6s ease-in-out infinite;
+}

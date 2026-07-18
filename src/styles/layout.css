@@ -1,0 +1,52 @@
+/* ============================================================================
+   LAYOUT — page scaffolding: the content column and full-bleed section rhythm.
+   ========================================================================= */
+
+@layer layout {
+  /* The content column. Three widths, all centred, all sharing one gutter —
+     previously `style={{ maxWidth: 720 }}` was inlined in three routes. */
+  .container {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--space-6);
+  }
+  .container-narrow { max-width: var(--container-narrow); }
+  .container-form   { max-width: var(--container-form); }
+
+  @media (max-width: 640px) {
+    .container { padding-inline: var(--space-4); }
+  }
+
+  /* Offsets the fixed header. */
+  .app-content { padding-top: var(--header-h); }
+
+  /* Full-bleed horizontal band. `section-*` modifiers set the surface so a
+     route composes bands rather than restating background + borders. */
+  .section {
+    padding-block: var(--section-py);
+  }
+  .section-lg { padding-block: var(--section-py-lg); }
+
+  .section-surface {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .section-bg {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .section-subtle {
+    background: var(--bg-subtle);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (max-width: 640px) {
+    .section,
+    .section-lg { padding-block: var(--section-py-sm); }
+  }
+
+  /* Short routes still need to push the footer to the fold. */
+  .page-min { min-height: var(--page-min-h); }
+}

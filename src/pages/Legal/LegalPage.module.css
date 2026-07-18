@@ -1,80 +1,52 @@
 .page {
-  padding: 64px 0 48px;
-  min-height: calc(100vh - var(--header-h) - 200px);
+  padding: var(--space-16) 0 var(--space-12);
+  min-height: var(--page-min-h);
 }
+
 .head {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: var(--space-10);
 }
+
 .eyebrow {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--primary);
-  margin-bottom: 12px;
+  composes: eyebrow from '../../styles/shared/typography.module.css';
 }
+
 .pageHeader {
-  font-size: clamp(1.9rem, 4vw, 2.5rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-  color: var(--text);
-  margin: 0 0 12px;
+  composes: pageTitle from '../../styles/shared/typography.module.css';
+  --title-margin: 0 0 var(--space-3);
 }
+
 .updated {
-  font-size: 13px;
+  font-size: var(--fs-sm);
   color: var(--text-muted);
 }
 
+/* Legal copy is authored as plain markup, so the prose recipe styles bare
+   descendants (h2/p/ul/a) rather than requiring classes on every node. */
 .body {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 40px 44px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  font-size: 15px;
+  composes: card from '../../styles/shared/surface.module.css';
+  composes: prose from '../../styles/shared/typography.module.css';
+  padding: var(--space-10) 44px;
 }
-.body :global(h2) {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.015em;
-  margin: 32px 0 12px;
-}
-.body :global(h2:first-child) { margin-top: 0; }
-.body :global(h3) {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text);
-  margin: 20px 0 8px;
-}
-.body :global(p) { margin: 0 0 14px; }
-.body :global(ul) { margin: 0 0 14px; padding-left: 22px; }
-.body :global(li) { margin-bottom: 6px; }
-.body :global(strong) { color: var(--text); font-weight: 600; }
-.body :global(a) {
-  color: var(--primary);
-  font-weight: 500;
-  text-decoration: none;
-}
-.body :global(a:hover) { text-decoration: underline; }
 
 .body :global(.callout) {
   background: var(--primary-light);
   border: 1px solid var(--primary-tint);
   border-radius: var(--radius);
-  padding: 16px 20px;
-  margin: 20px 0;
-  font-size: 14px;
+  padding: var(--space-4) var(--space-5);
+  margin: var(--space-5) 0;
+  font-size: var(--fs-body);
 }
 .body :global(.callout p) { margin: 0; }
 .body :global(.callout strong) { color: var(--primary); }
 
 @media (max-width: 640px) {
-  .page { padding: 48px 0 32px; }
-  .body { padding: 24px 20px; font-size: 14px; }
-  .body :global(h2) { font-size: 16px; }
-  .head { margin-bottom: 28px; }
+  .page { padding: var(--space-12) 0 var(--space-8); }
+  .body {
+    --prose-fs: var(--fs-body);
+    --prose-h2-fs: var(--fs-lg);
+    padding: var(--space-6) var(--space-5);
+  }
+  .head { margin-bottom: var(--space-7); }
 }

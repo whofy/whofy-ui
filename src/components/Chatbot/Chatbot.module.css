@@ -1,62 +1,51 @@
+/* --- Launcher ------------------------------------------------------------ */
 .bubble_btn {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  width: var(--space-14);
+  height: var(--space-14);
+  border-radius: var(--radius-circle);
   background: var(--primary);
-  color: #fff;
+  color: var(--text-on-primary);
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(31, 71, 224, 0.35);
-  transition: transform 0.15s var(--ease), background 0.15s var(--ease);
-  z-index: 100;
+  box-shadow: var(--shadow-primary-lg);
+  transition: transform var(--dur-quick) var(--ease),
+              background var(--dur-quick) var(--ease);
+  z-index: var(--z-overlay);
 }
-.bubble_btn svg { width: 24px; height: 24px; }
+.bubble_btn svg { width: var(--space-6); height: var(--space-6); }
 .bubble_btn:hover {
   transform: translateY(-2px);
   background: var(--primary-hover);
 }
 
+/* --- Panel --------------------------------------------------------------- */
 .panel {
   position: fixed;
-  bottom: 96px;
-  right: 24px;
+  bottom: var(--space-24);
+  right: var(--space-6);
   width: 360px;
-  max-width: calc(100vw - 48px);
+  max-width: calc(100vw - var(--space-12));
   height: 520px;
   max-height: calc(100vh - 128px);
   background: var(--surface);
-  border-radius: 16px;
   border: 1px solid var(--border);
-  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.18);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-float);
   display: flex;
   flex-direction: column;
-  z-index: 100;
+  z-index: var(--z-overlay);
   overflow: hidden;
-  animation: chatIn 0.2s var(--ease);
-}
-@media (max-width: 500px) {
-  .panel {
-    right: 12px;
-    left: 12px;
-    bottom: 84px;
-    width: auto;
-    max-width: none;
-  }
-  .bubble_btn { right: 16px; bottom: 16px; width: 52px; height: 52px; }
-}
-@keyframes chatIn {
-  from { opacity: 0; transform: translateY(10px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  animation: panelIn var(--dur-base) var(--ease);
 }
 
 .header {
-  padding: 14px 16px;
+  padding: 14px var(--space-4);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -64,30 +53,46 @@
   background: linear-gradient(180deg, var(--primary-light), var(--surface));
 }
 .hInfo { display: flex; gap: 10px; align-items: center; }
+
 .avatar {
   width: 34px;
   height: 34px;
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: var(--primary);
-  color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 14px;
+  color: var(--text-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-body);
 }
-.hName { font-size: 13px; font-weight: 700; color: var(--text); }
-.hStatus { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
-.dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; }
-.close {
-  width: 28px; height: 28px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: transparent;
-  cursor: pointer;
+.hName {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+}
+.hStatus {
+  font-size: var(--fs-tiny);
   color: var(--text-muted);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
-.close svg { width: 14px; height: 14px; }
-.close:hover { border-color: var(--primary); color: var(--primary); }
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-circle);
+  background: var(--success);
+}
 
+.close {
+  composes: base icon from '../../styles/shared/button.module.css';
+  --btn-size: var(--space-7);
+  --btn-radius: 6px;
+  --btn-bg: transparent;
+}
+
+/* --- Transcript ---------------------------------------------------------- */
 .body {
   flex: 1;
   overflow-y: auto;
@@ -96,40 +101,41 @@
   flex-direction: column;
   gap: 10px;
 }
+
 .msg { display: flex; }
 .msg.bot { justify-content: flex-start; }
 .msg.user { justify-content: flex-end; }
+
 .bubble {
   max-width: 78%;
-  font-size: 13px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  line-height: 1.5;
+  font-size: var(--fs-sm);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  line-height: var(--lh-normal);
 }
 .msg.bot .bubble {
   background: var(--bg-subtle);
   color: var(--text);
-  border-bottom-left-radius: 4px;
+  border-bottom-left-radius: var(--radius-sm);
 }
 .msg.user .bubble {
   background: var(--primary);
-  color: #fff;
-  border-bottom-right-radius: 4px;
+  color: var(--text-on-primary);
+  border-bottom-right-radius: var(--radius-sm);
 }
+
 .typing { display: inline-flex; gap: 3px; }
 .typing span {
-  width: 6px; height: 6px;
+  width: 6px;
+  height: 6px;
   background: var(--text-faint);
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   animation: blink 1.2s infinite;
 }
 .typing span:nth-child(2) { animation-delay: 0.2s; }
 .typing span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes blink {
-  0%, 60%, 100% { opacity: 0.3; }
-  30% { opacity: 1; }
-}
 
+/* --- Composer ------------------------------------------------------------ */
 .inputRow {
   border-top: 1px solid var(--border);
   padding: 10px;
@@ -140,10 +146,10 @@
 .inputRow input {
   flex: 1;
   font-family: inherit;
-  font-size: 13px;
-  padding: 8px 12px;
+  font-size: var(--fs-sm);
+  padding: var(--space-2) var(--space-3);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: var(--space-5);
   background: var(--bg-subtle);
   color: var(--text);
   outline: none;
@@ -153,14 +159,33 @@
   background: var(--surface);
 }
 .inputRow button {
-  width: 36px; height: 36px;
-  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-circle);
   background: var(--primary);
-  color: #fff;
+  color: var(--text-on-primary);
   border: none;
   cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
-.inputRow button svg { width: 14px; height: 14px; }
+.inputRow button svg { width: var(--fs-body); height: var(--fs-body); }
 .inputRow button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+@media (max-width: 500px) {
+  .panel {
+    right: var(--space-3);
+    left: var(--space-3);
+    bottom: 84px;
+    width: auto;
+    max-width: none;
+  }
+  .bubble_btn {
+    right: var(--space-4);
+    bottom: var(--space-4);
+    width: 52px;
+    height: 52px;
+  }
+}

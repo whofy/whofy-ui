@@ -1,25 +1,39 @@
+import { useEffect, useState } from 'react';
+import { getCompanies, getLocations, getSources } from '../../api/jobs.js';
 import FilterDropdown from './FilterDropdown.jsx';
-import { STATIC_FILTERS } from './filterConfig.js';
+import { SKILL_OPTIONS, STATIC_FILTERS, TYPE_OPTIONS, EXPERIENCE_OPTIONS } from './filterConfig.js';
 import styles from './FilterBar.module.css';
 
+function toOptions(values) {
+  return values.map(v => ({ value: v, label: v }));
+}
+
 export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll }) {
-  const locations = [...new Set(jobs.map(j => j.location))].sort()
-    .map(l => ({ value: l, label: l }));
-  const skills = [...new Set(jobs.flatMap(j => j.matchedSkills))].sort()
+  const [locations, setLocations] = useState([]);
+  const [companies, setCompanies] = useState([]);
+  const [sources, setSources] = useState([]);
+
+  useEffect(() => {
+    getLocations().then(setLocations).catch(() => setLocations([]));
+    getCompanies().then(setCompanies).catch(() => setCompanies([]));
+    getSources().then(setSources).catch(() => setSources([]));
+  }, []);
+
+  const fromResults = jobs.flatMap(j => j.matchedSkills || []);
+  const skills = [...new Set([...fromResults, ...SKILL_OPTIONS])].sort()
     .map(s => ({ value: s, label: s }));
 
   const totalSelected = Object.values(filterState).reduce((a, s) => a + s.size, 0);
 
   return (
     <div className={styles.bar}>
-      <FilterDropdown label="Job type"     options={STATIC_FILTERS[0].options} selected={filterState.type}       onApply={v => onApplyGroup('type', v)} />
-      <FilterDropdown label="Location"     options={locations}                  selected={filterState.location}   onApply={v => onApplyGroup('location', v)} />
-      <FilterDropdown label="Salary range" options={STATIC_FILTERS[1].options} selected={filterState.salary}     onApply={v => onApplyGroup('salary', v)} />
-      <FilterDropdown label="Experience"   options={STATIC_FILTERS[2].options} selected={filterState.experience} onApply={v => onApplyGroup('experience', v)} />
-      <FilterDropdown label="Work style"   options={STATIC_FILTERS[3].options} selected={filterState.work}       onApply={v => onApplyGroup('work', v)} />
-      <FilterDropdown label="Industry"     options={STATIC_FILTERS[4].options} selected={filterState.industry}   onApply={v => onApplyGroup('industry', v)} />
-      <FilterDropdown label="Skills"       options={skills}                    selected={filterState.skills}     onApply={v => onApplyGroup('skills', v)} />
-      <FilterDropdown label="Posted"       options={STATIC_FILTERS[5].options} selected={filterState.posted}     onApply={v => onApplyGroup('posted', v)} />
+      <FilterDropdown label="Location"   options={toOptions(locations)}      selected={filterState.location}   onApply={v => onApplyGroup('location', v)} />
+      <FilterDropdown label="Company"    options={toOptions(companies)}      selected={filterState.company}    onApply={v => onApplyGroup('company', v)} />
+      <FilterDropdown label="Source"     options={toOptions(sources)}        selected={filterState.source}     onApply={v => onApplyGroup('source', v)} />
+      <FilterDropdown label="Type"       options={TYPE_OPTIONS}              selected={filterState.type}       onApply={v => onApplyGroup('type', v)} />
+      <FilterDropdown label="Experience" options={EXPERIENCE_OPTIONS}        selected={filterState.experience} onApply={v => onApplyGroup('experience', v)} />
+      <FilterDropdown label="Posted"     options={STATIC_FILTERS[0].options} selected={filterState.posted}     onApply={v => onApplyGroup('posted', v)} />
+      <FilterDropdown label="Skills"     options={skills}                    selected={filterState.skills}     onApply={v => onApplyGroup('skills', v)} />
       {totalSelected > 0 && (
         <button className={styles.clear} onClick={onClearAll}>Clear all</button>
       )}

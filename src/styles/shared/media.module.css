@@ -1,0 +1,45 @@
+/* ============================================================================
+   Shared company-logo recipe.
+
+   JobCard (40px), EmptyState (44px) and DetailPane (52px) each carried their
+   own copy of the same two rules. One recipe now, sized by custom property:
+
+     .logo { composes: logo from '...'; --logo-size: 52px; }
+   ========================================================================= */
+
+/* Defaults are expressed as var() fallbacks rather than declared properties:
+   a consumer that sets --logo-size then has nothing to out-specify. */
+.logo,
+.logoImg {
+  width: var(--logo-size, 40px);
+  height: var(--logo-size, 40px);
+  border-radius: var(--logo-radius, var(--radius-md));
+  flex-shrink: 0;
+}
+
+/* Monogram fallback — background colour comes from JS (utils/logoColor). */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-semibold);
+  font-size: var(--logo-fs, var(--fs-lg));
+  color: var(--text-on-primary);
+}
+
+/* Real logo artwork, letterboxed on white so dark marks stay legible. */
+.logoImg {
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid var(--border-subtle);
+  padding: var(--logo-pad, 6px);
+  box-sizing: border-box;
+}
+
+/* Chip cloud shared by Processing skills, DetailPane matches, EmptyState
+   suggestions. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--chips-gap, 6px);
+}

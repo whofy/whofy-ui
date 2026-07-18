@@ -1,0 +1,133 @@
+/* ============================================================================
+   Shared typography recipes.
+
+   Consumed with `composes:` so a module keeps its own local class name and
+   its own JSX stays untouched:
+
+     .eyebrow { composes: eyebrow from '../../styles/shared/typography.module.css'; }
+
+   THE RULE: a consumer must never redeclare a property this file sets.
+   `composes` adds no specificity, and Vite emits these rules *after* the
+   consumer in dev but *before* it in a production build — so an override
+   would silently flip between the two. Every point of variation is therefore
+   a custom property with a var() fallback, which the consumer sets instead.
+   ========================================================================= */
+
+/* Small uppercase kicker above a heading. Was copy-pasted into Careers,
+   About (twice), Home, Process, WhyWhofy and LegalPage. */
+.eyebrow {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: var(--eyebrow-mb, var(--space-3));
+}
+
+/* Route-level <h1>. Tune: --title-margin, --title-lh. */
+.pageTitle {
+  font-size: var(--fs-page);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--ls-display);
+  line-height: var(--title-lh, var(--lh-tight));
+  color: var(--text);
+  margin: var(--title-margin, 0 0 var(--space-4));
+  text-wrap: balance;
+}
+.pageTitle em {
+  color: var(--primary);
+  font-style: normal;
+}
+
+/* Standalone <h2> opening a band. Tune: --section-title-margin. */
+.sectionTitle {
+  font-size: var(--fs-section);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  margin: var(--section-title-margin, 0 0 14px);
+}
+
+/* Supporting paragraph under any title. Tune: --lead-fs, --lead-margin. */
+.lead {
+  color: var(--text-muted);
+  font-size: var(--lead-fs, var(--fs-lg));
+  line-height: var(--lh-relaxed);
+  margin: var(--lead-margin, 0);
+}
+
+/* ---------------------------------------------------------------------------
+   The "eyebrow + h2 + lead" block that opens Home's upload prompt, Process,
+   WhyWhofy, About's pipeline and Careers' apply form.
+
+   Tune per site:
+     --head-align       text-align            (default: center)
+     --head-max         max-width             (default: 640px)
+     --head-mx          horizontal margin     (default: auto)
+     --head-gap         space below the block (default: 48px)
+     --head-title-fs    h2 size               (default: --fs-subsection)
+     --head-lead-fs     p size                (default: --fs-md)
+   ------------------------------------------------------------------------- */
+.headBlock {
+  text-align: var(--head-align, center);
+  max-width: var(--head-max, 640px);
+  margin: 0 var(--head-mx, auto) var(--head-gap, var(--space-12));
+}
+
+.headBlock h2 {
+  font-size: var(--head-title-fs, var(--fs-subsection));
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-3);
+}
+
+.headBlock p {
+  color: var(--text-muted);
+  font-size: var(--head-lead-fs, var(--fs-md));
+  line-height: var(--lh-relaxed);
+  margin: 0;
+}
+
+/* Dense uppercase label inside a card (skills, fit caption, footer columns).
+   Tune: --overline-fs, --overline-fw, --overline-color, --overline-ls. */
+.overline {
+  font-size: var(--overline-fs, var(--fs-caption));
+  font-weight: var(--overline-fw, var(--fw-bold));
+  color: var(--overline-color, var(--text-muted));
+  letter-spacing: var(--overline-ls, var(--ls-wide));
+  text-transform: uppercase;
+}
+
+/* Long-form prose body (legal pages), styling bare descendants because the
+   copy is authored as plain markup. Tune: --prose-fs, --prose-h2-fs. */
+.prose {
+  color: var(--text-secondary);
+  line-height: var(--lh-loose);
+  font-size: var(--prose-fs, var(--fs-md));
+}
+.prose h2 {
+  font-size: var(--prose-h2-fs, var(--fs-2xl));
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  letter-spacing: var(--ls-snug);
+  margin: var(--space-8) 0 var(--space-3);
+}
+.prose h2:first-child { margin-top: 0; }
+.prose h3 {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin: var(--space-5) 0 var(--space-2);
+}
+.prose p { margin: 0 0 14px; }
+.prose ul { margin: 0 0 14px; padding-left: 22px; }
+.prose li { margin-bottom: 6px; }
+.prose strong { color: var(--text); font-weight: var(--fw-semibold); }
+.prose a {
+  color: var(--primary);
+  font-weight: var(--fw-medium);
+}
+.prose a:hover { text-decoration: underline; }

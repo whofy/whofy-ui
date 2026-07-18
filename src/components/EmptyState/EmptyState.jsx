@@ -1,7 +1,6 @@
+import { useState } from 'react';
 import { logoColor, initial } from '../../utils/logoColor.js';
 import styles from './EmptyState.module.css';
-
-const TRENDING_SKILLS = ['Next.js', 'Docker', 'AWS', 'GraphQL', 'Kubernetes', 'Rust', 'TypeScript', 'Tailwind'];
 
 function countBy(arr) {
   const map = {};
@@ -11,13 +10,25 @@ function countBy(arr) {
 
 function computeSnapshot(jobs) {
   if (!jobs.length) return null;
-  const topPick = [...jobs].sort((a, b) => b.score - a.score)[0];
+
+  // Recommend by strongest skill match when we have that data (a resume was
+  // uploaded); otherwise fall back to most recently posted.
+  const byMatchCount = [...jobs].sort((a, b) => (b.matchedSkills?.length || 0) - (a.matchedSkills?.length || 0));
+  const topMatchCount = byMatchCount[0].matchedSkills?.length || 0;
+  const topPick = topMatchCount > 0
+    ? byMatchCount[0]
+    : [...jobs].sort((a, b) => new Date(b.postedAt || 0) - new Date(a.postedAt || 0))[0];
+
   const topCity = countBy(jobs.map(j => j.location))[0][0];
-  const topSkill = countBy(jobs.flatMap(j => j.matchedSkills))[0][0];
-  const topType = countBy(jobs.map(j => j.type))[0][0];
-  const present = new Set(jobs.flatMap(j => j.matchedSkills));
-  const missing = TRENDING_SKILLS.filter(s => !present.has(s)).slice(0, 5);
-  return { topPick, topCity, topSkill, topType, missing };
+  return { topPick, topCity, count: jobs.length, byMatch: topMatchCount > 0 };
+}
+
+function FeaturedLogo({ job }) {
+  const [logoFailed, setLogoFailed] = useState(false);
+  if (job.logoUrl && !logoFailed) {
+    return <img className={styles.logoImg} src={job.logoUrl} alt="" onError={() => setLogoFailed(true)} />;
+  }
+  return <div className={styles.logo} style={{ background: logoColor(job.company) }}>{initial(job.company)}</div>;
 }
 
 export default function EmptyState({ jobs, onPick }) {
@@ -35,14 +46,18 @@ export default function EmptyState({ jobs, onPick }) {
     );
   }
 
-  const { topPick, topCity, topSkill, topType, missing } = snap;
+  const { topPick, topCity, count, byMatch } = snap;
 
   return (
     <div className={styles.rich}>
       <div className={styles.featured} onClick={() => onPick(topPick.id)}>
-        <div className={styles.badge}>★ Top pick for you</div>
+        <div className={styles.badge}>
+          {byMatch
+            ? `Top pick — ${topPick.matchedSkills.length} skill${topPick.matchedSkills.length === 1 ? '' : 's'} matched`
+            : 'Most recently posted'}
+        </div>
         <div className={styles.featuredBody}>
-          <div className={styles.logo} style={{ background: logoColor(topPick.company) }}>{initial(topPick.company)}</div>
+          <FeaturedLogo key={topPick.id} job={topPick} />
           <div className={styles.featuredText}>
             <div className={styles.featuredRole}>{topPick.title}</div>
             <div className={styles.featuredCo}>{topPick.company} · {topPick.location}</div>
@@ -57,21 +72,10 @@ export default function EmptyState({ jobs, onPick }) {
       <div className={styles.section}>
         <div className={styles.sectionTitle}>Snapshot of your matches</div>
         <ul className={styles.facts}>
+          <li><b>{count}</b> {count === 1 ? 'role' : 'roles'} match your filters</li>
           <li>Most of your matches are in <b>{topCity}</b></li>
-          <li>Your strongest in-demand skill is <b>{topSkill}</b></li>
-          <li><b>{topType}</b> roles dominate your list</li>
         </ul>
       </div>
-
-      {missing.length > 0 && (
-        <div className={styles.section}>
-          <div className={styles.sectionTitle}>Skills worth adding to your resume</div>
-          <div className={styles.caption}>Trending in fresher hiring right now</div>
-          <div className={styles.chips}>
-            {missing.map(s => <span key={s} className={styles.addChip}>{s}</span>)}
-          </div>
-        </div>
-      )}
 
       <div className={styles.hint}>Click any role on the left to see the full details.</div>
     </div>
