@@ -1,7 +1,19 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Contacts.module.css';
+import Dropdown from '../../components/Dropdown/Dropdown';
 
 export default function Contacts() {
+  const [topic, setTopic] = useState('');
+
+  const TOPIC_OPTIONS = [
+    { value: 'Resume Parsing Issue', label: 'Resume Parsing Issue' },
+    { value: 'Match Accuracy Feedback', label: 'Match Accuracy Feedback' },
+    { value: 'Account Support', label: 'Account Support' },
+    { value: 'Privacy / Data Deletion', label: 'Privacy / Data Deletion Request' },
+    { value: 'General Inquiry', label: 'General Inquiry' }
+  ];
+
   return (
     <section className={styles.section}>
       <div className="container">
@@ -51,14 +63,15 @@ export default function Contacts() {
                 </div>
                 <div className={styles.formGroup}>
                   <label htmlFor="topic">How can we help you?</label>
-                  <select id="topic" name="topic" required defaultValue="">
-                    <option value="" disabled>Select a topic...</option>
-                    <option value="Resume Parsing Issue">Resume Parsing Issue</option>
-                    <option value="Match Accuracy Feedback">Match Accuracy Feedback</option>
-                    <option value="Account Support">Account Support</option>
-                    <option value="Privacy / Data Deletion">Privacy / Data Deletion Request</option>
-                    <option value="General Inquiry">General Inquiry</option>
-                  </select>
+                  <Dropdown
+                    id="topic"
+                    name="topic"
+                    required
+                    value={topic}
+                    onChange={setTopic}
+                    options={TOPIC_OPTIONS}
+                    placeholder="Select a topic..."
+                  />
                 </div>
                 <div className={styles.formGroup}>
                   <label htmlFor="message">Message</label>
@@ -72,7 +85,7 @@ export default function Contacts() {
 
                 <input type="checkbox" name="botcheck" style={{ display: 'none' }} />
 
-                <button type="submit" className="btn btn-theme btn-lg">
+                <button type="submit" className={`btn btn-theme btn-lg ${styles.submitBtn}`}>
                   Send Message
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </button>

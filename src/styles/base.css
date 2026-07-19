@@ -20,6 +20,13 @@
     outline-offset: 2px;
   }
 
+  /* Force remove any focus rings or outlines on form fields globally */
+  input:focus, select:focus, textarea:focus,
+  input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
   ::selection {
     background: var(--primary-tint);
     color: var(--text);

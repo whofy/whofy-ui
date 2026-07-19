@@ -77,7 +77,7 @@
   composes: checkbox from '../../styles/shared/form.module.css';
 }
 
-.form button {
+.submitBtn {
   margin-top: var(--space-3);
   justify-content: center;
 }

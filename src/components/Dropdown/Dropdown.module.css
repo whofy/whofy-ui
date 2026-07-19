@@ -1,0 +1,88 @@
+.wrap {
+  position: relative;
+  width: 100%;
+}
+
+.trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--field-pad, 11px 14px);
+  font-family: inherit;
+  font-size: var(--field-fs, var(--fs-body));
+  color: var(--text);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 0 transparent !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  -webkit-appearance: none;
+  appearance: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.trigger:focus,
+.trigger:focus-visible {
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: 0 0 0 0 transparent !important;
+  border-color: var(--primary) !important;
+  background: var(--surface) !important;
+}
+
+.trigger svg {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform var(--dur-quick) var(--ease);
+}
+
+.open .trigger {
+  border-color: var(--primary) !important;
+  background: var(--surface) !important;
+}
+
+.open .trigger svg {
+  transform: rotate(180deg);
+}
+
+.placeholder {
+  color: var(--text-faint);
+}
+
+.value {
+  color: var(--text);
+}
+
+.menu {
+  composes: menu from '../../styles/shared/menu.module.css';
+  width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+
+.option {
+  composes: option from '../../styles/shared/menu.module.css';
+  justify-content: space-between;
+}
+
+.option:hover {
+  background: var(--primary-light);
+  color: var(--primary-hover);
+}
+
+.selected {
+  --option-color: var(--primary);
+  --option-hover-color: var(--primary);
+  font-weight: var(--fw-semibold);
+}
+
+.checkIcon {
+  width: 16px;
+  height: 16px;
+}
