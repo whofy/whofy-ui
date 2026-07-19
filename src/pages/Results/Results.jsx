@@ -12,32 +12,57 @@ import SortControl from '../../components/SortControl/SortControl.jsx';
 import { SkeletonList } from '../../components/SkeletonCard/SkeletonCard.jsx';
 import styles from './Results.module.css';
 
+const PAGE_SIZE = 50;
+
 export default function Results() {
   const routeLocation = useLocation();
   const [prefs] = useState(() => readResumePrefs());
 
   const prefetched = routeLocation.state?.prefetchedJobs;
   const [jobs, setJobs] = useState(() => prefetched || []);
+  const [total, setTotal] = useState(prefetched ? prefetched.length : 0);
   const [loading, setLoading] = useState(!prefetched);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState(null);
   const [sortMode, setSortMode] = useState(prefs?.skills?.length ? 'relevance' : 'newest');
   const baseJobsRef = useRef(prefetched || null);
   const debounceRef = useRef(null);
+  const listRef = useRef(null);
+  const currentFiltersRef = useRef({ skills: [], filters: {} });
 
-  const fetchJobs = useCallback(async (skills = [], filters = {}) => {
-    setLoading(true);
+  const fetchJobs = useCallback(async (skills = [], filters = {}, append = false) => {
+    const skip = append ? jobs.length : 0;
+    if (append) {
+      setLoadingMore(true);
+    } else {
+      setLoading(true);
+    }
     try {
-      const data = await getMatches(skills, filters);
-      setJobs(data);
-      baseJobsRef.current = data;
-      setSortMode(skills.length ? 'relevance' : 'newest');
+      const data = await getMatches(skills, filters, { skip, limit: PAGE_SIZE });
+      const newJobs = data.jobs || [];
+      if (append) {
+        setJobs(prev => [...prev, ...newJobs]);
+      } else {
+        setJobs(newJobs);
+        baseJobsRef.current = newJobs;
+        setSortMode(skills.length ? 'relevance' : 'newest');
+      }
+      setTotal(data.total || 0);
+      currentFiltersRef.current = { skills, filters };
     } catch {
-      setJobs([]);
+      if (!append) setJobs([]);
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
-  }, []);
+  }, [jobs.length]);
+
+  const loadMore = useCallback(() => {
+    if (loadingMore || jobs.length >= total) return;
+    const { skills, filters } = currentFiltersRef.current;
+    fetchJobs(skills, filters, true);
+  }, [loadingMore, jobs.length, total, fetchJobs]);
 
   useEffect(() => {
     if (prefetched) {
@@ -47,6 +72,20 @@ export default function Results() {
     fetchJobs(prefs?.skills || []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Infinite scroll
+  useEffect(() => {
+    const listEl = listRef.current;
+    if (!listEl) return;
+    function handleScroll() {
+      const { scrollTop, scrollHeight, clientHeight } = listEl;
+      if (scrollHeight - scrollTop - clientHeight < 300) {
+        loadMore();
+      }
+    }
+    listEl.addEventListener('scroll', handleScroll);
+    return () => listEl.removeEventListener('scroll', handleScroll);
+  }, [loadMore]);
 
   const { filterState, clearAll, setGroup, visible } = useJobFilters(jobs, '');
 
@@ -113,6 +152,7 @@ export default function Results() {
 
   const sorted = useMemo(() => sortJobs(visible, sortMode), [visible, sortMode]);
   const selected = selectedId ? sorted.find(j => j.id === selectedId) : null;
+  const hasMore = jobs.length < total;
 
   return (
     <div className={styles.page}>
@@ -121,7 +161,7 @@ export default function Results() {
           <div className={styles.header}>
             <h2>
               Your matches
-              <span className={styles.count}>{sorted.length} {sorted.length === 1 ? 'result' : 'results'}</span>
+              <span className={styles.count}>{total} {total === 1 ? 'result' : 'results'}</span>
             </h2>
             <div className={styles.headerRight}>
               <div className={styles.searchWrap}>
@@ -171,7 +211,7 @@ export default function Results() {
           </div>
         ) : (
           <div className={styles.split}>
-            <div className={styles.listPane}>
+            <div className={styles.listPane} ref={listRef}>
               {sorted.map(job => (
                 <JobCard
                   key={job.id}
@@ -180,6 +220,12 @@ export default function Results() {
                   onClick={() => setSelectedId(job.id)}
                 />
               ))}
+              {loadingMore && <SkeletonList count={3} />}
+              {hasMore && !loadingMore && (
+                <button className={styles.loadMore} onClick={loadMore}>
+                  Load more jobs
+                </button>
+              )}
             </div>
             <div className={styles.detailPane}>
               {selected ? (

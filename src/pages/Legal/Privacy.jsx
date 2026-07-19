@@ -52,7 +52,7 @@ export default function Privacy() {
       <p>Data moves between your browser and our servers over HTTPS. Access to our database is restricted. That said, no online service is 100% risk-free — if you spot something concerning, please let us know.</p>
 
       <h2>Contact</h2>
-      <p>Questions or requests about your data? Email <a href="mailto:privacy@whofy.com">privacy@whofy.com</a>.</p>
+      <p>Questions or requests about your data? Email <a href="mailto:whofyteam@gmail.com">whofyteam@gmail.com</a>.</p>
     </LegalPage>
   );
 }

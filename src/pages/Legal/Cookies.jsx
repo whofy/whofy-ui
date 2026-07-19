@@ -37,7 +37,7 @@ export default function Cookies() {
       <p>You can clear or block cookies in your browser settings. If you block Whofy's essential cookies, some parts of the site (like keeping you signed in) may not work.</p>
 
       <h2>Contact</h2>
-      <p>Questions about cookies? Reach us at <a href="mailto:privacy@whofy.com">privacy@whofy.com</a>.</p>
+      <p>Questions about cookies? Reach us at <a href="mailto:whofyteam@gmail.com">whofyteam@gmail.com</a>.</p>
     </LegalPage>
   );
 }

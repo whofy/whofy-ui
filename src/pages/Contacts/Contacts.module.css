@@ -105,6 +105,25 @@
   color: var(--primary);
 }
 
+.thanks {
+  text-align: center;
+  padding: var(--space-10) var(--space-6);
+}
+.thanks h3 {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  margin: var(--space-4) 0 var(--space-2);
+}
+.thanks p {
+  color: var(--text-muted);
+  font-size: var(--fs-body);
+}
+.thanksCheck {
+  width: 48px;
+  height: 48px;
+  color: var(--success);
+}
+
 @media (max-width: 640px) {
   .section { padding: var(--section-py-sm) 0; }
   .subtitle { --lead-fs: var(--fs-lg); --lead-margin: 0 0 var(--space-8); }

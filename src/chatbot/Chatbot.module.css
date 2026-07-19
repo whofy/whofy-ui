@@ -85,7 +85,7 @@
 }
 
 .close {
-  composes: base icon from '../../styles/shared/button.module.css';
+  composes: base icon from '../styles/shared/button.module.css';
   --btn-size: var(--space-7);
   --btn-radius: 6px;
   --btn-bg: transparent;

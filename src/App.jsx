@@ -1,7 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar.jsx';
 import Footer from './components/Footer/Footer.jsx';
-import Chatbot from './components/Chatbot/Chatbot.jsx';
+import Chatbot from './chatbot/Chatbot.jsx';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop.jsx';
 import ResumeGate from './components/ResumeGate/ResumeGate.jsx';
 import Home from './pages/Home/Home.jsx';
