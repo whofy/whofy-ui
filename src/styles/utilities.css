@@ -40,11 +40,9 @@
   .btn-theme {
     background: var(--primary);
     color: var(--text-on-primary);
-    box-shadow: var(--shadow-theme);
   }
   .btn-theme:hover {
     background: var(--primary-hover);
-    box-shadow: var(--shadow-theme-hover);
     transform: translateY(-1px);
   }
 

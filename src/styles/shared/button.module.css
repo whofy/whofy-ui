@@ -41,7 +41,6 @@
 .solid:hover:not(:disabled) {
   background: var(--primary-hover);
   transform: var(--btn-hover-transform, translateY(-1px));
-  box-shadow: var(--btn-hover-shadow, var(--shadow-theme-hover));
 }
 .solid svg { width: 13px; height: 13px; }
 
