@@ -159,6 +159,21 @@
   .listPane { padding-right: 0; }
   .detailPane { min-height: 420px; }
 }
+.loadMore {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 8px);
+  background: var(--surface, #f9f9fb);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.loadMore:hover {
+  background: var(--surface-hover, #f0f0f4);
+}
+
 @media (max-width: 640px) {
   .header h2 { font-size: var(--fs-2xl); }
   .stickyToolbar { padding-bottom: 10px; }

@@ -4,12 +4,12 @@ import { uploadResume, getMatches } from '../../api/jobs.js';
 import { saveResumePrefs } from '../../utils/resumePreferences.js';
 import styles from './Processing.module.css';
 
-const TOTAL_MS = 2600;
-const STEP_DELAY = 900;
-const CAP = 0.92;
-const CREEP_CEILING = 0.99;
+const TOTAL_MS = 10000;
+const STEP_DELAY = 3200;
+const CAP = 0.95;
+const CREEP_CEILING = 0.97;
 const CREEP_DECAY_MS = 4000;
-const FINISH_MS = 350;
+const FINISH_MS = 200;
 
 const STEP_LABELS = [
   'Parsing resume text and structure',
@@ -33,6 +33,7 @@ export default function Processing() {
   const [stepStates, setStepStates] = useState(['', '', '']);
   const [finished, setFinished] = useState(false);
   const [upload, setUpload] = useState({ status: 'pending', resume: null, error: null });
+  const [parsedSkills, setParsedSkills] = useState([]);
   const rafRef = useRef(null);
   const navigated = useRef(false);
   const uploadStatusRef = useRef('pending');
@@ -90,8 +91,9 @@ export default function Processing() {
     uploadResume(info.file)
       .then(async ({ resume }) => {
         const skills = resume.skills || [];
-        const jobsPromise = getMatches(skills).catch(() => null);
-        prefetchedJobs.current = await jobsPromise;
+        setParsedSkills(skills);
+        const data = await getMatches(skills).catch(() => null);
+        prefetchedJobs.current = data ? data.jobs : null;
         setUpload({ status: 'done', resume, error: null });
       })
       .catch(err => setUpload({ status: 'error', resume: null, error: err.message }));
@@ -207,11 +209,11 @@ export default function Processing() {
             </div>
           </div>
 
-          {upload.status === 'done' && upload.resume.skills?.length > 0 && (
+          {parsedSkills.length > 0 && (
             <div className={styles.skillsBlock}>
               <div className={styles.skillsLabel}>Skills detected</div>
               <div className={styles.skills}>
-                {upload.resume.skills.slice(0, 8).map(sk => <span key={sk} className={styles.chip}>{sk}</span>)}
+                {parsedSkills.map(sk => <span key={sk} className={styles.chip}>{sk}</span>)}
               </div>
             </div>
           )}

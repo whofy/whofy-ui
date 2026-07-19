@@ -1,6 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
-import { sendChatMessage } from '../../api/chat.js';
+import { sendChatMessage } from './chat.js';
 import styles from './Chatbot.module.css';
+
+function formatMarkdown(text) {
+  const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return escaped
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+    .replace(/(^|\n)• /g, '$1\n• ')
+    .replace(/\n/g, '<br/>');
+}
 
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
@@ -54,7 +65,7 @@ export default function Chatbot() {
           <div className={styles.body} ref={bodyRef}>
             {messages.map((m, i) => (
               <div key={i} className={`${styles.msg} ${styles[m.from]}`}>
-                <div className={styles.bubble}>{m.text}</div>
+                <div className={styles.bubble} dangerouslySetInnerHTML={{ __html: formatMarkdown(m.text) }} />
               </div>
             ))}
             {sending && (

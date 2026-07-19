@@ -206,14 +206,15 @@
   color: var(--text-on-primary);
 }
 
-.step.active .tick { border-color: var(--primary); }
-.step.active .tick::after {
-  content: '';
-  width: var(--space-2);
-  height: var(--space-2);
-  border-radius: var(--radius-circle);
-  background: var(--primary);
-  animation: pulseDot 1s ease-in-out infinite;
+@keyframes spinTick {
+  to { transform: rotate(360deg); }
+}
+.step.active .tick {
+  border-color: transparent;
+  border-top-color: var(--primary);
+  border-right-color: var(--primary);
+  border-width: 2px;
+  animation: spinTick 0.8s linear infinite;
 }
 
 .step.done .tick {

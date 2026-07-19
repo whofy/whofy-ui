@@ -8,10 +8,11 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-export async function getMatches(skills = [], filters = {}) {
+export async function getMatches(skills = [], filters = {}, { skip = 0, limit = 50 } = {}) {
   if (USE_MOCK) {
     await delay(200);
-    return DUMMY_JOBS.slice();
+    const all = DUMMY_JOBS.slice();
+    return { jobs: all.slice(skip, skip + limit), total: all.length, skip, limit };
   }
   const params = new URLSearchParams();
   if (skills.length) params.set('skills', skills.join(','));
@@ -20,14 +21,14 @@ export async function getMatches(skills = [], filters = {}) {
   if (filters.location) params.set('location', filters.location);
   if (filters.type) params.set('type', filters.type);
   if (filters.experience) params.set('experience', filters.experience);
+  params.set('skip', String(skip));
+  params.set('limit', String(limit));
   const qs = params.toString();
   const res = await fetch(`${API_URL}/api/matches${qs ? '?' + qs : ''}`);
   if (!res.ok) throw new Error('Failed to load matches');
   return res.json();
 }
 
-// Distinct values across the WHOLE dataset (not just the currently loaded
-// jobs page) — used to populate filter dropdowns with real breadth.
 export async function getLocations() {
   if (USE_MOCK) return [...new Set(DUMMY_JOBS.map(j => j.location))].sort();
   const res = await fetch(`${API_URL}/api/locations`);
@@ -66,8 +67,6 @@ export async function getJob(id) {
   return res.json();
 }
 
-// Returns { resume: { skills, location, experienceLevel, education, summary } }
-// extracted from the uploaded file — see whofy-api's services/resume_parser.py.
 export async function uploadResume(file) {
   if (USE_MOCK) {
     await delay(1500);
