@@ -1,35 +1,20 @@
 .section {
-  padding: 88px 0 96px;
+  padding: var(--section-py-lg) 0 var(--space-24);
   background: var(--surface);
   border-top: 1px solid var(--border);
   position: relative;
 }
 
 .head {
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto 64px;
+  composes: headBlock from '../../../styles/shared/typography.module.css';
+  --head-gap: var(--space-16);
+  --head-title-fs: var(--fs-section);
+  --head-lead-fs: var(--fs-lg);
 }
+
 .eyebrow {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--primary);
-  margin-bottom: 16px;
-}
-.head h2 {
-  font-size: clamp(1.85rem, 3.6vw, 2.5rem);
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.025em;
-  margin: 0 0 14px;
-}
-.head p {
-  color: var(--text-muted);
-  font-size: 16px;
-  line-height: 1.55;
-  margin: 0;
+  composes: eyebrow from '../../../styles/shared/typography.module.css';
+  --eyebrow-mb: var(--space-4);
 }
 
 .pipeline {
@@ -39,6 +24,7 @@
   position: relative;
 }
 
+/* Connector rail behind the step circles. */
 .pipeline::before {
   content: '';
   position: absolute;
@@ -46,31 +32,38 @@
   left: 12.5%;
   right: 12.5%;
   height: 2px;
-  background: linear-gradient(90deg, var(--border) 0%, var(--primary) 30%, var(--primary) 70%, var(--border) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--border) 0%,
+    var(--primary) 30%,
+    var(--primary) 70%,
+    var(--border) 100%
+  );
   z-index: 0;
 }
 
 .step {
   position: relative;
-  padding: 0 20px;
+  padding: 0 var(--space-5);
   text-align: center;
-  z-index: 1;
+  z-index: var(--z-base);
 }
 
 .circle {
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 24px;
-  border-radius: 50%;
+  width: var(--space-14);
+  height: var(--space-14);
+  margin: 0 auto var(--space-6);
+  border-radius: var(--radius-circle);
   background: var(--surface);
   border: 2px solid var(--primary);
   display: grid;
   place-items: center;
   color: var(--primary);
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: -0.02em;
-  box-shadow: 0 0 0 6px var(--surface), 0 4px 12px rgba(30, 64, 175, 0.15);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
+  letter-spacing: var(--ls-tight);
+  /* Inner ring punches the rail out from behind the circle. */
+  box-shadow: 0 0 0 6px var(--surface), 0 4px 12px rgba(var(--primary-rgb), 0.15);
   position: relative;
 }
 .circle svg { width: 22px; height: 22px; }
@@ -81,11 +74,11 @@
   right: -6px;
   width: 22px;
   height: 22px;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   background: var(--primary);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
+  color: var(--text-on-primary);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-bold);
   display: grid;
   place-items: center;
   border: 2px solid var(--surface);
@@ -93,34 +86,35 @@
 }
 
 .step h3 {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
   color: var(--text);
-  letter-spacing: -0.01em;
-  margin: 0 0 8px;
+  letter-spacing: var(--ls-snug);
+  margin: 0 0 var(--space-2);
 }
 .step p {
-  font-size: 13px;
+  font-size: var(--fs-sm);
   color: var(--text-muted);
   line-height: 1.55;
   max-width: 220px;
   margin: 0 auto;
 }
+
 .highlight {
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 
 @media (max-width: 900px) {
   .pipeline {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: var(--space-6);
   }
   .pipeline::before { display: none; }
   .step {
     display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 16px;
+    grid-template-columns: var(--space-14) 1fr;
+    gap: var(--space-4);
     text-align: left;
     padding: 0;
     align-items: start;

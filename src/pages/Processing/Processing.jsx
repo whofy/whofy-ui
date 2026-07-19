@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { saveResumePrefs, MOCK_EXTRACTED } from '../../utils/resumePreferences.js';
+import { uploadResume, getMatches } from '../../api/jobs.js';
+import { saveResumePrefs } from '../../utils/resumePreferences.js';
 import styles from './Processing.module.css';
 
-const EXTRACTED_SKILLS = ['JavaScript', 'React', 'Python', 'SQL', 'Git', 'HTML/CSS'];
-const SCAN_TARGET = 12400;
 const TOTAL_MS = 2600;
 const STEP_DELAY = 900;
+const CAP = 0.92;
+const CREEP_CEILING = 0.99;
+const CREEP_DECAY_MS = 4000;
+const FINISH_MS = 350;
 
 const STEP_LABELS = [
   'Parsing resume text and structure',
   'Extracting skills, education, and experience',
-  'Matching against 12,400 live roles'
+  'Matching against live roles'
 ];
 
 function formatSize(bytes) {
@@ -27,24 +30,35 @@ export default function Processing() {
 
   const [pct, setPct] = useState(0);
   const [scanned, setScanned] = useState(0);
-  const [skills, setSkills] = useState([]);
   const [stepStates, setStepStates] = useState(['', '', '']);
+  const [finished, setFinished] = useState(false);
+  const [upload, setUpload] = useState({ status: 'pending', resume: null, error: null });
   const rafRef = useRef(null);
+  const navigated = useRef(false);
+  const uploadStatusRef = useRef('pending');
+  const prefetchedJobs = useRef(null);
+  useEffect(() => { uploadStatusRef.current = upload.status; }, [upload.status]);
 
   useEffect(() => {
+    if (!info.file) navigate('/', { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!info.file) return;
     const startedAt = performance.now();
 
     function tick(now) {
-      const p = Math.min(1, (now - startedAt) / TOTAL_MS);
+      if (uploadStatusRef.current !== 'pending') return;
+      const elapsed = now - startedAt;
+      const p = elapsed < TOTAL_MS
+        ? (elapsed / TOTAL_MS) * CAP
+        : CREEP_CEILING - (CREEP_CEILING - CAP) * Math.exp(-(elapsed - TOTAL_MS) / CREEP_DECAY_MS);
       setPct(Math.round(p * 100));
-      setScanned(Math.round(p * SCAN_TARGET));
-      if (p < 1) rafRef.current = requestAnimationFrame(tick);
+      setScanned(Math.round(p * 12400));
+      rafRef.current = requestAnimationFrame(tick);
     }
     rafRef.current = requestAnimationFrame(tick);
-
-    const skillTimeouts = EXTRACTED_SKILLS.map((sk, idx) =>
-      setTimeout(() => setSkills(prev => [...prev, sk]), 400 + idx * 260)
-    );
 
     let i = 0;
     let timeoutId = null;
@@ -55,24 +69,73 @@ export default function Processing() {
         if (i < next.length) next[i] = 'active';
         return next;
       });
-      if (i < STEP_LABELS.length) {
+      if (i < STEP_LABELS.length - 1) {
         i++;
         timeoutId = setTimeout(advance, STEP_DELAY);
-      } else {
-        // Persist the "extracted" preferences so Results can auto-select filters.
-        // Backend will replace MOCK_EXTRACTED with a real parse later.
-        saveResumePrefs(MOCK_EXTRACTED);
-        timeoutId = setTimeout(() => navigate('/results'), 300);
       }
     }
     advance();
 
     return () => {
       cancelAnimationFrame(rafRef.current);
-      skillTimeouts.forEach(clearTimeout);
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [info.file]);
+
+  useEffect(() => {
+    if (!info.file) return;
+    uploadResume(info.file)
+      .then(async ({ resume }) => {
+        const skills = resume.skills || [];
+        const jobsPromise = getMatches(skills).catch(() => null);
+        prefetchedJobs.current = await jobsPromise;
+        setUpload({ status: 'done', resume, error: null });
+      })
+      .catch(err => setUpload({ status: 'error', resume: null, error: err.message }));
+  }, [info.file]);
+
+  useEffect(() => {
+    if (upload.status !== 'done') return;
+    const timeoutId = setTimeout(() => {
+      setPct(100);
+      setScanned(12400);
+      setStepStates(prev => { const next = [...prev]; next[next.length - 1] = 'done'; return next; });
+      setFinished(true);
+    }, FINISH_MS);
+    return () => clearTimeout(timeoutId);
+  }, [upload.status]);
+
+  useEffect(() => {
+    if (navigated.current || upload.status === 'error' || !finished) return;
+    navigated.current = true;
+    saveResumePrefs({
+      location: upload.resume.location || '',
+      skills: upload.resume.skills || [],
+      experienceLevel: upload.resume.experienceLevel || ''
+    });
+    setTimeout(() => navigate('/results', { state: { prefetchedJobs: prefetchedJobs.current } }), 500);
+  }, [finished, upload, navigate]);
+
+  if (upload.status === 'error') {
+    return (
+      <div className={styles.page}>
+        <div className={`${styles.card} fade-in`}>
+          <div className={styles.header}>
+            <div className={styles.brandMark}>W</div>
+            <div className={styles.brandName}>Who<b>fy</b></div>
+          </div>
+          <div className={styles.body}>
+            <h2 className={styles.title}>Couldn't read your resume</h2>
+            <p className={styles.subtitle}>{upload.error}</p>
+            <button className={styles.fileBadge} style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
+              Try again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
@@ -107,12 +170,14 @@ export default function Processing() {
             </div>
           </div>
 
-          <div className={styles.skillsBlock}>
-            <div className={styles.skillsLabel}>Skills detected</div>
-            <div className={styles.skills}>
-              {skills.map(sk => <span key={sk} className={styles.chip}>{sk}</span>)}
+          {upload.status === 'done' && upload.resume.skills?.length > 0 && (
+            <div className={styles.skillsBlock}>
+              <div className={styles.skillsLabel}>Skills detected</div>
+              <div className={styles.skills}>
+                {upload.resume.skills.slice(0, 8).map(sk => <span key={sk} className={styles.chip}>{sk}</span>)}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className={styles.steps}>
             {STEP_LABELS.map((label, i) => (

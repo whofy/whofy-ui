@@ -2,11 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import styles from './SortControl.module.css';
 
 export const SORT_OPTIONS = [
-  { value: 'best',       label: 'Best match' },
-  { value: 'newest',     label: 'Newest first' },
-  { value: 'salaryHigh', label: 'Salary (high to low)' },
-  { value: 'salaryLow',  label: 'Salary (low to high)' },
-  { value: 'companyAZ',  label: 'Company (A-Z)' }
+  { value: 'relevance', label: 'Best match' },
+  { value: 'newest',    label: 'Newest first' },
+  { value: 'companyAZ', label: 'Company (A-Z)' }
 ];
 
 export default function SortControl({ value, onChange }) {

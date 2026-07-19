@@ -4,156 +4,123 @@
   flex-wrap: wrap;
   align-items: center;
 }
+
 .dropdown { position: relative; }
+
+/* --- Trigger ------------------------------------------------------------- */
 .btn {
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 7px 14px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-  transition: all 0.15s var(--ease);
+  composes: base pill from '../../styles/shared/button.module.css';
 }
-.btn svg {
-  width: 11px; height: 11px;
-  color: var(--text-faint);
-  transition: transform 0.2s var(--ease);
+/* Only the background — border-color and colour come from the shared
+   .pill:hover, so the two rules complement rather than compete. */
+.btn:hover { background: var(--primary-light); }
+
+/* Trigger for a filter that currently has selections applied. */
+.active {
+  --pill-border: var(--primary);
+  --pill-color: var(--primary);
+  --pill-bg: var(--primary-light);
+  --pill-icon-color: var(--primary);
 }
-.btn:hover, .active {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: var(--primary-light);
-}
-.active svg { color: var(--primary); }
+
+/* `.open` sits on the wrapper. */
 .open .btn svg { transform: rotate(180deg); }
 
 .count {
   font-size: 9px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   background: var(--primary);
-  color: #fff;
-  border-radius: 50%;
+  color: var(--text-on-primary);
+  border-radius: var(--radius-circle);
   min-width: 15px;
   height: 15px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 4px;
+  padding: 0 var(--space-1);
 }
 
+/* --- Menu ---------------------------------------------------------------- */
 .menu {
-  position: absolute;
-  top: calc(100% + 6px);
+  composes: menu from '../../styles/shared/menu.module.css';
+  --menu-min-w: 220px;
+  --menu-pad: 6px 6px 0;
   left: 0;
-  min-width: 220px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 6px 6px 0;
-  box-shadow: var(--shadow-lg);
-  z-index: 100;
   display: flex;
   flex-direction: column;
 }
+
+.search {
+  font-family: inherit;
+  font-size: var(--fs-caption);
+  color: var(--text);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  margin-bottom: 6px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+.search:focus { border-color: var(--primary); }
+.search::placeholder { color: var(--text-faint); }
+
 .menuList {
-  max-height: 240px;
-  overflow-y: auto;
+  composes: list from '../../styles/shared/menu.module.css';
 }
 .menuEmpty {
-  padding: 12px;
-  font-size: 12px;
-  color: var(--text-faint);
-  text-align: center;
+  composes: empty from '../../styles/shared/menu.module.css';
 }
 .menuFooter {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 4px 6px;
-  margin-top: 6px;
-  border-top: 1px solid var(--border-subtle);
+  composes: footer from '../../styles/shared/menu.module.css';
 }
-.resetBtn {
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text);
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 6px 14px;
-  cursor: pointer;
-  transition: all 0.15s var(--ease);
-}
-.resetBtn:hover:not(:disabled) {
-  border-color: var(--text);
-}
-.resetBtn:disabled {
-  color: var(--text-faint);
-  cursor: not-allowed;
-  border-color: var(--border-subtle);
-}
-.showBtn {
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
-  background: var(--primary);
-  border: 1px solid var(--primary);
-  border-radius: 999px;
-  padding: 6px 16px;
-  cursor: pointer;
-  transition: all 0.15s var(--ease);
-}
-.showBtn:hover {
-  background: var(--primary-hover);
-}
+
 .option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 10px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 13px;
-  color: var(--text-secondary);
-  transition: background 0.1s var(--ease);
+  composes: option from '../../styles/shared/menu.module.css';
 }
-.option:hover { background: var(--bg-subtle); }
 .option input[type="checkbox"] {
-  width: 14px; height: 14px;
+  width: var(--fs-body);
+  height: var(--fs-body);
   accent-color: var(--primary);
   cursor: pointer;
   flex-shrink: 0;
 }
 .option input[type="checkbox"]:checked + span {
   color: var(--text);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
+}
+
+/* --- Menu actions -------------------------------------------------------- */
+.resetBtn {
+  composes: base ghost from '../../styles/shared/button.module.css';
+  --btn-fs: var(--fs-caption);
+  --btn-pad: 6px 14px;
+  --btn-radius: var(--radius-pill);
+  --btn-bg: transparent;
+  /* Neutral hover, not the brand hover the shared ghost defaults to. */
+  --btn-hover-border: var(--text);
+  --btn-hover-color: var(--text);
+}
+
+.showBtn {
+  composes: base solid from '../../styles/shared/button.module.css';
+  --btn-fs: var(--fs-caption);
+  --btn-pad: 6px var(--space-4);
+  --btn-radius: var(--radius-pill);
+  /* Sits inside a menu, so it must not lift off the surface on hover. */
+  --btn-hover-transform: none;
+  --btn-hover-shadow: none;
 }
 
 .clear {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--primary);
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  padding: 4px 8px;
+  composes: base link from '../../styles/shared/button.module.css';
   white-space: nowrap;
-  margin-left: 4px;
+  margin-left: var(--space-1);
 }
-.clear:hover { text-decoration: underline; }
 
 @media (max-width: 640px) {
-  .bar { gap: 4px; }
-  .btn { font-size: 11px; padding: 6px 10px; }
-  .menu { min-width: 160px; }
+  .bar { gap: var(--space-1); }
+  .btn { --btn-fs: var(--fs-tiny); --btn-pad: 6px 10px; }
+  .menu { --menu-min-w: 160px; }
 }

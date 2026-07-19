@@ -15,7 +15,7 @@ export default function Dropzone() {
       alert('Please upload a PDF or DOCX file.');
       return;
     }
-    navigate('/processing', { state: { filename: file.name, size: file.size } });
+    navigate('/processing', { state: { file, filename: file.name, size: file.size } });
   }
 
   return (

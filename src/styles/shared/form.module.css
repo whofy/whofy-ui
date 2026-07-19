@@ -1,0 +1,148 @@
+/* ============================================================================
+   Shared form recipes.
+
+   Careers and Contacts previously carried byte-identical copies of the field
+   styles, the focus ring and the inlined select-chevron SVG. This is the one
+   copy. Density is tuned per form via custom properties rather than by
+   redeclaring the rules:
+
+     .formGroup {
+       composes: group from '../../styles/shared/form.module.css';
+       --field-pad: 12px 16px;
+       --field-fs: var(--fs-md);
+     }
+   ========================================================================= */
+
+/* Defaults are var() fallbacks, not declared properties, so a consumer that
+   sets --field-pad has nothing to out-specify. */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--field-gap, 6px);
+}
+
+.group label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+}
+
+.group input,
+.group select,
+.group textarea {
+  padding: var(--field-pad, 11px 14px);
+  font-family: inherit;
+  font-size: var(--field-fs, var(--fs-body));
+  color: var(--text);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color var(--dur-quick) var(--ease),
+              box-shadow var(--dur-quick) var(--ease);
+}
+
+.group input:focus,
+.group select:focus,
+.group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: var(--focus-ring);
+}
+
+.group input::placeholder,
+.group textarea::placeholder {
+  color: var(--text-faint);
+}
+
+/* Native select arrow replaced with the app's chevron. Stroke is
+   --hc-text-muted; data URIs can't read custom properties, so this is the
+   one place the value is repeated — keep them in step. */
+.group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20' stroke='%2364748B'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right var(--space-3) center;
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  padding-right: var(--space-10);
+}
+
+/* Vertical stack of groups. */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--form-gap, var(--space-5));
+}
+
+/* Two-up row that collapses on small screens. */
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 640px) {
+  .row2 { grid-template-columns: 1fr; }
+}
+
+/* Consent / opt-in checkbox row. */
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+  margin-top: var(--space-1);
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+}
+.checkbox input {
+  margin-top: 3px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+.checkbox a {
+  color: var(--primary);
+  font-weight: var(--fw-semibold);
+}
+
+/* Helper text under a field. */
+.hint {
+  font-size: var(--fs-caption);
+  color: var(--text-faint);
+  margin-top: var(--space-1);
+}
+
+/* Standalone search box with a leading icon (Results toolbar, filter menus). */
+.searchWrap {
+  position: relative;
+}
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--space-4);
+  height: var(--space-4);
+  color: var(--text-faint);
+  pointer-events: none;
+}
+.searchInput {
+  width: 100%;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  color: var(--text);
+  background: var(--bg-subtle);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px var(--space-4) 10px var(--space-10);
+  outline: none;
+  transition: var(--transition-base);
+}
+.searchInput::placeholder {
+  color: var(--text-faint);
+  font-weight: var(--fw-regular);
+}
+.searchInput:focus {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: var(--focus-ring);
+}

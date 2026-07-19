@@ -16,7 +16,7 @@ export default function Home() {
       <Stats />
       <WhyWhofy />
       <section id="upload-section" className={styles.uploadSection}>
-        <div className="container" style={{ maxWidth: 720 }}>
+        <div className="container container-form">
           <div className={styles.uploadHead}>
             <div className={styles.eyebrow}>Get started</div>
             <h2>Ready to see your shortlist?</h2>

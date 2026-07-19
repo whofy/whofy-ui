@@ -15,16 +15,24 @@ import styles from './FilterBar.module.css';
  *   - selected  : Set<string> of currently-applied values
  *   - onApply   : (Set<string>) => void   — commit these values as the new applied set
  */
+// Below this many options, a search box just adds clutter for no benefit.
+const SEARCH_THRESHOLD = 8;
+
 export default function FilterDropdown({ label, options, selected, onApply }) {
   const [open, setOpen] = useState(false);
   const [pending, setPending] = useState(() => new Set(selected));
+  const [search, setSearch] = useState('');
   const ref = useRef(null);
 
   // Whenever the dropdown opens, seed pending from what's actually applied.
   // This also handles external changes (e.g. Clear all) syncing back in.
   useEffect(() => {
-    if (open) setPending(new Set(selected));
+    if (open) { setPending(new Set(selected)); setSearch(''); }
   }, [open, selected]);
+
+  const visibleOptions = search.trim()
+    ? options.filter(o => o.label.toLowerCase().includes(search.trim().toLowerCase()))
+    : options;
 
   useEffect(() => {
     function handleClick(e) {
@@ -47,8 +55,10 @@ export default function FilterDropdown({ label, options, selected, onApply }) {
   }
 
   function reset() {
-    // Clear the pending selections back to empty (does not commit until Show results)
+    // Unlike checkbox toggles, Reset commits immediately — clearing a filter
+    // should be visible right away, not require a separate "Show results".
     setPending(new Set());
+    onApply(new Set());
   }
 
   function showResults() {
@@ -69,11 +79,22 @@ export default function FilterDropdown({ label, options, selected, onApply }) {
       </button>
       {open && (
         <div className={styles.menu}>
+          {options.length > SEARCH_THRESHOLD && (
+            <input
+              type="text"
+              className={styles.search}
+              placeholder={`Search ${label.toLowerCase()}...`}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+              autoFocus
+            />
+          )}
           <div className={styles.menuList}>
-            {options.length === 0 ? (
-              <div className={styles.menuEmpty}>No options available</div>
+            {visibleOptions.length === 0 ? (
+              <div className={styles.menuEmpty}>{options.length === 0 ? 'No options available' : 'No matches'}</div>
             ) : (
-              options.map(opt => (
+              visibleOptions.map(opt => (
                 <label key={opt.value} className={styles.option}>
                   <input
                     type="checkbox"

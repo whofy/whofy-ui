@@ -1,16 +1,17 @@
-export function matchLevel(score) {
-  if (score >= 85) return 'strong';
-  if (score >= 70) return 'good';
-  return 'weak';
-}
+// Match scoring (matchLevel/matchLabel) is deferred until real resume
+// matching (matcher.py in whofy-api) exists — no fabricated scores for now.
 
-export function matchLabel(level) {
-  return level === 'strong' ? 'Strong match'
-       : level === 'good'   ? 'Good match'
-       : 'Stretch role';
-}
+const DAY_MS = 24 * 60 * 60 * 1000;
 
-const POSTED_LABELS = ['Today', '2d ago', '4d ago', '1w ago', '2w ago', '5d ago'];
-export function postedLabel(id) {
-  return POSTED_LABELS[id % POSTED_LABELS.length];
+export function postedLabel(postedAt) {
+  if (!postedAt) return 'Recently';
+  const posted = new Date(postedAt);
+  if (Number.isNaN(posted.getTime())) return 'Recently';
+
+  const days = Math.floor((Date.now() - posted.getTime()) / DAY_MS);
+  if (days <= 0) return 'Today';
+  if (days === 1) return '1d ago';
+  if (days < 14) return `${days}d ago`;
+  const weeks = Math.floor(days / 7);
+  return `${weeks}w ago`;
 }
