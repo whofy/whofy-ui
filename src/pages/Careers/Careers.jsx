@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import styles from './Careers.module.css';
+import Dropdown from '../../components/Dropdown/Dropdown';
 
 const VALUES = [
   { icon: (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>),
@@ -36,6 +37,11 @@ export default function Careers() {
     // Focus the position dropdown after scroll settles
     setTimeout(() => positionRef.current?.focus(), 500);
   }
+
+  const dropdownOptions = [
+    ...ROLES.map(r => ({ value: r.value, label: r.title })),
+    { value: 'General / Other', label: 'General / Other' }
+  ];
 
   return (
     <>
@@ -131,32 +137,28 @@ export default function Careers() {
                   <input type="tel" id="apply-phone" name="phone" placeholder="+91 98765 43210" />
                 </div>
                 <div className={styles.formGroup}>
-                  <label htmlFor="apply-linkedin">LinkedIn (optional)</label>
-                  <input type="url" id="apply-linkedin" name="linkedin" placeholder="linkedin.com/in/janedoe" />
+                  <label htmlFor="apply-linkedin">LinkedIn</label>
+                  <input type="url" id="apply-linkedin" name="linkedin" required placeholder="linkedin.com/in/janedoe" />
                 </div>
               </div>
 
               <div className={styles.formGroup}>
                 <label htmlFor="apply-position">Position</label>
-                <select
+                <Dropdown
                   id="apply-position"
                   name="position"
                   ref={positionRef}
                   required
                   value={selectedPosition}
-                  onChange={(e) => setSelectedPosition(e.target.value)}
-                >
-                  <option value="" disabled>Select a position...</option>
-                  {ROLES.map(r => (
-                    <option key={r.value} value={r.value}>{r.title}</option>
-                  ))}
-                  <option value="General / Other">General / Other</option>
-                </select>
+                  onChange={(val) => setSelectedPosition(val)}
+                  options={dropdownOptions}
+                  placeholder="Select a position..."
+                />
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="apply-message">Why you'd be a great fit (optional)</label>
-                <textarea id="apply-message" name="message" rows={4} placeholder="A few sentences about your background and why you're interested in Whofy." />
+                <label htmlFor="apply-message">Why you'd be a great fit</label>
+                <textarea id="apply-message" name="message" required rows={4} placeholder="A few sentences about your background and why you're interested in Whofy." />
               </div>
 
               <div className={styles.formGroup}>

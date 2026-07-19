@@ -13,7 +13,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-primary-lg);
   transition: transform var(--dur-quick) var(--ease),
               background var(--dur-quick) var(--ease);
   z-index: var(--z-overlay);

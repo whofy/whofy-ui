@@ -37,6 +37,8 @@ export default function Processing() {
   const navigated = useRef(false);
   const uploadStatusRef = useRef('pending');
   const prefetchedJobs = useRef(null);
+  const fileInputRef = useRef(null);
+
   useEffect(() => { uploadStatusRef.current = upload.status; }, [upload.status]);
 
   useEffect(() => {
@@ -117,6 +119,26 @@ export default function Processing() {
     setTimeout(() => navigate('/results', { state: { prefetchedJobs: prefetchedJobs.current } }), 500);
   }, [finished, upload, navigate]);
 
+  function handleFileSelect(e) {
+    const files = e.target.files;
+    if (!files || !files.length) return;
+    const file = files[0];
+    const okType = /\.(pdf|docx?)$/i.test(file.name);
+    if (!okType) {
+      alert('Please upload a PDF or DOCX file.');
+      return;
+    }
+    
+    setPct(0);
+    setScanned(0);
+    setStepStates(['', '', '']);
+    setFinished(false);
+    setUpload({ status: 'pending', resume: null, error: null });
+    navigated.current = false;
+    
+    navigate('/processing', { state: { file, filename: file.name, size: file.size }, replace: true });
+  }
+
   if (upload.status === 'error') {
     return (
       <div className={styles.page}>
@@ -125,12 +147,27 @@ export default function Processing() {
             <div className={styles.brandMark}>W</div>
             <div className={styles.brandName}>Who<b>fy</b></div>
           </div>
-          <div className={styles.body}>
-            <h2 className={styles.title}>Couldn't read your resume</h2>
-            <p className={styles.subtitle}>{upload.error}</p>
-            <button className={styles.fileBadge} style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
-              Try again
-            </button>
+          <div className={styles.body} style={{ padding: '2.5rem 2rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h2 className={styles.title} style={{ margin: 0, textAlign: 'left' }}>Couldn't read your resume</h2>
+                <p className={styles.subtitle} style={{ margin: '0.5rem 0 0 0', textAlign: 'left' }}>Please upload a PDF or DOCX file under 5 MB.</p>
+              </div>
+              <button 
+                className="btn btn-theme btn-lg" 
+                style={{ padding: '0.75rem 1.5rem', flexShrink: 0, marginLeft: '1.5rem' }}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Upload again
+              </button>
+            </div>
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              hidden 
+              accept=".pdf,.docx,.doc" 
+              onChange={handleFileSelect} 
+            />
           </div>
         </div>
       </div>
