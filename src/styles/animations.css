@@ -27,6 +27,11 @@
   50%      { opacity: 0.4; transform: scale(0.8); }
 }
 
+/* Spinner rotation for active step indicators. */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Item appearing in a list/chip cloud. */
 @keyframes popIn {
   from { opacity: 0; transform: translateY(4px); }
