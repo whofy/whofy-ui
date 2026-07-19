@@ -36,7 +36,7 @@ export default function Terms() {
       <p>Whofy is still growing. We may update how features work as we build. If we make a change that affects how you use the site, we'll surface it clearly on the page.</p>
 
       <h2>Contact</h2>
-      <p>Questions about these terms? Reach us at <a href="mailto:support@whofy.com">support@whofy.com</a>.</p>
+      <p>Questions about these terms? Reach us at <a href="mailto:whofyteam@gmail.com">whofyteam@gmail.com</a>.</p>
     </LegalPage>
   );
 }

@@ -108,13 +108,18 @@ export default function Careers() {
           ) : (
             <form
               className={styles.form}
-              action="https://api.web3forms.com/submit"
-              method="POST"
-              encType="multipart/form-data"
-              onSubmit={() => setTimeout(() => setSubmitted(true), 100)}
+              onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                fetch('https://api.web3forms.com/submit', {
+                  method: 'POST',
+                  body: formData,
+                }).catch(() => {});
+                setSubmitted(true);
+              }}
             >
               {/* Sign up at web3forms.com and paste your access key here */}
-              <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+              <input type="hidden" name="access_key" value="47664644-0a17-4f2e-b9c2-51c50b2ed539" />
               <input type="hidden" name="subject" value="Whofy — New Job Application" />
               <input type="hidden" name="from_name" value="Whofy Careers" />
               {/* Web3Forms delivers submissions to the address on the account,
@@ -162,16 +167,15 @@ export default function Careers() {
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="apply-resume">Resume (PDF or DOCX)</label>
+                <label htmlFor="apply-resume">Resume link (Google Drive, Dropbox, etc.)</label>
                 <input
-                  type="file"
+                  type="url"
                   id="apply-resume"
-                  name="resume"
-                  accept=".pdf,.docx,.doc"
+                  name="resume_link"
                   required
-                  className={styles.fileInput}
+                  placeholder="https://drive.google.com/file/d/..."
                 />
-                <div className={styles.fileHint}>Max 5&nbsp;MB. PDF preferred.</div>
+                <div className={styles.fileHint}>Upload your resume to Google Drive or Dropbox and paste the sharing link.</div>
               </div>
 
               <input type="checkbox" name="botcheck" style={{ display: 'none' }} tabIndex={-1} />
