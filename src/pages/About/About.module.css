@@ -1,203 +1,183 @@
 .page {
-  padding: 0 0 32px;
+  padding: 0 0 var(--space-8);
 }
 
+/* --- Hero ---------------------------------------------------------------- */
 .hero {
-  padding: 72px 0 56px;
+  padding: var(--space-18) 0 var(--space-14);
   text-align: center;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
-.eyebrow {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--primary);
-  margin-bottom: 16px;
+
+.eyebrow,
+.smallEyebrow {
+  composes: eyebrow from '../../styles/shared/typography.module.css';
 }
+.eyebrow { --eyebrow-mb: var(--space-4); }
+
 .pageHeader {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  color: var(--text);
+  composes: pageTitle from '../../styles/shared/typography.module.css';
+  --title-margin: 0 auto var(--space-5);
+  --title-lh: var(--lh-display);
   max-width: 780px;
-  margin: 0 auto 20px;
-}
-.subtitle {
-  font-size: 17px;
-  color: var(--text-muted);
-  line-height: 1.6;
-  max-width: 700px;
-  margin: 0 auto;
 }
 
+.subtitle {
+  composes: lead from '../../styles/shared/typography.module.css';
+  --lead-fs: var(--fs-xl);
+  --lead-margin: 0 auto;
+  max-width: 700px;
+}
+
+/* --- Mission ------------------------------------------------------------- */
 .mission {
-  padding: 64px 0;
+  padding: var(--space-16) 0;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
 .missionGrid {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
-  gap: 48px;
+  gap: var(--space-12);
   align-items: start;
-}
-.smallEyebrow {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--primary);
-  margin-bottom: 12px;
 }
 .missionGrid h2 {
   font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   color: var(--text);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--ls-tight);
   line-height: 1.2;
   margin: 0;
 }
 .missionGrid p {
-  font-size: 16px;
+  font-size: var(--fs-lg);
   color: var(--text-muted);
-  line-height: 1.7;
+  line-height: var(--lh-loose);
   margin: 0;
 }
 
+/* --- How it works -------------------------------------------------------- */
 .howItWorks {
-  padding: 80px 0;
+  padding: var(--section-py) 0;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
+
 .head {
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto 48px;
+  composes: headBlock from '../../styles/shared/typography.module.css';
 }
-.head h2 {
-  font-size: clamp(1.75rem, 3.4vw, 2.25rem);
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.025em;
-  margin: 0 0 12px;
-}
-.head p {
-  font-size: 15px;
-  color: var(--text-muted);
-  line-height: 1.6;
-  margin: 0;
-}
+
 .pipelineGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  gap: var(--space-6);
 }
+
 .step {
-  background: var(--bg-subtle);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 28px;
-  transition: all 0.15s var(--ease);
+  composes: card from '../../styles/shared/surface.module.css';
+  --card-bg: var(--bg-subtle);
+  padding: var(--space-7);
+  transition: var(--transition-base);
 }
 .step:hover {
   border-color: var(--primary-tint);
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm);
 }
+
 .stepIcon {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: var(--primary);
-  color: #fff;
+  color: var(--text-on-primary);
   display: grid;
   place-items: center;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 .stepIcon svg { width: 22px; height: 22px; }
+
 .step h3 {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
   color: var(--text);
-  letter-spacing: -0.01em;
-  margin: 0 0 8px;
+  letter-spacing: var(--ls-snug);
+  margin: 0 0 var(--space-2);
 }
 .step p {
-  font-size: 14px;
+  font-size: var(--fs-body);
   color: var(--text-muted);
   line-height: 1.65;
   margin: 0;
 }
 
+/* --- Values -------------------------------------------------------------- */
 .values {
-  padding: 80px 0;
+  padding: var(--section-py) 0;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
 .valuesGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: var(--space-5);
 }
 .valueCard {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 28px;
+  composes: card from '../../styles/shared/surface.module.css';
+  padding: var(--space-7);
 }
 .valueMark {
-  font-size: 24px;
+  font-size: var(--space-6);
   color: var(--primary);
-  font-weight: 700;
-  margin-bottom: 12px;
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-3);
 }
 .valueCard h3 {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
   color: var(--text);
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
 }
 .valueCard p {
-  font-size: 13px;
+  font-size: var(--fs-sm);
   color: var(--text-muted);
   line-height: 1.65;
   margin: 0;
 }
 
+/* --- Closing CTA --------------------------------------------------------- */
 .cta {
-  padding: 80px 0 32px;
+  padding: var(--section-py) 0 var(--space-8);
 }
 .ctaCard {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 48px 32px;
+  composes: card from '../../styles/shared/surface.module.css';
+  padding: var(--space-12) var(--space-8);
   text-align: center;
 }
 .ctaCard h2 {
   font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   color: var(--text);
-  letter-spacing: -0.02em;
-  margin: 0 0 12px;
+  letter-spacing: var(--ls-tight);
+  margin: 0 0 var(--space-3);
 }
 .ctaCard p {
-  font-size: 15px;
+  font-size: var(--fs-md);
   color: var(--text-muted);
-  margin: 0 0 24px;
+  margin: 0 0 var(--space-6);
 }
 
 @media (max-width: 900px) {
-  .missionGrid { grid-template-columns: 1fr; gap: 20px; }
+  .missionGrid { grid-template-columns: 1fr; gap: var(--space-5); }
   .pipelineGrid { grid-template-columns: 1fr; }
   .valuesGrid { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
-  .hero { padding: 56px 0 40px; }
-  .mission, .howItWorks, .values { padding: 56px 0; }
-  .ctaCard { padding: 32px 20px; }
-  .subtitle { font-size: 15px; }
+  .hero { padding: var(--section-py-sm) 0 var(--space-10); }
+  .mission,
+  .howItWorks,
+  .values { padding: var(--section-py-sm) 0; }
+  .ctaCard { padding: var(--space-8) var(--space-5); }
+  .subtitle { --lead-fs: var(--fs-md); }
 }

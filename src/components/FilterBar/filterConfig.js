@@ -1,33 +1,4 @@
 export const STATIC_FILTERS = [
-  { key: 'type', label: 'Job type', options: [
-    { value: 'Full-time', label: 'Full-time' },
-    { value: 'Internship', label: 'Internship' },
-    { value: 'Contract', label: 'Contract' },
-    { value: 'Part-time', label: 'Part-time' }
-  ]},
-  { key: 'salary', label: 'Salary range', options: [
-    { value: '0-5', label: 'Under ₹5 LPA' },
-    { value: '5-8', label: '₹5–8 LPA' },
-    { value: '8-12', label: '₹8–12 LPA' },
-    { value: '12+', label: '₹12 LPA+' }
-  ]},
-  { key: 'experience', label: 'Experience', options: [
-    { value: 'Fresher', label: 'Fresher' },
-    { value: '0-1', label: '0–1 year' },
-    { value: '0-2', label: '0–2 years' },
-    { value: '1-2', label: '1–2 years' }
-  ]},
-  { key: 'work', label: 'Work style', options: [
-    { value: 'remote', label: 'Remote' },
-    { value: 'onsite', label: 'On-site' },
-    { value: 'hybrid', label: 'Hybrid' }
-  ]},
-  { key: 'industry', label: 'Industry', options: [
-    { value: 'Technology', label: 'Technology' },
-    { value: 'Fintech', label: 'Fintech' },
-    { value: 'E-commerce', label: 'E-commerce' },
-    { value: 'SaaS', label: 'SaaS' }
-  ]},
   { key: 'posted', label: 'Posted', options: [
     { value: 'today', label: 'Today' },
     { value: 'week', label: 'Past week' },
@@ -35,5 +6,28 @@ export const STATIC_FILTERS = [
   ]}
 ];
 
-// Filters where the options come from the actual jobs data
-export const DYNAMIC_FILTERS = ['location', 'skills'];
+export const TYPE_OPTIONS = [
+  { value: 'Remote', label: 'Remote' },
+  { value: 'Hybrid', label: 'Hybrid' },
+  { value: 'On-site', label: 'On-site' },
+];
+
+export const EXPERIENCE_OPTIONS = [
+  { value: 'Internship', label: 'Internship' },
+  { value: 'Entry Level', label: 'Entry Level' },
+  { value: 'Junior', label: 'Junior' },
+  { value: 'Mid Level', label: 'Mid Level' },
+  { value: 'Senior', label: 'Senior' },
+];
+
+export const DYNAMIC_FILTERS = ['location'];
+
+export const SKILL_OPTIONS = [
+  'JavaScript', 'TypeScript', 'Python', 'Java', 'Go', 'C++', 'C#', 'Ruby', 'PHP', 'Rust',
+  'React', 'Vue', 'Angular', 'Node.js', 'Next.js', 'Svelte', 'Django', 'FastAPI', 'Spring',
+  'SQL', 'MongoDB', 'PostgreSQL', 'MySQL', 'Redis',
+  'AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform', 'Linux',
+  'Git', 'CI/CD', 'GraphQL', 'REST API', 'Microservices',
+  'Machine Learning', 'Data Science', 'TensorFlow', 'PyTorch', 'LLM',
+  'HTML', 'CSS', 'Swift', 'Kotlin', 'Android', 'iOS', 'Figma'
+];

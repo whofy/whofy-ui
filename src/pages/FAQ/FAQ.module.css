@@ -1,50 +1,42 @@
 .section {
-  padding: 80px 0;
-  min-height: calc(100vh - var(--header-h) - 200px);
+  padding: var(--section-py) 0;
+  min-height: var(--page-min-h);
 }
+
 .header {
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto 60px;
+  composes: headBlock from '../../styles/shared/typography.module.css';
+  --head-max: 600px;
+  --head-gap: 60px;
+  --head-lead-fs: var(--fs-2xl);
 }
+
 .pageHeader {
-  font-size: 40px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  color: var(--text);
-  margin: 0 0 16px;
+  composes: pageTitle from '../../styles/shared/typography.module.css';
 }
-.header p {
-  color: var(--text-muted);
-  font-size: 18px;
-  margin: 0;
-  line-height: 1.6;
-}
+
 .list {
   max-width: 800px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }
+
 .item {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  composes: cardSoft from '../../styles/shared/surface.module.css';
   overflow: hidden;
-  transition: box-shadow 0.2s var(--ease);
+  transition: box-shadow var(--dur-base) var(--ease);
 }
 .item:hover { box-shadow: var(--shadow); }
+
 .question {
   width: 100%;
   text-align: left;
-  padding: 24px;
+  padding: var(--space-6);
   background: transparent;
   border: none;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
   color: var(--text);
   display: flex;
   justify-content: space-between;
@@ -53,32 +45,34 @@
   font-family: inherit;
 }
 .question svg {
-  width: 20px; height: 20px;
+  width: var(--space-5);
+  height: var(--space-5);
   color: var(--primary);
-  transition: transform 0.3s var(--ease);
+  transition: transform var(--dur-slow) var(--ease);
   flex-shrink: 0;
 }
+
 .answer {
-  padding: 0 24px;
+  padding: 0 var(--space-6);
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s var(--ease), padding 0.3s var(--ease);
+  transition: max-height var(--dur-slow) var(--ease),
+              padding var(--dur-slow) var(--ease);
 }
 .answer p {
   color: var(--text-muted);
-  line-height: 1.6;
-  margin: 0 0 24px;
-  font-size: 15px;
+  line-height: var(--lh-relaxed);
+  margin: 0 0 var(--space-6);
+  font-size: var(--fs-md);
 }
+
 .item.active .answer { max-height: 500px; }
 .item.active .question svg { transform: rotate(180deg); }
 
 @media (max-width: 640px) {
-  .section { padding: 56px 0; }
-  .header { margin: 0 auto 40px; }
-  .pageHeader { font-size: 30px; }
-  .header p { font-size: 16px; }
-  .question { padding: 18px; font-size: 15px; }
+  .section { padding: var(--section-py-sm) 0; }
+  .header { --head-gap: var(--space-10); }
+  .question { padding: 18px; font-size: var(--fs-md); }
   .answer { padding: 0 18px; }
-  .answer p { font-size: 14px; margin: 0 0 18px; }
+  .answer p { font-size: var(--fs-body); margin: 0 0 18px; }
 }

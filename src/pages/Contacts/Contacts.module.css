@@ -1,153 +1,113 @@
 .section {
-  padding: 80px 0;
-  min-height: calc(100vh - var(--header-h) - 200px);
+  padding: var(--section-py) 0;
+  min-height: var(--page-min-h);
 }
+
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 48px;
+  gap: var(--space-12);
 }
 @media (min-width: 768px) {
   .grid {
     grid-template-columns: 1fr 1.2fr;
-    gap: 64px;
+    gap: var(--space-16);
     align-items: start;
   }
 }
+
 .pageHeader {
-  font-size: 40px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  color: var(--text);
-  margin: 0 0 16px;
+  composes: pageTitle from '../../styles/shared/typography.module.css';
 }
+
 .subtitle {
-  color: var(--text-muted);
-  font-size: 18px;
-  margin: 0 0 40px;
-  line-height: 1.6;
+  composes: lead from '../../styles/shared/typography.module.css';
+  --lead-fs: var(--fs-2xl);
+  --lead-margin: 0 0 var(--space-10);
 }
+
+/* --- Contact details ----------------------------------------------------- */
 .info {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-6);
 }
 .item {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: var(--space-4);
 }
 .item svg {
-  width: 24px; height: 24px;
+  width: var(--space-6);
+  height: var(--space-6);
   color: var(--primary);
   flex-shrink: 0;
   margin-top: 2px;
 }
 .item h4 {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 4px;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  margin: 0 0 var(--space-1);
   color: var(--text);
 }
 .item p {
   color: var(--text-muted);
   margin: 0;
 }
+
+/* --- Form ---------------------------------------------------------------- */
 .formCard {
-  padding: 32px;
-  background: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
+  composes: cardSoft from '../../styles/shared/surface.module.css';
+  padding: var(--space-8);
 }
+
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  composes: form from '../../styles/shared/form.module.css';
 }
+
+/* Roomier fields than the Careers form — density only, no restated rules. */
 .formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  composes: group from '../../styles/shared/form.module.css';
+  --field-gap: var(--space-2);
+  --field-pad: var(--space-3) var(--space-4);
+  --field-fs: var(--fs-md);
 }
-.formGroup label {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-}
-.formGroup input, .formGroup select, .formGroup textarea {
-  padding: 12px 16px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-family: inherit;
-  font-size: 15px;
-  background: var(--bg-subtle);
-  color: var(--text);
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.formGroup input:focus, .formGroup select:focus, .formGroup textarea:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-tint);
-}
-.formGroup select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20' stroke='%2364748B'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
-  background-position: right 12px center;
-  background-repeat: no-repeat;
-  background-size: 20px 20px;
-  padding-right: 40px;
-}
+
 .formCheckbox {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  cursor: pointer;
-  margin-top: 4px;
-  font-size: 14px;
-  color: var(--text-muted);
+  composes: checkbox from '../../styles/shared/form.module.css';
 }
-.formCheckbox input {
-  margin-top: 3px;
-  cursor: pointer;
+
+.form button {
+  margin-top: var(--space-3);
+  justify-content: center;
 }
-.formCheckbox a {
-  color: var(--primary);
-  font-weight: 600;
-}
+
+/* --- Help callout -------------------------------------------------------- */
 .helpCallout {
-  margin-top: 40px;
-  padding: 24px;
-  background: var(--bg-subtle);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  composes: well from '../../styles/shared/surface.module.css';
+  margin-top: var(--space-10);
+  padding: var(--space-6);
 }
 .helpCallout h4 {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
   margin: 0 0 6px;
   color: var(--text);
 }
 .helpCallout p {
   color: var(--text-muted);
-  font-size: 14px;
-  margin: 0 0 12px;
+  font-size: var(--fs-body);
+  margin: 0 0 var(--space-3);
 }
 .helpCallout a {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-bold);
   color: var(--primary);
-}
-.form button {
-  margin-top: 12px;
-  justify-content: center;
 }
 
 @media (max-width: 640px) {
-  .section { padding: 56px 0; }
-  .pageHeader { font-size: 30px; }
-  .subtitle { font-size: 16px; margin: 0 0 32px; }
-  .formCard { padding: 20px; }
-  .helpCallout { padding: 20px; margin-top: 32px; }
+  .section { padding: var(--section-py-sm) 0; }
+  .subtitle { --lead-fs: var(--fs-lg); --lead-margin: 0 0 var(--space-8); }
+  .formCard { padding: var(--space-5); }
+  .helpCallout { padding: var(--space-5); margin-top: var(--space-8); }
 }

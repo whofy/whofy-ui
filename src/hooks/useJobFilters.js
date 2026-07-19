@@ -1,44 +1,33 @@
 import { useState, useMemo, useCallback } from 'react';
 
-function salaryLPA(s) {
-  const nums = (s.match(/[\d.]+/g) || []).map(Number);
-  if (!nums.length) return 0;
-  if (/\/mo/i.test(s)) return (nums[0] * 12) / 100000;
-  return nums[0];
-}
-function salaryMax(s) {
-  const nums = (s.match(/[\d.]+/g) || []).map(Number);
-  if (!nums.length) return 0;
-  if (/\/mo/i.test(s)) return (nums[nums.length - 1] * 12) / 100000;
-  return nums[nums.length - 1];
-}
-function matchesSalary(job, values) {
-  const min = salaryLPA(job.salary), max = salaryMax(job.salary);
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function matchesPosted(job, values) {
+  if (!job.postedAt) return false;
+  const posted = new Date(job.postedAt);
+  if (Number.isNaN(posted.getTime())) return false;
+  const days = Math.floor((Date.now() - posted.getTime()) / DAY_MS);
+
   for (const v of values) {
-    if (v === '0-5' && min < 5) return true;
-    if (v === '5-8' && max >= 5 && min <= 8) return true;
-    if (v === '8-12' && max >= 8 && min <= 12) return true;
-    if (v === '12+' && max >= 12) return true;
-  }
-  return false;
-}
-function matchesExp(job, values) {
-  const exp = job.experience.toLowerCase();
-  for (const v of values) {
-    if (v === 'Fresher' && (exp.includes('0') || exp.includes('fresher'))) return true;
-    if (v === '0-1' && exp.includes('0–1')) return true;
-    if (v === '0-2' && exp.includes('0–2')) return true;
-    if (v === '1-2' && exp.includes('1–2')) return true;
+    if (v === 'today' && days <= 0) return true;
+    if (v === 'week' && days <= 7) return true;
+    if (v === 'month' && days <= 30) return true;
   }
   return false;
 }
 
 function emptyState() {
-  return {
-    type: new Set(), location: new Set(), salary: new Set(),
-    experience: new Set(), work: new Set(), industry: new Set(),
-    skills: new Set(), posted: new Set()
-  };
+  return { location: new Set(), posted: new Set(), skills: new Set(), company: new Set(), source: new Set(), type: new Set(), experience: new Set() };
+}
+
+function jobText(j) {
+  return [
+    j.title,
+    j.company,
+    j.location,
+    ...(j.matchedSkills || []),
+    j.description || '',
+  ].join(' ').toLowerCase();
 }
 
 export function useJobFilters(jobs, query = '') {
@@ -64,26 +53,21 @@ export function useJobFilters(jobs, query = '') {
   }, []);
 
   const visible = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const tokens = query.trim().toLowerCase().split(/[\s.]+/).filter(Boolean);
     return jobs.filter(j => {
-      if (filterState.type.size && !filterState.type.has(j.type)) return false;
       if (filterState.location.size && !filterState.location.has(j.location)) return false;
-      if (filterState.salary.size && !matchesSalary(j, filterState.salary)) return false;
-      if (filterState.experience.size && !matchesExp(j, filterState.experience)) return false;
-      if (filterState.work.size) {
-        const ok = (filterState.work.has('remote') && j.remote) || (filterState.work.has('onsite') && !j.remote);
-        if (!ok) return false;
-      }
+      if (filterState.posted.size && !matchesPosted(j, filterState.posted)) return false;
       if (filterState.skills.size) {
-        const hasSkill = j.matchedSkills.some(sk => filterState.skills.has(sk));
+        const hasSkill = (j.matchedSkills || []).some(sk => filterState.skills.has(sk));
         if (!hasSkill) return false;
       }
-      if (q) {
-        const hit = j.title.toLowerCase().includes(q)
-          || j.company.toLowerCase().includes(q)
-          || j.matchedSkills.some(sk => sk.toLowerCase().includes(q))
-          || j.location.toLowerCase().includes(q);
-        if (!hit) return false;
+      if (filterState.company.size && !filterState.company.has(j.company)) return false;
+      if (filterState.source.size && !filterState.source.has(j.source)) return false;
+      if (filterState.type.size && !filterState.type.has(j.workType)) return false;
+      if (filterState.experience.size && !filterState.experience.has(j.experience)) return false;
+      if (tokens.length) {
+        const text = jobText(j);
+        if (!tokens.every(t => text.includes(t))) return false;
       }
       return true;
     });

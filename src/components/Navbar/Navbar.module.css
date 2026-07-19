@@ -7,8 +7,9 @@
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: saturate(180%) blur(10px);
   border-bottom: 1px solid var(--border);
-  z-index: 50;
+  z-index: var(--z-header);
 }
+
 .inner {
   height: 100%;
   display: flex;

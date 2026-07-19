@@ -4,64 +4,71 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
+  padding: var(--space-12) var(--space-6);
 }
+
 .card {
+  composes: card from '../../styles/shared/surface.module.css';
   width: 100%;
   max-width: 640px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   overflow: hidden;
 }
 
+/* --- Card header --------------------------------------------------------- */
 .header {
-  padding: 20px 24px;
+  padding: var(--space-5) var(--space-6);
   border-bottom: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 .brandMark {
-  width: 28px; height: 28px;
-  font-size: 13px;
+  width: var(--space-7);
+  height: var(--space-7);
+  font-size: var(--fs-sm);
   border-radius: 5px;
   background: var(--primary);
-  color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700;
+  color: var(--text-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-bold);
 }
-.brandName { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
-.brandName b { font-weight: 700; }
+.brandName {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-snug);
+}
+.brandName b { font-weight: var(--fw-bold); }
 
-.body { padding: 32px 32px 28px; }
+.body { padding: var(--space-8) var(--space-8) var(--space-7); }
 
 .title {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: var(--fs-4xl);
+  font-weight: var(--fw-bold);
   color: var(--text);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--ls-tight);
   margin: 0 0 6px;
 }
 .subtitle {
-  font-size: 14px;
+  font-size: var(--fs-body);
   color: var(--text-muted);
-  margin: 0 0 28px;
+  margin: 0 0 var(--space-7);
 }
 
+/* --- Uploaded file summary ----------------------------------------------- */
 .fileRow {
+  composes: well from '../../styles/shared/surface.module.css';
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 16px;
-  background: var(--bg-subtle);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  margin-bottom: 24px;
+  padding: 14px var(--space-4);
+  margin-bottom: var(--space-6);
 }
 .fileIcon {
-  width: 40px; height: 40px;
+  width: var(--space-10);
+  height: var(--space-10);
   flex: none;
   border-radius: var(--radius-sm);
   background: var(--primary-tint);
@@ -69,28 +76,30 @@
   display: grid;
   place-items: center;
 }
-.fileIcon svg { width: 20px; height: 20px; }
+.fileIcon svg { width: var(--space-5); height: var(--space-5); }
+
 .fileMeta { flex: 1; min-width: 0; }
 .fileName {
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-body);
   color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .fileSize {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   color: var(--text-muted);
   margin-top: 2px;
   font-variant-numeric: tabular-nums;
 }
+
 .fileBadge {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--fs-tiny);
+  font-weight: var(--fw-bold);
   color: var(--primary);
   background: var(--primary-tint);
-  padding: 4px 10px;
+  padding: var(--space-1) 10px;
   border-radius: var(--radius-sm);
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -100,27 +109,29 @@
 }
 .fileBadge::before {
   content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-circle);
   background: var(--primary);
   animation: pulseDot 1.2s ease-in-out infinite;
 }
-@keyframes pulseDot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.8); }
-}
 
-.progress { margin-bottom: 28px; }
+/* --- Progress ------------------------------------------------------------ */
+.progress { margin-bottom: var(--space-7); }
 .progressHeader {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 8px;
-  font-size: 12px;
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-caption);
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
 }
-.progressHeader b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.progressHeader b {
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+}
 .progressBar {
   height: 6px;
   border-radius: 3px;
@@ -132,76 +143,81 @@
   height: 100%;
   background: var(--primary);
   border-radius: 3px;
-  transition: width 0.2s linear;
+  transition: width var(--dur-base) linear;
 }
 
-.skillsBlock { margin-bottom: 28px; }
+/* --- Extracted skills ---------------------------------------------------- */
+.skillsBlock { margin-bottom: var(--space-7); }
 .skillsLabel {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  composes: overline from '../../styles/shared/typography.module.css';
+  --overline-fs: var(--fs-tiny);
   margin-bottom: 10px;
 }
 .skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  min-height: 28px;
+  composes: chips from '../../styles/shared/media.module.css';
+  min-height: var(--space-7);
 }
 .chip {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
   color: var(--primary);
   background: var(--primary-tint);
   border: 1px solid transparent;
-  padding: 4px 10px;
+  padding: var(--space-1) 10px;
   border-radius: var(--radius-sm);
-  animation: chipPop 0.3s var(--ease) both;
-}
-@keyframes chipPop {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  animation: popIn var(--dur-slow) var(--ease) both;
 }
 
+/* --- Step checklist ------------------------------------------------------ */
 .steps {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding-top: 24px;
+  padding-top: var(--space-6);
   border-top: 1px solid var(--border-subtle);
 }
 .step {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 4px;
-  font-size: 14px;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-1);
+  font-size: var(--fs-body);
   color: var(--text-muted);
-  transition: color 0.2s var(--ease);
+  transition: color var(--dur-base) var(--ease);
 }
-.step.active { color: var(--text); font-weight: 600; }
+.step.active { color: var(--text); font-weight: var(--fw-semibold); }
 .step.done { color: var(--text-secondary); }
 
 .tick {
-  width: 22px; height: 22px;
+  width: 22px;
+  height: 22px;
   flex: none;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   border: 1.5px solid var(--border-strong);
   display: grid;
   place-items: center;
-  transition: all 0.2s var(--ease);
+  transition: var(--transition-base);
   background: var(--surface);
 }
+.tick svg {
+  width: var(--space-3);
+  height: var(--space-3);
+  opacity: 0;
+  color: var(--text-on-primary);
+}
+
 .step.active .tick { border-color: var(--primary); }
 .step.active .tick::after {
   content: '';
-  width: 8px; height: 8px;
-  border-radius: 50%;
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-circle);
   background: var(--primary);
   animation: pulseDot 1s ease-in-out infinite;
 }
-.step.done .tick { background: #10b981; border-color: #10b981; }
-.step.done .tick svg { color: #fff; opacity: 1; }
-.tick svg { width: 12px; height: 12px; opacity: 0; color: #fff; }
+
+.step.done .tick {
+  background: var(--success);
+  border-color: var(--success);
+}
+.step.done .tick svg { opacity: 1; }

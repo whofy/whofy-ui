@@ -39,7 +39,7 @@ export default function Careers() {
 
   return (
     <>
-      <section className={`${styles.hero} container`}>
+      <section className={styles.hero}>
         <h1 className={styles.pageHeader}>Join the mission to hunt opportunity.</h1>
         <p>We're building the infrastructure that connects India's next generation of engineers, designers, and analysts with roles where they truly belong.</p>
       </section>
@@ -84,7 +84,7 @@ export default function Careers() {
       </section>
 
       <section className={styles.apply} ref={formRef}>
-        <div className="container" style={{ maxWidth: 720 }}>
+        <div className="container container-form">
           <div className={styles.applyHead}>
             <div className={styles.eyebrow}>Apply now</div>
             <h2>Tell us about yourself.</h2>

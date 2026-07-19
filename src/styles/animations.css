@@ -1,0 +1,46 @@
+/* ============================================================================
+   ANIMATIONS — every shared @keyframes in the app.
+
+   These live in a plain (non-module) stylesheet on purpose: CSS Modules only
+   rewrites an `animation-name` when a @keyframes of that name is declared in
+   the same file, so modules can reference these by their literal name.
+   Component-local, one-off keyframes stay in their own module.
+   ========================================================================= */
+
+/* Route/section entrance. */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Loading placeholders — was duplicated as `shimmer` in SkeletonCard and
+   `skShimmer` in Results with identical bodies. */
+@keyframes shimmer {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+
+/* "Working" indicator dot — Processing uses it for both the file badge and
+   the active step tick. */
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* Item appearing in a list/chip cloud. */
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Panel opening from a floating trigger. */
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Typing indicator. */
+@keyframes blink {
+  0%, 60%, 100% { opacity: 0.3; }
+  30%           { opacity: 1; }
+}
