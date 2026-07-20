@@ -21,10 +21,25 @@ export default function Chatbot() {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const bodyRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
   }, [messages, open]);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [open]);
 
   async function send() {
     const text = input.trim();
@@ -50,7 +65,7 @@ export default function Chatbot() {
   }
 
   return (
-    <>
+    <div ref={containerRef}>
       {open && (
         <div className={styles.panel} role="dialog" aria-label="Whofy assistant">
           <div className={styles.header}>
@@ -100,6 +115,6 @@ export default function Chatbot() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
         )}
       </button>
-    </>
+    </div>
   );
 }

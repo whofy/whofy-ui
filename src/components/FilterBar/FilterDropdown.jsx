@@ -18,7 +18,7 @@ import styles from './FilterBar.module.css';
 // Below this many options, a search box just adds clutter for no benefit.
 const SEARCH_THRESHOLD = 8;
 
-export default function FilterDropdown({ label, options, selected, onApply }) {
+export default function FilterDropdown({ label, options, selected, onApply, singleSelect }) {
   const [open, setOpen] = useState(false);
   const [pending, setPending] = useState(() => new Set(selected));
   const [search, setSearch] = useState('');
@@ -45,8 +45,20 @@ export default function FilterDropdown({ label, options, selected, onApply }) {
   const appliedCount = selected.size;
   const hasApplied = appliedCount > 0;
 
+  let displayLabel = label;
+  if (appliedCount === 1) {
+    const singleValue = Array.from(selected)[0];
+    const option = options.find(o => o.value === singleValue);
+    if (option) {
+      displayLabel = option.label;
+    }
+  }
+
   function togglePending(value) {
     setPending(prev => {
+      if (singleSelect) {
+        return new Set([value]);
+      }
       const next = new Set(prev);
       if (next.has(value)) next.delete(value);
       else next.add(value);
@@ -73,22 +85,25 @@ export default function FilterDropdown({ label, options, selected, onApply }) {
         onClick={() => setOpen(o => !o)}
         type="button"
       >
-        {label}
-        {hasApplied && <span className={styles.count}>{appliedCount}</span>}
+        {displayLabel}
+        {appliedCount > 1 && <span className={styles.count}>{appliedCount}</span>}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
       </button>
       {open && (
         <div className={styles.menu}>
           {options.length > SEARCH_THRESHOLD && (
-            <input
-              type="text"
-              className={styles.search}
-              placeholder={`Search ${label.toLowerCase()}...`}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onClick={(e) => e.stopPropagation()}
-              autoFocus
-            />
+            <div className={styles.searchWrap}>
+              <svg className={styles.searchIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+              <input
+                type="text"
+                className={styles.search}
+                placeholder={`Search ${label.toLowerCase()}...`}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+                autoFocus
+              />
+            </div>
           )}
           <div className={styles.menuList}>
             {visibleOptions.length === 0 ? (
@@ -97,9 +112,15 @@ export default function FilterDropdown({ label, options, selected, onApply }) {
               visibleOptions.map(opt => (
                 <label key={opt.value} className={styles.option}>
                   <input
-                    type="checkbox"
+                    type={singleSelect ? "radio" : "checkbox"}
+                    name={singleSelect ? label : undefined}
                     value={opt.value}
                     checked={pending.has(opt.value)}
+                    onClick={(e) => {
+                      if (singleSelect && pending.has(opt.value)) {
+                        setPending(new Set());
+                      }
+                    }}
                     onChange={() => togglePending(opt.value)}
                   />
                   <span>{opt.label}</span>
