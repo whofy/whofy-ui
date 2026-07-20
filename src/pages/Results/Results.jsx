@@ -101,7 +101,7 @@ export default function Results() {
       const filters = {};
       for (const key of SERVER_FILTER_GROUPS) {
         const vals = key === group ? arr : [...(nextState[key] || [])];
-        if (vals.length) filters[key] = vals.join(',');
+        if (vals.length) filters[key] = vals.join('|');
       }
       await fetchJobs(skills, filters);
     }
