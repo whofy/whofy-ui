@@ -1,0 +1,109 @@
+.section {
+  padding: var(--section-py-lg) 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.head {
+  composes: headBlock from '../../../styles/shared/typography.module.css';
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.eyebrow {
+  composes: eyebrow from '../../../styles/shared/typography.module.css';
+  display: flex;
+  justify-content: center;
+}
+
+.marqueeContainer {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  /* Fading edges for a nice visual effect */
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  padding: var(--space-4) 0;
+}
+
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 40s linear infinite;
+}
+
+.marquee:hover {
+  animation-play-state: paused;
+}
+
+.marqueeTrack {
+  display: flex;
+  gap: var(--space-6);
+  padding-right: var(--space-6);
+}
+
+.pill {
+  padding: var(--space-2) var(--space-5) var(--space-2) var(--space-2);
+  border-radius: var(--radius-pill, 9999px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-md);
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+  transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: default;
+}
+
+.pill:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
+  color: var(--text);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  z-index: 1;
+}
+
+.logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-bold);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.realLogo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: white; /* fallback for transparent logos */
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
