@@ -21,6 +21,7 @@ export async function getMatches(skills = [], filters = {}, { skip = 0, limit = 
   if (filters.location) params.set('location', filters.location);
   if (filters.type) params.set('type', filters.type);
   if (filters.experience) params.set('experience', filters.experience);
+  if (filters.posted) params.set('posted', filters.posted);
   params.set('skip', String(skip));
   params.set('limit', String(limit));
   const qs = params.toString();
