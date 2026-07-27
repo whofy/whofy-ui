@@ -2,6 +2,7 @@ import Hero from './sections/Hero.jsx';
 import Stats from './sections/Stats.jsx';
 import WhyWhofy from './sections/WhyWhofy.jsx';
 import Process from './sections/Process.jsx';
+import Integrations from './sections/Integrations.jsx';
 import Dropzone from '../../components/Dropzone/Dropzone.jsx';
 import styles from './Home.module.css';
 
@@ -26,6 +27,7 @@ export default function Home() {
         </div>
       </section>
       <Process />
+      <Integrations />
     </>
   );
 }
