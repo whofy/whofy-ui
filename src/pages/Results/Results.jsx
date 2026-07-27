@@ -62,7 +62,7 @@ export default function Results() {
 
   const { filterState, clearAll, setGroup, visible } = useJobFilters(jobs, '');
 
-  const SERVER_FILTER_GROUPS = new Set(['source', 'company', 'location', 'type', 'experience']);
+  const SERVER_FILTER_GROUPS = new Set(['source', 'company', 'location', 'type', 'experience', 'posted']);
 
   async function applyGroup(group, values) {
     const arr = [...values];

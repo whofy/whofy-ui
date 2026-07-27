@@ -56,7 +56,7 @@ export function useJobFilters(jobs, query = '') {
     const tokens = query.trim().toLowerCase().split(/[\s.]+/).filter(Boolean);
     return jobs.filter(j => {
       if (filterState.location.size && !filterState.location.has(j.location)) return false;
-      if (filterState.posted.size && !matchesPosted(j, filterState.posted)) return false;
+      // posted filter is handled server-side
       if (filterState.skills.size) {
         const hasSkill = (j.matchedSkills || []).some(sk => filterState.skills.has(sk));
         if (!hasSkill) return false;
