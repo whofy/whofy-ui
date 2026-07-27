@@ -1,0 +1,111 @@
+/* ============================================================================
+   Shared button recipes.
+
+   Mirrors the global `.btn` family in styles/utilities.css — that one is for
+   routes that write className="btn btn-theme" directly in JSX, this one is
+   for modules that need a locally-named class. Same tokens, same result.
+
+   Every size/colour/hover value is a custom property so a consumer tunes it
+   by setting the property, never by redeclaring the rule. See the header of
+   typography.module.css for why that matters.
+   ========================================================================= */
+
+/* Shape only: no colour, no size. */
+.base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+  font-weight: var(--fw-semibold);
+  border: 1px solid transparent;
+  border-radius: var(--btn-radius, var(--radius));
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition-base);
+}
+.base svg { flex-shrink: 0; }
+.base:disabled {
+  opacity: var(--btn-disabled-opacity, 0.5);
+  cursor: not-allowed;
+}
+
+/* Filled brand button — DetailPane apply, EmptyState view, FilterBar show. */
+.solid {
+  font-size: var(--btn-fs, var(--fs-sm));
+  padding: var(--btn-pad, 10px var(--space-5));
+  color: var(--text-on-primary);
+  background: var(--btn-bg, var(--primary));
+  border-color: var(--btn-bg, var(--primary));
+}
+.solid:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: var(--btn-hover-transform, translateY(-1px));
+}
+.solid svg { width: 13px; height: 13px; }
+
+/* Outlined neutral button — DetailPane save, FilterBar reset. */
+.ghost {
+  font-size: var(--btn-fs, var(--fs-sm));
+  padding: var(--btn-pad, 10px var(--space-4));
+  color: var(--text);
+  background: var(--btn-bg, var(--surface));
+  border-color: var(--border);
+}
+.ghost:hover:not(:disabled) {
+  border-color: var(--btn-hover-border, var(--primary));
+  color: var(--btn-hover-color, var(--primary));
+}
+.ghost:disabled {
+  color: var(--text-faint);
+  border-color: var(--border-subtle);
+}
+.ghost svg { width: 14px; height: 14px; }
+
+/* Pill trigger that opens a menu — FilterBar filters, SortControl.
+   Includes the chevron sizing both files implemented separately. */
+.pill {
+  font-size: var(--btn-fs, var(--fs-caption));
+  font-weight: var(--fw-medium);
+  padding: var(--btn-pad, 7px 14px);
+  border-radius: var(--btn-radius, var(--radius-pill));
+  border-color: var(--pill-border, var(--border));
+  background: var(--pill-bg, var(--surface));
+  color: var(--pill-color, var(--text-secondary));
+}
+.pill svg {
+  width: 11px;
+  height: 11px;
+  color: var(--pill-icon-color, var(--text-faint));
+  transition: transform var(--dur-base) var(--ease);
+}
+.pill:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Square icon-only button — DetailPane close, Chatbot close. */
+.icon {
+  width: var(--btn-size, var(--space-8));
+  height: var(--btn-size, var(--space-8));
+  padding: 0;
+  border-radius: var(--btn-radius, var(--radius-md));
+  border-color: var(--border);
+  background: var(--btn-bg, var(--surface));
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.icon:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.icon svg { width: 14px; height: 14px; }
+
+/* Borderless text button — FilterBar clear. */
+.link {
+  font-size: var(--btn-fs, var(--fs-tiny));
+  color: var(--primary);
+  background: transparent;
+  padding: var(--btn-pad, var(--space-1) var(--space-2));
+}
+.link:hover { text-decoration: underline; }

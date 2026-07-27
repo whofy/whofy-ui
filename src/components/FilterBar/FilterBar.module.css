@@ -1,0 +1,157 @@
+.bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.dropdown { position: relative; }
+
+/* --- Trigger ------------------------------------------------------------- */
+.btn {
+  composes: base pill from '../../styles/shared/button.module.css';
+}
+/* Only the background — border-color and colour come from the shared
+   .pill:hover, so the two rules complement rather than compete. */
+
+/* Trigger for a filter that currently has selections applied. */
+.active {
+  --pill-border: var(--primary);
+  --pill-color: var(--primary);
+  --pill-icon-color: var(--primary);
+}
+
+/* `.open` sits on the wrapper. */
+.open .btn svg { transform: rotate(180deg); }
+
+.count {
+  font-size: 9px;
+  font-weight: var(--fw-semibold);
+  background: var(--primary);
+  color: var(--text-on-primary);
+  border-radius: var(--radius-circle);
+  min-width: 15px;
+  height: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-1);
+}
+
+.skillTag {
+  composes: base pill from '../../styles/shared/button.module.css';
+  --pill-color: var(--primary);
+  --pill-border: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-right: 8px; /* a bit tighter on the right for the close icon */
+}
+.skillTag svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+.skillTag:hover svg {
+  opacity: 1;
+}
+
+/* --- Menu ---------------------------------------------------------------- */
+.menu {
+  composes: menu from '../../styles/shared/menu.module.css';
+  --menu-min-w: 220px;
+  --menu-pad: 6px 6px 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.searchWrap {
+  position: relative;
+  margin-bottom: 6px;
+  width: 100%;
+}
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  color: var(--text-faint);
+  pointer-events: none;
+}
+
+.search {
+  font-family: inherit;
+  font-size: var(--fs-caption);
+  color: var(--text);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px 7px 30px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+.search:focus { border-color: var(--primary); }
+.search::placeholder { color: var(--text-faint); }
+
+.menuList {
+  composes: list from '../../styles/shared/menu.module.css';
+}
+.menuEmpty {
+  composes: empty from '../../styles/shared/menu.module.css';
+}
+.menuFooter {
+  composes: footer from '../../styles/shared/menu.module.css';
+}
+
+.option {
+  composes: option from '../../styles/shared/menu.module.css';
+}
+.option input[type="checkbox"] {
+  width: var(--fs-body);
+  height: var(--fs-body);
+  accent-color: var(--primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.option input[type="checkbox"]:checked + span {
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+}
+
+/* --- Menu actions -------------------------------------------------------- */
+.resetBtn {
+  composes: base ghost from '../../styles/shared/button.module.css';
+  --btn-fs: var(--fs-caption);
+  --btn-pad: 6px 14px;
+  --btn-radius: var(--radius-pill);
+  --btn-bg: transparent;
+  /* Neutral hover, not the brand hover the shared ghost defaults to. */
+  --btn-hover-border: var(--text);
+  --btn-hover-color: var(--text);
+}
+
+.showBtn {
+  composes: base solid from '../../styles/shared/button.module.css';
+  --btn-fs: var(--fs-caption);
+  --btn-pad: 6px var(--space-4);
+  --btn-radius: var(--radius-pill);
+  /* Sits inside a menu, so it must not lift off the surface on hover. */
+  --btn-hover-transform: none;
+  --btn-hover-shadow: none;
+}
+
+.clear {
+  composes: base link from '../../styles/shared/button.module.css';
+  white-space: nowrap;
+  margin-left: var(--space-1);
+}
+
+@media (max-width: 640px) {
+  .bar { gap: var(--space-1); }
+  .btn { --btn-fs: var(--fs-tiny); --btn-pad: 6px 10px; }
+  .menu { --menu-min-w: 160px; }
+}

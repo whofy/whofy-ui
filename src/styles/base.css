@@ -1,0 +1,43 @@
+/* ============================================================================
+   BASE — default appearance of bare elements, expressed only in tokens.
+   ========================================================================= */
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--fs-body);
+    line-height: var(--lh-normal);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* A single visible focus treatment for everything keyboard-reachable.
+     Modules should not redefine :focus-visible. */
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  /* Force remove any focus rings or outlines on form fields globally */
+  input:focus, select:focus, textarea:focus,
+  input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  ::selection {
+    background: var(--primary-tint);
+    color: var(--text);
+  }
+
+  /* Scrollbars on any scroll container that opts in. */
+  .scroll-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 3px;
+  }
+}

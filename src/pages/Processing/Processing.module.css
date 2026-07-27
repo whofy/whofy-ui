@@ -1,0 +1,226 @@
+.page {
+  min-height: calc(100vh - var(--header-h));
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+}
+
+.card {
+  composes: card from '../../styles/shared/surface.module.css';
+  width: 100%;
+  max-width: 640px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* --- Card header --------------------------------------------------------- */
+.header {
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.brandMark {
+  width: var(--space-7);
+  height: var(--space-7);
+  font-size: var(--fs-sm);
+  border-radius: 5px;
+  background: var(--primary);
+  color: var(--text-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-bold);
+}
+.brandName {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-snug);
+}
+.brandName b { font-weight: var(--fw-bold); }
+
+.body { padding: var(--space-8) var(--space-8) var(--space-7); }
+
+.title {
+  font-size: var(--fs-4xl);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  letter-spacing: var(--ls-tight);
+  margin: 0 0 6px;
+}
+.subtitle {
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-7);
+}
+
+/* --- Uploaded file summary ----------------------------------------------- */
+.fileRow {
+  composes: well from '../../styles/shared/surface.module.css';
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px var(--space-4);
+  margin-bottom: var(--space-6);
+}
+.fileIcon {
+  width: var(--space-10);
+  height: var(--space-10);
+  flex: none;
+  border-radius: var(--radius-sm);
+  background: var(--primary-tint);
+  color: var(--primary);
+  display: grid;
+  place-items: center;
+}
+.fileIcon svg { width: var(--space-5); height: var(--space-5); }
+
+.fileMeta { flex: 1; min-width: 0; }
+.fileName {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-body);
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fileSize {
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.fileBadge {
+  font-size: var(--fs-tiny);
+  font-weight: var(--fw-bold);
+  color: var(--primary);
+  background: var(--primary-tint);
+  padding: var(--space-1) 10px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.fileBadge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-circle);
+  background: var(--primary);
+  animation: pulseDot 1.2s ease-in-out infinite;
+}
+
+/* --- Progress ------------------------------------------------------------ */
+.progress { margin-bottom: var(--space-7); }
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+  font-weight: var(--fw-medium);
+}
+.progressHeader b {
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+}
+.progressBar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border-subtle);
+  overflow: hidden;
+}
+.progressBar > span {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+  border-radius: 3px;
+  transition: width var(--dur-base) linear;
+}
+
+/* --- Extracted skills ---------------------------------------------------- */
+.skillsBlock { margin-bottom: var(--space-7); }
+.skillsLabel {
+  composes: overline from '../../styles/shared/typography.module.css';
+  --overline-fs: var(--fs-tiny);
+  margin-bottom: 10px;
+}
+.skills {
+  composes: chips from '../../styles/shared/media.module.css';
+  min-height: var(--space-7);
+}
+.chip {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  color: var(--primary);
+  background: var(--primary-tint);
+  border: 1px solid transparent;
+  padding: var(--space-1) 10px;
+  border-radius: var(--radius-sm);
+  animation: popIn var(--dur-slow) var(--ease) both;
+}
+
+/* --- Step checklist ------------------------------------------------------ */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+}
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-1);
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+  transition: color var(--dur-base) var(--ease);
+}
+.step.active { color: var(--text); font-weight: var(--fw-semibold); }
+.step.done { color: var(--text-secondary); }
+
+.tick {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border-radius: var(--radius-circle);
+  border: 1.5px solid var(--border-strong);
+  display: grid;
+  place-items: center;
+  transition: var(--transition-base);
+  background: var(--surface);
+}
+.tick svg {
+  width: var(--space-3);
+  height: var(--space-3);
+  opacity: 0;
+  color: var(--text-on-primary);
+}
+
+@keyframes spinTick {
+  to { transform: rotate(360deg); }
+}
+.step.active .tick {
+  border-color: transparent;
+  border-top-color: var(--primary);
+  border-right-color: var(--primary);
+  border-width: 2px;
+  animation: spinTick 0.8s linear infinite;
+}
+
+.step.done .tick {
+  background: var(--success);
+  border-color: var(--success);
+}
+.step.done .tick svg { opacity: 1; }
+
+

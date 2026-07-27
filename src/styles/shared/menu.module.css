@@ -1,0 +1,76 @@
+/* ============================================================================
+   Shared dropdown recipes — FilterBar and SortControl had near-identical
+   copies of the panel and the option row.
+
+   Variation points are custom properties; see typography.module.css header.
+   ========================================================================= */
+
+/* The floating panel. Anchor side (left/right) stays with the consumer,
+   since neither is a sensible default. */
+.menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  min-width: var(--menu-min-w, 200px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--menu-pad, 6px);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-overlay);
+  list-style: none;
+  margin: 0;
+}
+
+/* A single selectable row. A selected row sets --option-color rather than
+   declaring `color`, so it survives both the resting and hover rules. */
+.option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--option-pad, 7px 10px);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--option-color, var(--text-secondary));
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease);
+}
+.option:hover {
+  background: var(--bg-subtle);
+  color: var(--option-hover-color, var(--text));
+}
+.option svg {
+  width: 14px;
+  height: 14px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* Scrollable option list inside a taller menu. */
+.list {
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+/* "No matches" row. */
+.empty {
+  padding: var(--space-3);
+  font-size: var(--fs-caption);
+  color: var(--text-faint);
+  text-align: center;
+}
+
+/* Sticky action row at the bottom of a multi-select menu. */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-1) 6px;
+  margin-top: 6px;
+  border-top: 1px solid var(--border-subtle);
+}

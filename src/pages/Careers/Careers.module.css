@@ -1,0 +1,227 @@
+/* --- Hero ---------------------------------------------------------------- */
+.hero {
+  padding: 60px var(--space-6) 30px;
+  text-align: center;
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+.pageHeader {
+  composes: pageTitle from '../../styles/shared/typography.module.css';
+  --title-margin: 0 auto var(--space-6);
+}
+
+.hero p {
+  color: var(--text-muted);
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  line-height: var(--lh-relaxed);
+  margin: 0 auto var(--space-8);
+  max-width: 680px;
+}
+
+/* --- Values -------------------------------------------------------------- */
+.values {
+  padding: var(--section-py) 0;
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.sectionTitle {
+  composes: sectionTitle from '../../styles/shared/typography.module.css';
+  --section-title-margin: 0 0 var(--space-12);
+  text-align: center;
+}
+
+.valuesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+@media (min-width: 768px) {
+  .valuesGrid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.valueCard {
+  composes: cardSoft from '../../styles/shared/surface.module.css';
+  padding: var(--space-8);
+  text-align: left;
+}
+.valueCard svg {
+  width: var(--space-8);
+  height: var(--space-8);
+  color: var(--primary);
+  margin-bottom: var(--space-5);
+}
+.valueCard h3 {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  margin: 0 0 var(--space-3);
+  color: var(--text);
+}
+.valueCard p {
+  color: var(--text-muted);
+  line-height: var(--lh-relaxed);
+  margin: 0;
+}
+
+/* --- Open roles ---------------------------------------------------------- */
+.roles { padding: var(--section-py) 0 var(--space-10); }
+
+.rolesList {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.roleCard {
+  composes: card from '../../styles/shared/surface.module.css';
+  --card-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-6) var(--space-8);
+  transition: var(--transition-base);
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  color: var(--text);
+}
+.roleCard:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.roleInfo h4 {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  margin: 0 0 var(--space-2);
+  color: var(--text);
+}
+.roleInfo p {
+  color: var(--text-muted);
+  font-size: var(--fs-md);
+  margin: 0;
+}
+
+.roleAction {
+  font-weight: var(--fw-semibold);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* --- Apply form ---------------------------------------------------------- */
+.apply {
+  padding: 60px 0 var(--section-py);
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
+.applyHead {
+  composes: headBlock from '../../styles/shared/typography.module.css';
+  --head-max: 560px;
+  --head-gap: var(--space-8);
+}
+
+.eyebrow {
+  composes: eyebrow from '../../styles/shared/typography.module.css';
+}
+
+.form {
+  composes: form from '../../styles/shared/form.module.css';
+  composes: card from '../../styles/shared/surface.module.css';
+  --form-gap: 18px;
+  padding: var(--space-8);
+  box-shadow: var(--shadow-sm);
+}
+
+.grid2 {
+  composes: row2 from '../../styles/shared/form.module.css';
+}
+
+.formGroup {
+  composes: group from '../../styles/shared/form.module.css';
+}
+
+.fileInput {
+  padding: 10px 14px !important;
+  cursor: pointer;
+}
+
+.fileInput::file-selector-button {
+  background: var(--bg-subtle, #f3f4f6);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: var(--radius, 6px);
+  padding: 8px 16px;
+  color: var(--text, #111827);
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 12px;
+  transition: all 0.2s ease;
+}
+
+.fileInput::file-selector-button:hover {
+  background: var(--border, #e5e7eb);
+}
+
+.fileHint {
+  composes: hint from '../../styles/shared/form.module.css';
+}
+
+.submitBtn {
+  margin-top: 6px;
+  justify-content: center;
+}
+
+/* --- Post-submit confirmation -------------------------------------------- */
+.thanks {
+  composes: card from '../../styles/shared/surface.module.css';
+  padding: var(--space-12) var(--space-7);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+.thanksCheck {
+  width: var(--space-14);
+  height: var(--space-14);
+  border-radius: var(--radius-circle);
+  background: var(--primary);
+  color: var(--text-on-primary);
+  display: grid;
+  place-items: center;
+  margin: 0 auto var(--space-4);
+}
+.thanksCheck svg { width: 26px; height: 26px; }
+.thanks h3 {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin: 0 0 6px;
+}
+.thanks p {
+  color: var(--text-muted);
+  font-size: var(--fs-body);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .hero { padding: var(--section-py-sm) 0 var(--space-10); }
+  .hero p { font-size: var(--fs-lg); }
+  .values,
+  .roles { padding: var(--section-py-sm) 0; }
+  .sectionTitle { margin: 0 0 var(--space-8); }
+  .valueCard { padding: var(--space-6); }
+  .roleCard {
+    padding: var(--space-5);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .apply { padding: var(--space-10) 0 var(--section-py-sm); }
+  .form { padding: var(--space-5); }
+}

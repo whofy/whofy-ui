@@ -1,0 +1,132 @@
+.section {
+  padding: var(--section-py) 0;
+  min-height: var(--page-min-h);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+}
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+}
+
+.pageHeader {
+  composes: pageTitle from '../../styles/shared/typography.module.css';
+}
+
+.subtitle {
+  composes: lead from '../../styles/shared/typography.module.css';
+  --lead-fs: var(--fs-2xl);
+  --lead-margin: 0 0 var(--space-10);
+}
+
+/* --- Contact details ----------------------------------------------------- */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+.item svg {
+  width: var(--space-6);
+  height: var(--space-6);
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.item h4 {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  margin: 0 0 var(--space-1);
+  color: var(--text);
+}
+.item p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* --- Form ---------------------------------------------------------------- */
+.formCard {
+  composes: cardSoft from '../../styles/shared/surface.module.css';
+  padding: var(--space-8);
+}
+
+.form {
+  composes: form from '../../styles/shared/form.module.css';
+}
+
+/* Roomier fields than the Careers form — density only, no restated rules. */
+.formGroup {
+  composes: group from '../../styles/shared/form.module.css';
+  --field-gap: var(--space-2);
+  --field-pad: var(--space-3) var(--space-4);
+  --field-fs: var(--fs-md);
+}
+
+.formCheckbox {
+  composes: checkbox from '../../styles/shared/form.module.css';
+}
+
+.submitBtn {
+  margin-top: var(--space-3);
+  justify-content: center;
+}
+
+/* --- Help callout -------------------------------------------------------- */
+.helpCallout {
+  composes: well from '../../styles/shared/surface.module.css';
+  margin-top: var(--space-10);
+  padding: var(--space-6);
+}
+.helpCallout h4 {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  margin: 0 0 6px;
+  color: var(--text);
+}
+.helpCallout p {
+  color: var(--text-muted);
+  font-size: var(--fs-body);
+  margin: 0 0 var(--space-3);
+}
+.helpCallout a {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-bold);
+  color: var(--primary);
+}
+
+.thanks {
+  text-align: center;
+  padding: var(--space-10) var(--space-6);
+}
+.thanks h3 {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  margin: var(--space-4) 0 var(--space-2);
+}
+.thanks p {
+  color: var(--text-muted);
+  font-size: var(--fs-body);
+}
+.thanksCheck {
+  width: 48px;
+  height: 48px;
+  color: var(--success);
+}
+
+@media (max-width: 640px) {
+  .section { padding: var(--section-py-sm) 0; }
+  .subtitle { --lead-fs: var(--fs-lg); --lead-margin: 0 0 var(--space-8); }
+  .formCard { padding: var(--space-5); }
+  .helpCallout { padding: var(--space-5); margin-top: var(--space-8); }
+}

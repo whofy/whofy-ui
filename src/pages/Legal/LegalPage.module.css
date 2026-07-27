@@ -1,0 +1,52 @@
+.page {
+  padding: var(--space-16) 0 var(--space-12);
+  min-height: var(--page-min-h);
+}
+
+.head {
+  text-align: center;
+  margin-bottom: var(--space-10);
+}
+
+.eyebrow {
+  composes: eyebrow from '../../styles/shared/typography.module.css';
+}
+
+.pageHeader {
+  composes: pageTitle from '../../styles/shared/typography.module.css';
+  --title-margin: 0 0 var(--space-3);
+}
+
+.updated {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+/* Legal copy is authored as plain markup, so the prose recipe styles bare
+   descendants (h2/p/ul/a) rather than requiring classes on every node. */
+.body {
+  composes: card from '../../styles/shared/surface.module.css';
+  composes: prose from '../../styles/shared/typography.module.css';
+  padding: var(--space-10) 44px;
+}
+
+.body :global(.callout) {
+  background: var(--primary-light);
+  border: 1px solid var(--primary-tint);
+  border-radius: var(--radius);
+  padding: var(--space-4) var(--space-5);
+  margin: var(--space-5) 0;
+  font-size: var(--fs-body);
+}
+.body :global(.callout p) { margin: 0; }
+.body :global(.callout strong) { color: var(--primary); }
+
+@media (max-width: 640px) {
+  .page { padding: var(--space-12) 0 var(--space-8); }
+  .body {
+    --prose-fs: var(--fs-body);
+    --prose-h2-fs: var(--fs-lg);
+    padding: var(--space-6) var(--space-5);
+  }
+  .head { margin-bottom: var(--space-7); }
+}

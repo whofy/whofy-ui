@@ -1,0 +1,44 @@
+.wrap { position: relative; }
+
+.trigger {
+  composes: base pill from '../../styles/shared/button.module.css';
+}
+
+/* `.open` sits on the wrapper, so the trigger's open state is a descendant
+   rule rather than the shared .pillOpen. */
+.open .trigger {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.open .trigger svg {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+
+.label { color: var(--text-faint); font-weight: var(--fw-medium); }
+.value { color: var(--text); font-weight: var(--fw-semibold); }
+
+.menu {
+  composes: menu from '../../styles/shared/menu.module.css';
+  right: 0;
+}
+
+.option {
+  composes: option from '../../styles/shared/menu.module.css';
+  --option-pad: var(--space-2) 10px;
+  justify-content: space-between;
+}
+
+/* Sets the colour properties rather than `color`, so the selected tint holds
+   at rest *and* on hover without depending on rule order. */
+.selected {
+  --option-color: var(--primary);
+  --option-hover-color: var(--primary);
+  font-weight: var(--fw-semibold);
+}
+
+@media (max-width: 640px) {
+  .trigger { --btn-fs: var(--fs-tiny); --btn-pad: 6px 10px; }
+  .label { display: none; }
+  .menu { --menu-min-w: 180px; right: auto; left: 0; }
+}

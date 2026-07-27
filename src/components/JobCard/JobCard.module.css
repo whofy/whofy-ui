@@ -1,0 +1,92 @@
+.card {
+  composes: card from '../../styles/shared/surface.module.css';
+  padding: 14px;
+  position: relative;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+/* Hover lift is local rather than a shared recipe: the interplay with
+   .card.active below is bespoke, and keeping both rules in one file makes
+   their relative order explicit. */
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Deliberately doesn't touch border-color on hover (the shared
+   .cardInteractive lift) — it used to, which made a merely-hovered card look
+   almost identical to the actually selected one. Selection now gets a solid
+   ring + a background tint so it reads unambiguously even next to a hovered
+   neighbor. Compound selector (not just .active) so this reliably wins over
+   the composed surface rules regardless of their order in the bundle. */
+.card.active {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.top {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.logo {
+  composes: logo from '../../styles/shared/media.module.css';
+}
+.logoImg {
+  composes: logoImg from '../../styles/shared/media.module.css';
+}
+
+.info { flex: 1; min-width: 0; }
+
+.title {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+  letter-spacing: var(--ls-snug);
+  line-height: var(--lh-snug);
+}
+.co {
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.meta {
+  font-size: var(--fs-tiny);
+  color: var(--text-faint);
+  margin-top: var(--space-1);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.meta svg { width: var(--space-3); height: var(--space-3); flex-shrink: 0; }
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+.bottomLeft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.source {
+  font-size: var(--fs-tiny);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+.typeBadge {
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semibold);
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-light);
+  color: var(--primary);
+}
+.time { font-size: var(--fs-micro); color: var(--text-faint); }

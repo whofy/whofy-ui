@@ -1,0 +1,183 @@
+.page {
+  padding: 0 0 var(--space-8);
+}
+
+/* --- Hero ---------------------------------------------------------------- */
+.hero {
+  padding: var(--space-18) 0 var(--space-14);
+  text-align: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.eyebrow,
+.smallEyebrow {
+  composes: eyebrow from '../../styles/shared/typography.module.css';
+}
+.eyebrow { --eyebrow-mb: var(--space-4); }
+
+.pageHeader {
+  composes: pageTitle from '../../styles/shared/typography.module.css';
+  --title-margin: 0 auto var(--space-5);
+  --title-lh: var(--lh-display);
+  max-width: 780px;
+}
+
+.subtitle {
+  composes: lead from '../../styles/shared/typography.module.css';
+  --lead-fs: var(--fs-xl);
+  --lead-margin: 0 auto;
+  max-width: 700px;
+}
+
+/* --- Mission ------------------------------------------------------------- */
+.mission {
+  padding: var(--space-16) 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.missionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--space-12);
+  align-items: start;
+}
+.missionGrid h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  letter-spacing: var(--ls-tight);
+  line-height: 1.2;
+  margin: 0;
+}
+.missionGrid p {
+  font-size: var(--fs-lg);
+  color: var(--text-muted);
+  line-height: var(--lh-loose);
+  margin: 0;
+}
+
+/* --- How it works -------------------------------------------------------- */
+.howItWorks {
+  padding: var(--section-py) 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.head {
+  composes: headBlock from '../../styles/shared/typography.module.css';
+}
+
+.pipelineGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+}
+
+.step {
+  composes: card from '../../styles/shared/surface.module.css';
+  --card-bg: var(--bg-subtle);
+  padding: var(--space-7);
+  transition: var(--transition-base);
+}
+.step:hover {
+  border-color: var(--primary-tint);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.stepIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: var(--text-on-primary);
+  display: grid;
+  place-items: center;
+  margin-bottom: var(--space-4);
+}
+.stepIcon svg { width: 22px; height: 22px; }
+
+.step h3 {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  letter-spacing: var(--ls-snug);
+  margin: 0 0 var(--space-2);
+}
+.step p {
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* --- Values -------------------------------------------------------------- */
+.values {
+  padding: var(--section-py) 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+.valueCard {
+  composes: card from '../../styles/shared/surface.module.css';
+  padding: var(--space-7);
+}
+.valueMark {
+  font-size: var(--space-6);
+  color: var(--primary);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-3);
+}
+.valueCard h3 {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin: 0 0 var(--space-2);
+}
+.valueCard p {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* --- Closing CTA --------------------------------------------------------- */
+.cta {
+  padding: var(--section-py) 0 var(--space-8);
+}
+.ctaCard {
+  composes: card from '../../styles/shared/surface.module.css';
+  padding: var(--space-12) var(--space-8);
+  text-align: center;
+}
+.ctaCard h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  letter-spacing: var(--ls-tight);
+  margin: 0 0 var(--space-3);
+}
+.ctaCard p {
+  font-size: var(--fs-md);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-6);
+}
+
+@media (max-width: 900px) {
+  .missionGrid { grid-template-columns: 1fr; gap: var(--space-5); }
+  .pipelineGrid { grid-template-columns: 1fr; }
+  .valuesGrid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .hero { padding: var(--section-py-sm) 0 var(--space-10); }
+  .mission,
+  .howItWorks,
+  .values { padding: var(--section-py-sm) 0; }
+  .ctaCard { padding: var(--space-8) var(--space-5); }
+  .subtitle { --lead-fs: var(--fs-md); }
+}

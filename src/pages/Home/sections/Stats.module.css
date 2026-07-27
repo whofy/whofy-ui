@@ -1,0 +1,38 @@
+.band {
+  background: var(--bg);
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  text-align: center;
+}
+
+.stat {
+  padding: var(--space-2) var(--space-5);
+  border-left: 1px solid var(--border);
+}
+.stat:first-child { border-left: none; }
+
+.num {
+  font-size: var(--fs-5xl);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  letter-spacing: var(--ls-display);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.cap {
+  composes: overline from '../../../styles/shared/typography.module.css';
+  --overline-fw: var(--fw-medium);
+  margin-top: var(--space-1);
+}
+
+@media (max-width: 960px) {
+  .grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-5); }
+  .stat { border-left: none; }
+}

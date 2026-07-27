@@ -1,0 +1,141 @@
+/* Bare "nothing selected" placeholder. */
+.plain {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-faint);
+  padding: var(--space-10) var(--space-5);
+}
+.plain svg {
+  width: var(--space-12);
+  height: var(--space-12);
+  margin-bottom: var(--space-3);
+  opacity: 0.5;
+}
+.plain p { font-size: var(--fs-body); }
+
+/* Populated variant shown before the user picks a job. */
+.rich { padding: 22px var(--space-6) var(--space-6); }
+
+.featured {
+  composes: card from '../../styles/shared/surface.module.css';
+  padding: 18px 18px 18px 22px;
+  margin-bottom: 22px;
+  cursor: pointer;
+  transition: var(--transition-base);
+  position: relative;
+  /* Accent rail down the leading edge. */
+  box-shadow: inset 3px 0 0 var(--primary);
+}
+.featured:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 3px 0 0 var(--primary), var(--shadow);
+  border-color: var(--primary-tint);
+}
+
+.badge {
+  composes: overline from '../../styles/shared/typography.module.css';
+  --overline-fs: var(--fs-micro);
+  --overline-color: var(--primary);
+  --overline-ls: 0.08em;
+  margin-bottom: var(--space-3);
+}
+
+.featuredBody {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.logo {
+  composes: logo from '../../styles/shared/media.module.css';
+  --logo-size: 44px;
+  --logo-radius: var(--radius);
+}
+.logoImg {
+  composes: logoImg from '../../styles/shared/media.module.css';
+  --logo-size: 44px;
+  --logo-radius: var(--radius);
+  --logo-pad: 7px;
+}
+
+.featuredText { flex: 1; min-width: 0; }
+.featuredRole {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  letter-spacing: var(--ls-snug);
+  line-height: var(--lh-snug);
+}
+.featuredCo {
+  font-size: var(--fs-caption);
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+
+.viewBtn {
+  composes: base solid from '../../styles/shared/button.module.css';
+}
+
+/* --- Explainer sections --------------------------------------------------- */
+.section { margin-bottom: 22px; }
+.sectionTitle {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin-bottom: var(--space-1);
+}
+.caption {
+  font-size: var(--fs-tiny);
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.facts {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-2) 0 0;
+}
+.facts li {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  padding: var(--space-2) 0 var(--space-2) 22px;
+  position: relative;
+  border-bottom: 1px solid var(--border-subtle);
+  line-height: var(--lh-normal);
+}
+.facts li:last-child { border-bottom: none; }
+.facts li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  top: var(--space-2);
+  color: var(--primary);
+  font-weight: var(--fw-semibold);
+}
+.facts b { color: var(--text); font-weight: var(--fw-semibold); }
+
+.chips {
+  composes: chips from '../../styles/shared/media.module.css';
+  margin-top: var(--space-1);
+}
+.addChip {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  padding: 5px var(--space-3);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  color: var(--primary);
+  border: 1px dashed var(--primary-tint);
+}
+
+.hint {
+  font-size: var(--fs-tiny);
+  color: var(--text-faint);
+  text-align: center;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border-subtle);
+}

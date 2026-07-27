@@ -1,0 +1,80 @@
+.foot {
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border);
+  padding: var(--space-12) 0 var(--space-6);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--space-10);
+  margin-bottom: var(--space-8);
+}
+
+.brandCol p {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  margin-top: var(--space-3);
+  max-width: 320px;
+  line-height: var(--lh-relaxed);
+}
+
+/* Column headings. Written out rather than composing the shared .overline —
+   `composes` is only legal on a single local class, and these are descendant
+   selectors over markup that carries no class of its own. */
+.nav h4,
+.connect h4 {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  margin: 0 0 14px;
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.nav a,
+.socials a {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  transition: color var(--dur-quick) var(--ease);
+}
+.nav a:hover,
+.socials a:hover { color: var(--primary); }
+
+.socials {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.bottom {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fs-caption);
+  color: var(--text-faint);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.legal { display: flex; gap: var(--space-4); }
+.legal a { color: var(--text-faint); }
+.legal a:hover { color: var(--primary); }
+
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; gap: var(--space-7); }
+}

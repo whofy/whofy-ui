@@ -1,0 +1,190 @@
+/* --- Launcher ------------------------------------------------------------ */
+.bubble_btn {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  width: var(--space-14);
+  height: var(--space-14);
+  border-radius: var(--radius-circle);
+  background: var(--primary);
+  color: var(--text-on-primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--dur-quick) var(--ease),
+              background var(--dur-quick) var(--ease);
+  z-index: var(--z-overlay);
+}
+.bubble_btn svg { width: var(--space-6); height: var(--space-6); }
+.bubble_btn:hover {
+  transform: translateY(-2px);
+  background: var(--primary-hover);
+}
+
+/* --- Panel --------------------------------------------------------------- */
+.panel {
+  position: fixed;
+  bottom: var(--space-24);
+  right: var(--space-6);
+  width: 360px;
+  max-width: calc(100vw - var(--space-12));
+  height: 520px;
+  max-height: calc(100vh - 128px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-float);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-overlay);
+  overflow: hidden;
+  animation: panelIn var(--dur-base) var(--ease);
+}
+
+.header {
+  padding: 14px var(--space-4);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, var(--primary-light), var(--surface));
+}
+.hInfo { display: flex; gap: 10px; align-items: center; }
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: var(--text-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-body);
+}
+.hName {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+}
+.hStatus {
+  font-size: var(--fs-tiny);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-circle);
+  background: var(--success);
+}
+
+.close {
+  composes: base icon from '../styles/shared/button.module.css';
+  --btn-size: var(--space-7);
+  --btn-radius: 6px;
+  --btn-bg: transparent;
+}
+
+/* --- Transcript ---------------------------------------------------------- */
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.msg { display: flex; }
+.msg.bot { justify-content: flex-start; }
+.msg.user { justify-content: flex-end; }
+
+.bubble {
+  max-width: 78%;
+  font-size: var(--fs-sm);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  line-height: var(--lh-normal);
+}
+.msg.bot .bubble {
+  background: var(--bg-subtle);
+  color: var(--text);
+  border-bottom-left-radius: var(--radius-sm);
+}
+.msg.user .bubble {
+  background: var(--primary);
+  color: var(--text-on-primary);
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.typing { display: inline-flex; gap: 3px; }
+.typing span {
+  width: 6px;
+  height: 6px;
+  background: var(--text-faint);
+  border-radius: var(--radius-circle);
+  animation: blink 1.2s infinite;
+}
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+
+/* --- Composer ------------------------------------------------------------ */
+.inputRow {
+  border-top: 1px solid var(--border);
+  padding: 10px;
+  display: flex;
+  gap: 6px;
+  background: var(--surface);
+}
+.inputRow input {
+  flex: 1;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--space-5);
+  background: var(--bg-subtle);
+  color: var(--text);
+  outline: none;
+}
+.inputRow input:focus {
+  border-color: var(--primary);
+  background: var(--surface);
+}
+.inputRow button {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-circle);
+  background: var(--primary);
+  color: var(--text-on-primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.inputRow button svg { width: var(--fs-body); height: var(--fs-body); }
+.inputRow button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+@media (max-width: 500px) {
+  .panel {
+    right: var(--space-3);
+    left: var(--space-3);
+    bottom: 84px;
+    width: auto;
+    max-width: none;
+  }
+  .bubble_btn {
+    right: var(--space-4);
+    bottom: var(--space-4);
+    width: 52px;
+    height: 52px;
+  }
+}

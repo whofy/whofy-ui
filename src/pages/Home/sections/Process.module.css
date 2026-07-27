@@ -1,0 +1,124 @@
+.section {
+  padding: var(--section-py-lg) 0 var(--space-24);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+
+.head {
+  composes: headBlock from '../../../styles/shared/typography.module.css';
+  --head-gap: var(--space-16);
+  --head-title-fs: var(--fs-section);
+  --head-lead-fs: var(--fs-lg);
+}
+
+.eyebrow {
+  composes: eyebrow from '../../../styles/shared/typography.module.css';
+  --eyebrow-mb: var(--space-4);
+}
+
+.pipeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+
+/* Connector rail behind the step circles. */
+.pipeline::before {
+  content: '';
+  position: absolute;
+  top: 27px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--border) 0%,
+    var(--primary) 30%,
+    var(--primary) 70%,
+    var(--border) 100%
+  );
+  z-index: 0;
+}
+
+.step {
+  position: relative;
+  padding: 0 var(--space-5);
+  text-align: center;
+  z-index: var(--z-base);
+}
+
+.circle {
+  width: var(--space-14);
+  height: var(--space-14);
+  margin: 0 auto var(--space-6);
+  border-radius: var(--radius-circle);
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
+  letter-spacing: var(--ls-tight);
+  /* Inner ring punches the rail out from behind the circle. */
+  box-shadow: 0 0 0 6px var(--surface), 0 4px 12px rgba(var(--primary-rgb), 0.15);
+  position: relative;
+}
+.circle svg { width: 22px; height: 22px; }
+
+.circleNum {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-circle);
+  background: var(--primary);
+  color: var(--text-on-primary);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-bold);
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--surface);
+  letter-spacing: 0.02em;
+}
+
+.step h3 {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  letter-spacing: var(--ls-snug);
+  margin: 0 0 var(--space-2);
+}
+.step p {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: 1.55;
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+.highlight {
+  color: var(--primary);
+  font-weight: var(--fw-semibold);
+}
+
+@media (max-width: 900px) {
+  .pipeline {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+  .pipeline::before { display: none; }
+  .step {
+    display: grid;
+    grid-template-columns: var(--space-14) 1fr;
+    gap: var(--space-4);
+    text-align: left;
+    padding: 0;
+    align-items: start;
+  }
+  .circle { margin: 0; }
+  .step p { margin: 0; max-width: none; }
+}

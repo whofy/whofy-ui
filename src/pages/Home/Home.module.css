@@ -1,0 +1,20 @@
+.uploadSection {
+  background: var(--bg);
+  padding: var(--section-py) 0;
+}
+
+.uploadHead {
+  composes: headBlock from '../../styles/shared/typography.module.css';
+  --head-max: none;
+  --head-gap: var(--space-8);
+  --head-lead-fs: var(--fs-lg);
+}
+
+.eyebrow {
+  composes: eyebrow from '../../styles/shared/typography.module.css';
+}
+
+@media (max-width: 640px) {
+  .uploadSection { padding: var(--section-py-sm) 0; }
+  .uploadHead { --head-gap: var(--space-6); }
+}
