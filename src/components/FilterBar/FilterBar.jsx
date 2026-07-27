@@ -9,7 +9,7 @@ function toOptions(values) {
   return values.map(v => ({ value: v, label: v }));
 }
 
-export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll }) {
+export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll, sortMode, onSortChange }) {
   const [locations, setLocations] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [sources, setSources] = useState([]);

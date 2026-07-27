@@ -118,7 +118,7 @@ export default function Processing() {
       skills: upload.resume.skills || [],
       experienceLevel: upload.resume.experienceLevel || ''
     });
-    setTimeout(() => navigate('/results', { state: { prefetchedJobs: prefetchedJobs.current } }), 500);
+    setTimeout(() => navigate('/results'), 500);
   }, [finished, upload, navigate]);
 
   function handleFileSelect(e) {

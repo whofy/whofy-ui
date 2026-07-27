@@ -12,80 +12,53 @@ import SortControl from '../../components/SortControl/SortControl.jsx';
 import { SkeletonList } from '../../components/SkeletonCard/SkeletonCard.jsx';
 import styles from './Results.module.css';
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 10;
 
 export default function Results() {
   const routeLocation = useLocation();
   const [prefs] = useState(() => readResumePrefs());
 
-  const prefetched = routeLocation.state?.prefetchedJobs;
-  const [jobs, setJobs] = useState(() => prefetched || []);
-  const [total, setTotal] = useState(prefetched ? prefetched.length : 0);
-  const [loading, setLoading] = useState(!prefetched);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [jobs, setJobs] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState(null);
   const [sortMode, setSortMode] = useState(prefs?.skills?.length ? 'relevance' : 'newest');
-  const baseJobsRef = useRef(prefetched || null);
+  const baseJobsRef = useRef(null);
   const debounceRef = useRef(null);
   const listRef = useRef(null);
   const currentFiltersRef = useRef({ skills: [], filters: {} });
 
-  const fetchJobs = useCallback(async (skills = [], filters = {}, append = false) => {
-    const skip = append ? jobs.length : 0;
-    if (append) {
-      setLoadingMore(true);
-    } else {
-      setLoading(true);
-    }
+  const fetchJobs = useCallback(async (skills = [], filters = {}, pageNum = 1) => {
+    setLoading(true);
     try {
+      const skip = (pageNum - 1) * PAGE_SIZE;
       const data = await getMatches(skills, filters, { skip, limit: PAGE_SIZE });
       const newJobs = data.jobs || [];
-      if (append) {
-        setJobs(prev => [...prev, ...newJobs]);
-      } else {
-        setJobs(newJobs);
-        baseJobsRef.current = newJobs;
-        setSortMode(skills.length ? 'relevance' : 'newest');
-      }
+      setJobs(newJobs);
+      baseJobsRef.current = newJobs;
+      setSortMode(skills.length ? 'relevance' : 'newest');
       setTotal(data.total || 0);
       currentFiltersRef.current = { skills, filters };
     } catch {
-      if (!append) setJobs([]);
+      setJobs([]);
     } finally {
       setLoading(false);
-      setLoadingMore(false);
     }
-  }, [jobs.length]);
-
-  const loadMore = useCallback(() => {
-    if (loadingMore || jobs.length >= total) return;
-    const { skills, filters } = currentFiltersRef.current;
-    fetchJobs(skills, filters, true);
-  }, [loadingMore, jobs.length, total, fetchJobs]);
-
-  useEffect(() => {
-    if (prefetched) {
-      baseJobsRef.current = prefetched;
-      return;
-    }
-    fetchJobs(prefs?.skills || []);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Infinite scroll
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    const { skills, filters } = currentFiltersRef.current;
+    fetchJobs(skills, filters, newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   useEffect(() => {
-    const listEl = listRef.current;
-    if (!listEl) return;
-    function handleScroll() {
-      const { scrollTop, scrollHeight, clientHeight } = listEl;
-      if (scrollHeight - scrollTop - clientHeight < 300) {
-        loadMore();
-      }
-    }
-    listEl.addEventListener('scroll', handleScroll);
-    return () => listEl.removeEventListener('scroll', handleScroll);
-  }, [loadMore]);
+    fetchJobs(prefs?.skills || [], {}, 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { filterState, clearAll, setGroup, visible } = useJobFilters(jobs, '');
 
@@ -103,14 +76,16 @@ export default function Results() {
         const vals = key === group ? arr : [...(nextState[key] || [])];
         if (vals.length) filters[key] = vals.join('|');
       }
-      await fetchJobs(skills, filters);
+      await fetchJobs(skills, filters, 1);
+      setPage(1);
     }
   }
 
   function handleClearAll() {
     clearAll();
     setQuery('');
-    fetchJobs([]);
+    fetchJobs([], {}, 1);
+    setPage(1);
   }
 
   function handleSearch(e) {
@@ -152,18 +127,13 @@ export default function Results() {
 
   const sorted = useMemo(() => sortJobs(visible, sortMode), [visible, sortMode]);
   const selected = selectedId ? sorted.find(j => j.id === selectedId) : null;
-  const hasMore = jobs.length < total;
 
   return (
     <div className={styles.page}>
       <div className={styles.stickyToolbar}>
         <div className="container">
           <div className={styles.header}>
-            <h2>
-              Your matches
-              <span className={styles.count}>{total} {total === 1 ? 'result' : 'results'}</span>
-            </h2>
-            <div className={styles.headerRight}>
+            <div className={styles.headerLeft}>
               <div className={styles.searchWrap}>
                 <svg className={styles.searchIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
                 <input
@@ -173,8 +143,23 @@ export default function Results() {
                   className={styles.searchInput}
                   placeholder="Search by role, company or skill..."
                 />
+                {query && (
+                  <button 
+                    className={styles.clearSearchBtn}
+                    onClick={() => handleSearch({ target: { value: '' } })}
+                    aria-label="Clear search"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                  </button>
+                )}
               </div>
               <SortControl value={sortMode} onChange={setSortMode} />
+            </div>
+            <div className={styles.headerRight}>
+              <h2>
+                Your matches
+                <span className={styles.count}>{total.toLocaleString()} {total === 1 ? 'result' : 'results'}</span>
+              </h2>
             </div>
           </div>
           <FilterBar
@@ -220,11 +205,27 @@ export default function Results() {
                   onClick={() => setSelectedId(job.id)}
                 />
               ))}
-              {loadingMore && <SkeletonList count={3} />}
-              {hasMore && !loadingMore && (
-                <button className={styles.loadMore} onClick={loadMore}>
-                  Load more jobs
-                </button>
+              
+              {total > PAGE_SIZE && (
+                <div className={styles.pagination}>
+                  <button 
+                    className={styles.pageBtn} 
+                    onClick={() => handlePageChange(Math.max(1, page - 1))}
+                    disabled={page === 1}
+                  >
+                    Previous
+                  </button>
+                  <span className={styles.pageText}>
+                    Page {page} of {Math.ceil(total / PAGE_SIZE)}
+                  </span>
+                  <button 
+                    className={styles.pageBtn} 
+                    onClick={() => handlePageChange(Math.min(Math.ceil(total / PAGE_SIZE), page + 1))}
+                    disabled={page >= Math.ceil(total / PAGE_SIZE)}
+                  >
+                    Next
+                  </button>
+                </div>
               )}
             </div>
             <div className={styles.detailPane}>

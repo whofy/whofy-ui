@@ -21,8 +21,8 @@
    the composed surface rules regardless of their order in the bundle. */
 .card.active {
   border-color: var(--primary);
-  background: var(--primary-light);
-  box-shadow: var(--ring-primary), var(--shadow);
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
 
 .top {

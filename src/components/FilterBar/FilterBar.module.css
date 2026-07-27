@@ -13,13 +13,11 @@
 }
 /* Only the background — border-color and colour come from the shared
    .pill:hover, so the two rules complement rather than compete. */
-.btn:hover { background: var(--primary-light); }
 
 /* Trigger for a filter that currently has selections applied. */
 .active {
   --pill-border: var(--primary);
   --pill-color: var(--primary);
-  --pill-bg: var(--primary-light);
   --pill-icon-color: var(--primary);
 }
 
@@ -42,7 +40,6 @@
 
 .skillTag {
   composes: base pill from '../../styles/shared/button.module.css';
-  --pill-bg: var(--primary-light);
   --pill-color: var(--primary);
   --pill-border: var(--primary);
   display: inline-flex;
