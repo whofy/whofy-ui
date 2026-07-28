@@ -46,9 +46,6 @@ export default function DetailPane({ job, onClose }) {
             <div className={styles.role}>{job.title}</div>
             <div className={styles.co}>{job.company}</div>
           </div>
-          <button className={styles.close} onClick={onClose} aria-label="Close">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-          </button>
         </div>
         <div className={styles.metaRow}>
           {job.workType && (

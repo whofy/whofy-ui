@@ -12,7 +12,7 @@ import SortControl from '../../components/SortControl/SortControl.jsx';
 import { SkeletonList } from '../../components/SkeletonCard/SkeletonCard.jsx';
 import styles from './Results.module.css';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 15;
 
 export default function Results() {
   const routeLocation = useLocation();
@@ -28,6 +28,7 @@ export default function Results() {
   const baseJobsRef = useRef(null);
   const debounceRef = useRef(null);
   const listRef = useRef(null);
+  const detailRef = useRef(null);
   const currentFiltersRef = useRef({ skills: [], filters: {} });
 
   const fetchJobs = useCallback(async (skills = [], filters = {}, pageNum = 1) => {
@@ -126,6 +127,27 @@ export default function Results() {
   }, [jobs, prefs, setGroup]);
 
   const sorted = useMemo(() => sortJobs(visible, sortMode), [visible, sortMode]);
+  
+  // Auto-select first job whenever the sorted/filtered list changes
+  useEffect(() => {
+    if (sorted.length > 0) {
+      setSelectedId(sorted[0].id);
+    } else {
+      setSelectedId(null);
+    }
+    // Also reset list scroll position when new jobs load
+    if (listRef.current) {
+      listRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [sorted]);
+
+  // Reset detail pane scroll when a new job is selected
+  useEffect(() => {
+    if (detailRef.current) {
+      detailRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [selectedId]);
+
   const selected = selectedId ? sorted.find(j => j.id === selectedId) : null;
 
   return (
@@ -171,7 +193,7 @@ export default function Results() {
         </div>
       </div>
 
-      <div className="container">
+      <div className={`container ${styles.contentWrapper}`}>
         {loading ? (
           <div className={styles.split}>
             <div className={styles.listPane}>
@@ -213,10 +235,11 @@ export default function Results() {
                     onClick={() => handlePageChange(Math.max(1, page - 1))}
                     disabled={page === 1}
                   >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                     Previous
                   </button>
                   <span className={styles.pageText}>
-                    Page {page} of {Math.ceil(total / PAGE_SIZE)}
+                    <strong>{page}</strong> / {Math.ceil(total / PAGE_SIZE)}
                   </span>
                   <button 
                     className={styles.pageBtn} 
@@ -224,11 +247,12 @@ export default function Results() {
                     disabled={page >= Math.ceil(total / PAGE_SIZE)}
                   >
                     Next
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                   </button>
                 </div>
               )}
             </div>
-            <div className={styles.detailPane}>
+            <div className={styles.detailPane} ref={detailRef}>
               {selected ? (
                 <DetailPane key={selected.id} job={selected} onClose={() => setSelectedId(null)} />
               ) : (

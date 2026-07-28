@@ -32,12 +32,19 @@
     color: var(--text);
   }
 
-  /* Scrollbars on any scroll container that opts in. */
-  .scroll-thin::-webkit-scrollbar {
+  /* Global slim scrollbars */
+  ::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
-  .scroll-thin::-webkit-scrollbar-thumb {
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
     background: var(--border-strong);
-    border-radius: 3px;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-faint);
   }
 }
