@@ -1,6 +1,6 @@
 export const STATIC_FILTERS = [
   { key: 'posted', label: 'Posted', options: [
-    { value: 'today', label: 'Today' },
+    { value: 'today', label: 'Past 24 hours' },
     { value: 'week', label: 'Past week' },
     { value: 'month', label: 'Past month' }
   ]}
