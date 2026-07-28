@@ -1,8 +1,27 @@
 .bar {
   display: flex;
-  gap: 6px;
   flex-wrap: wrap;
+  gap: 6px;
+  width: 100%;
+}
+
+.barActions {
+  display: flex;
+  gap: 8px;
   align-items: center;
+  flex-shrink: 0;
+  height: 34px; /* matches the height of one typical row */
+}
+
+.viewMoreBtn {
+  composes: base link from '../../styles/shared/button.module.css';
+  white-space: nowrap;
+  font-weight: var(--fw-semibold);
+}
+
+.clearBtn {
+  composes: base link from '../../styles/shared/button.module.css';
+  white-space: nowrap;
 }
 
 .dropdown { position: relative; }

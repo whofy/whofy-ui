@@ -26,6 +26,9 @@ export default function App() {
   const isAuth = location.pathname.startsWith('/auth');
   const hideChrome = isProcessing || isAuth;
 
+  const isResults = location.pathname === '/results';
+  const hideFooter = hideChrome || isResults;
+
   return (
     <div className="fade-in app-content">
       <ScrollToTop />
@@ -48,7 +51,7 @@ export default function App() {
         <Route path="/auth/otp" element={<Otp />} />
         <Route path="/auth/reset-password" element={<ResetPassword />} />
       </Routes>
-      {!hideChrome && <Footer />}
+      {!hideFooter && <Footer />}
       {!hideChrome && <Chatbot />}
     </div>
   );

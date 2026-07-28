@@ -6,10 +6,6 @@ export default function Hero({ onPickFile }) {
       <div className="container">
         <div className={styles.grid}>
           <div>
-            <div className={styles.eyebrow}>
-              <span className={styles.eyebrowDot}></span>
-              Resume-first job matching
-            </div>
             <h1 className={styles.h1}>We hunt <em>opportunity</em> for you.</h1>
             <p className={styles.subtitle}>Upload your resume once. Whofy reads your skills, understands your experience, and delivers a ranked shortlist of live openings across India — in seconds.</p>
             <div className={styles.ctaRow}>
