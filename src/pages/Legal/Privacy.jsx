@@ -35,7 +35,7 @@ export default function Privacy() {
       <h2>Who we share it with</h2>
       <p>We share data with tools we need to run the service:</p>
       <ul>
-        <li><strong>Google Gemini</strong> — for reading resume text and generating embeddings</li>
+        <li><strong>Groq</strong> — for reading resume text and extracting skills</li>
         <li><strong>MongoDB Atlas (Mumbai region)</strong> — where the jobs database lives</li>
         <li><strong>Google (if you sign in with Google)</strong> — to verify who you are</li>
       </ul>

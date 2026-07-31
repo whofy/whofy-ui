@@ -1,7 +1,7 @@
 import styles from './Stats.module.css';
 
 const STATS = [
-  { num: '12,400+', cap: 'Live openings' },
+  { num: '20,000+', cap: 'Live openings' },
   { num: '500+', cap: 'Hiring companies' },
   { num: '15s', cap: 'Avg. match time' },
   { num: '0', cap: 'Resumes stored' }
