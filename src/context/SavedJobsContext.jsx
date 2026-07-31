@@ -1,37 +1,38 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useUser, useAuth } from '@clerk/clerk-react';
 import { getSavedJobIds, saveJob as apiSave, unsaveJob as apiUnsave } from '../api/jobs.js';
 
 const SavedJobsContext = createContext({ savedIds: new Set(), saving: false, toggle: () => {}, refresh: () => {} });
 
 export function SavedJobsProvider({ children }) {
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn } = useUser();
+  const { getToken } = useAuth();
   const [savedIds, setSavedIds] = useState(new Set());
   const [saving, setSaving] = useState(false);
 
-  const userId = isSignedIn ? user?.id : null;
-
   const refresh = useCallback(async () => {
-    if (!userId) { setSavedIds(new Set()); return; }
+    if (!isSignedIn) { setSavedIds(new Set()); return; }
     try {
-      const ids = await getSavedJobIds(userId);
+      const token = await getToken();
+      const ids = await getSavedJobIds(token);
       setSavedIds(new Set(ids));
     } catch {
       // silent
     }
-  }, [userId]);
+  }, [isSignedIn, getToken]);
 
   useEffect(() => { refresh(); }, [refresh]);
 
   const toggle = useCallback(async (jobId) => {
-    if (!userId || saving) return;
+    if (!isSignedIn || saving) return;
     setSaving(true);
     try {
+      const token = await getToken();
       if (savedIds.has(jobId)) {
-        await apiUnsave(userId, jobId);
+        await apiUnsave(token, jobId);
         setSavedIds(prev => { const next = new Set(prev); next.delete(jobId); return next; });
       } else {
-        await apiSave(userId, jobId);
+        await apiSave(token, jobId);
         setSavedIds(prev => new Set(prev).add(jobId));
       }
     } catch {
@@ -39,7 +40,7 @@ export function SavedJobsProvider({ children }) {
     } finally {
       setSaving(false);
     }
-  }, [userId, savedIds, saving]);
+  }, [isSignedIn, getToken, savedIds, saving]);
 
   return (
     <SavedJobsContext.Provider value={{ savedIds, saving, toggle, refresh }}>

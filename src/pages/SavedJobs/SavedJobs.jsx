@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useUser, useAuth } from '@clerk/clerk-react';
 import { getSavedJobs } from '../../api/jobs.js';
 import { useSavedJobs } from '../../context/SavedJobsContext.jsx';
 import DetailPane from './SavedDetailPane.jsx';
@@ -60,7 +60,8 @@ function SavedJobCard({ job, active, onClick }) {
 }
 
 export default function SavedJobs() {
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn } = useUser();
+  const { getToken } = useAuth();
   const { savedIds, refresh } = useSavedJobs();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -68,16 +69,17 @@ export default function SavedJobs() {
   const detailRef = useRef(null);
 
   useEffect(() => {
-    if (!isSignedIn || !user) { setLoading(false); return; }
+    if (!isSignedIn) { setLoading(false); return; }
     setLoading(true);
-    getSavedJobs(user.id)
+    getToken()
+      .then(token => getSavedJobs(token))
       .then(data => {
         setJobs(data);
         if (data.length > 0) setSelectedId(data[0].id);
       })
       .catch(() => setJobs([]))
       .finally(() => setLoading(false));
-  }, [isSignedIn, user, savedIds.size]);
+  }, [isSignedIn, getToken, savedIds.size]);
 
   useEffect(() => {
     if (detailRef.current) detailRef.current.scrollTo({ top: 0, behavior: 'smooth' });
