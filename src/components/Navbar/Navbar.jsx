@@ -35,11 +35,7 @@ export default function Navbar({ onProfileToggle }) {
                 onClick={openProfile}
                 aria-label="Open profile"
               >
-                {user.imageUrl ? (
-                  <img src={user.imageUrl} alt="" className={styles.avatarImg} />
-                ) : (
-                  initials
-                )}
+                {initials}
               </button>
             ) : (
               <>

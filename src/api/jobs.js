@@ -68,6 +68,41 @@ export async function getJob(id) {
   return res.json();
 }
 
+export async function getSavedJobs(token) {
+  const res = await fetch(`${API_URL}/api/saved-jobs`, {
+    headers: { 'Authorization': `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error('Failed to load saved jobs');
+  return res.json();
+}
+
+export async function getSavedJobIds(token) {
+  const res = await fetch(`${API_URL}/api/saved-jobs/ids`, {
+    headers: { 'Authorization': `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error('Failed to load saved job ids');
+  return res.json();
+}
+
+export async function saveJob(token, jobId) {
+  const res = await fetch(`${API_URL}/api/saved-jobs`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+    body: JSON.stringify({ job_id: jobId }),
+  });
+  if (!res.ok) throw new Error('Failed to save job');
+  return res.json();
+}
+
+export async function unsaveJob(token, jobId) {
+  const res = await fetch(`${API_URL}/api/saved-jobs/${encodeURIComponent(jobId)}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error('Failed to unsave job');
+  return res.json();
+}
+
 export async function uploadResume(file) {
   if (USE_MOCK) {
     await delay(1500);
