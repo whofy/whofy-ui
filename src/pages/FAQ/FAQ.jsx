@@ -9,7 +9,7 @@ const FAQS = [
   { q: 'Do you store my resume or personal data?',
     a: 'No. Your resume is parsed in-memory securely via our API, matched against our jobs database, and then completely forgotten once your session ends. We do not store your PDF or sell your personal data to third parties.' },
   { q: 'Do I need to create an account?',
-    a: "Not at all! Whofy is designed to be frictionless for candidates. Just drag and drop your resume, and you'll get your shortlist immediately. No sign-ups, no passwords, no hassle." },
+    a: "Not to find jobs! Just drag and drop your resume and you'll get your shortlist immediately — no sign-up needed. If you want to save jobs for later, you can create a free account, but it's completely optional." },
   { q: 'Are the job roles actually active?',
     a: "Yes. We specifically focus on the 0-2 years (freshers and early-career) track. Every partner company on Whofy maintains active pipelines for these roles, meaning you aren't applying to ghost postings." }
 ];
