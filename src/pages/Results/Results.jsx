@@ -57,7 +57,9 @@ export default function Results() {
   };
 
   useEffect(() => {
-    fetchJobs(prefs?.skills || [], {}, 1);
+    const initFilters = {};
+    if (prefs?.location) initFilters.location = prefs.location;
+    fetchJobs(prefs?.skills || [], initFilters, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -120,8 +122,9 @@ export default function Results() {
     autoApplied.current = true;
 
     if (prefs?.location) {
-      const validLocations = new Set(jobs.map(j => j.location));
-      if (validLocations.has(prefs.location)) setGroup('location', [prefs.location]);
+      const prefLoc = prefs.location.toLowerCase();
+      const match = jobs.find(j => (j.location || '').toLowerCase().includes(prefLoc));
+      if (match) setGroup('location', [prefs.location]);
     }
     if (prefs?.skills?.length) setGroup('skills', prefs.skills);
   }, [jobs, prefs, setGroup]);

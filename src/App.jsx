@@ -24,6 +24,20 @@ const clerkAppearance = {
     colorPrimary: '#1F47E0',
     borderRadius: '10px',
   },
+  layout: {
+    socialButtonsVariant: 'blockButton',
+    socialButtonsPlacement: 'top',
+  },
+  elements: {
+    socialButtonsBlockButtonOuter: {
+      display: 'inline-flex',
+      width: 'calc(50% - 4px)',
+    },
+    socialButtonsProviderIcon: {
+      width: '20px',
+      height: '20px',
+    },
+  },
 };
 
 export default function App() {
@@ -73,7 +87,20 @@ export default function App() {
           path="/account-settings/*"
           element={
             <div style={{ display: 'flex', justifyContent: 'center', padding: 'calc(var(--header-h) + 40px) 20px 40px', background: 'var(--bg)', minHeight: '100vh' }}>
-              <UserProfile routing="path" path="/account-settings" appearance={clerkAppearance} />
+              <UserProfile
+                routing="path"
+                path="/account-settings"
+                appearance={{
+                  ...clerkAppearance,
+                  elements: {
+                    ...clerkAppearance.elements,
+                    profileSection__activeDevices: { display: 'none' },
+                    profileSection__connectedAccounts: { display: 'none' },
+                    profileSectionPrimaryButton__emailAddresses: { display: 'none' },
+                    badge: { display: 'none' },
+                  },
+                }}
+              />
             </div>
           }
         />

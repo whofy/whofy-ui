@@ -28,7 +28,7 @@ export default function Privacy() {
       <ul>
         <li><strong>Resume file:</strong> parsed in memory, discarded when your session ends</li>
         <li><strong>Extracted skills:</strong> held only for the length of your session</li>
-        <li><strong>Saved jobs (if signed in):</strong> kept until you delete them or your account</li>
+        <li><strong>Saved jobs (if signed in):</strong> kept until you delete them or your account. Job listings in our database are refreshed every 28 days — if a saved job is removed by the employer or expires, it will be marked as "No longer available" but your save record is preserved</li>
         <li><strong>Basic analytics:</strong> aggregate, not tied to identifiable users</li>
       </ul>
 

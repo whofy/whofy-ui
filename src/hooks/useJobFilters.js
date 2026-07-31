@@ -55,7 +55,11 @@ export function useJobFilters(jobs, query = '') {
   const visible = useMemo(() => {
     const tokens = query.trim().toLowerCase().split(/[\s.]+/).filter(Boolean);
     return jobs.filter(j => {
-      if (filterState.location.size && !filterState.location.has(j.location)) return false;
+      if (filterState.location.size) {
+        const loc = (j.location || '').toLowerCase();
+        const match = [...filterState.location].some(v => loc.includes(v.toLowerCase()));
+        if (!match) return false;
+      }
       // posted filter is handled server-side
       if (filterState.skills.size) {
         const hasSkill = (j.matchedSkills || []).some(sk => filterState.skills.has(sk));
