@@ -1,0 +1,200 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--header-h));
+  overflow: hidden;
+}
+
+.toolbar {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) 0 var(--space-4);
+}
+
+.header h2 {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  letter-spacing: var(--ls-tight);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.header h2 > svg {
+  width: 22px;
+  height: 22px;
+  color: var(--primary);
+}
+
+.count {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  letter-spacing: normal;
+}
+
+.contentWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 388px 1fr;
+  gap: 18px;
+  margin-top: 18px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding-bottom: 10px;
+}
+
+.listPane {
+  padding: 3px var(--space-1) 3px 3px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  overflow-y: auto;
+}
+
+.detailPane {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* --- Job cards ----------------------------------------------------------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.card.active {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.cardTop {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.cardLogo {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: var(--fw-bold);
+  flex-shrink: 0;
+}
+
+.cardInfo { flex: 1; min-width: 0; }
+
+.cardTitle {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+  line-height: var(--lh-snug);
+}
+.cardCompany {
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.cardMeta {
+  font-size: var(--fs-tiny);
+  color: var(--text-faint);
+  margin-top: var(--space-1);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.cardMeta svg { width: var(--space-3); height: var(--space-3); flex-shrink: 0; }
+
+.cardBottom {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.cardTime {
+  font-size: var(--fs-micro);
+  color: var(--text-faint);
+}
+
+/* --- Empty state --------------------------------------------------------- */
+.empty {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  padding: 60px var(--space-5);
+  color: var(--text-muted);
+  margin-top: var(--space-4);
+}
+.empty svg {
+  width: var(--space-10);
+  height: var(--space-10);
+  color: var(--text-faint);
+  margin-bottom: var(--space-3);
+}
+.empty p { font-size: var(--fs-body); }
+
+@media (max-width: 900px) {
+  .page {
+    height: auto;
+    min-height: calc(100vh - var(--header-h));
+    overflow: visible;
+  }
+  .toolbar {
+    position: sticky;
+    top: var(--header-h);
+  }
+  .contentWrapper {
+    overflow: visible;
+  }
+  .split {
+    grid-template-columns: 1fr;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    overflow: visible;
+  }
+  .listPane { padding-right: 0; overflow-y: visible; }
+  .detailPane { min-height: 420px; overflow-y: visible; }
+}
+
+@media (max-width: 640px) {
+  .header h2 { font-size: var(--fs-2xl); }
+}
