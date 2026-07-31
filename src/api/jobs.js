@@ -68,6 +68,36 @@ export async function getJob(id) {
   return res.json();
 }
 
+export async function getSavedJobs(userId) {
+  const res = await fetch(`${API_URL}/api/saved-jobs?user_id=${encodeURIComponent(userId)}`);
+  if (!res.ok) throw new Error('Failed to load saved jobs');
+  return res.json();
+}
+
+export async function getSavedJobIds(userId) {
+  const res = await fetch(`${API_URL}/api/saved-jobs/ids?user_id=${encodeURIComponent(userId)}`);
+  if (!res.ok) throw new Error('Failed to load saved job ids');
+  return res.json();
+}
+
+export async function saveJob(userId, jobId) {
+  const res = await fetch(`${API_URL}/api/saved-jobs`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: userId, job_id: jobId }),
+  });
+  if (!res.ok) throw new Error('Failed to save job');
+  return res.json();
+}
+
+export async function unsaveJob(userId, jobId) {
+  const res = await fetch(`${API_URL}/api/saved-jobs/${encodeURIComponent(jobId)}?user_id=${encodeURIComponent(userId)}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error('Failed to unsave job');
+  return res.json();
+}
+
 export async function uploadResume(file) {
   if (USE_MOCK) {
     await delay(1500);

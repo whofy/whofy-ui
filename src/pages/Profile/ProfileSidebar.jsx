@@ -1,24 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser, useClerk } from '@clerk/clerk-react';
+import { useSavedJobs } from '../../context/SavedJobsContext.jsx';
 import styles from './ProfileSidebar.module.css';
 
 function MyInfoView({ user, onOpenSettings }) {
-  const hasPassword = user.passwordEnabled;
-
   return (
     <div className={styles.view}>
       <div className={styles.infoRow}>
         <span className={styles.infoLabel}>Name</span>
         <span className={styles.infoValue}>{user.fullName || user.username || '—'}</span>
-      </div>
-      <div className={styles.infoRow}>
-        <span className={styles.infoLabel}>Email</span>
-        <span className={styles.infoValue}>{user.primaryEmailAddress?.emailAddress || '—'}</span>
-      </div>
-      <div className={styles.infoRow}>
-        <span className={styles.infoLabel}>Signed in via</span>
-        <span className={styles.infoValue}>{hasPassword ? 'Email & password' : 'Google / GitHub'}</span>
       </div>
       <div className={styles.infoRow}>
         <span className={styles.infoLabel}>Joined</span>
@@ -36,6 +27,7 @@ export default function ProfileSidebar({ open, onClose }) {
   const [activeView, setActiveView] = useState(null);
   const { user } = useUser();
   const { signOut } = useClerk();
+  const { savedIds } = useSavedJobs();
   const navigate = useNavigate();
 
   if (!open || !user) return null;
@@ -79,11 +71,7 @@ export default function ProfileSidebar({ open, onClose }) {
               </button>
             )}
             <div className={styles.avatar}>
-              {user.imageUrl ? (
-                <img src={user.imageUrl} alt="" className={styles.avatarImg} />
-              ) : (
-                initials
-              )}
+              {initials}
             </div>
             <div className={styles.name}>{headerTitle}</div>
             <button className={styles.closeBtn} onClick={handleClose} aria-label="Close profile">
@@ -99,9 +87,9 @@ export default function ProfileSidebar({ open, onClose }) {
               <span>My info</span>
             </button>
             <button className={styles.menuItem} onClick={handleSavedJobs}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></svg>
               <span>Saved jobs</span>
-              <span className={styles.badge}>3</span>
+              {savedIds.size > 0 && <span className={styles.badge}>{savedIds.size}</span>}
             </button>
             <button className={`${styles.menuItem} ${styles.signout}`} onClick={handleSignOut}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>

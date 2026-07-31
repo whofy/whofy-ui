@@ -14,9 +14,23 @@
 
 .header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 6px;
   padding: var(--space-5) 0 var(--space-4);
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-tiny);
+  color: var(--text-faint);
+  margin: 0;
+}
+.note svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .header h2 {
@@ -151,6 +165,15 @@
 .cardTime {
   font-size: var(--fs-micro);
   color: var(--text-faint);
+}
+
+.expiredTag {
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semibold);
+  color: #dc2626;
+  background: #fef2f2;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
 }
 
 /* --- Empty state --------------------------------------------------------- */

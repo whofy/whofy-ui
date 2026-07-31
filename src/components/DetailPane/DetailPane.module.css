@@ -76,6 +76,11 @@
 .ghost {
   composes: base ghost from '../../styles/shared/button.module.css';
 }
+.saved {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
 
 .body { padding: 18px var(--space-6) var(--space-6); }
 
