@@ -1,22 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import SEO from '../../components/SEO/SEO.jsx';
 import styles from './Contacts.module.css';
-import Dropdown from '../../components/Dropdown/Dropdown';
 
 export default function Contacts() {
-  const [topic, setTopic] = useState('');
-
-  const TOPIC_OPTIONS = [
-    { value: 'Resume Parsing Issue', label: 'Resume Parsing Issue' },
-    { value: 'Match Accuracy Feedback', label: 'Match Accuracy Feedback' },
-    { value: 'Account Support', label: 'Account Support' },
-    { value: 'Privacy / Data Deletion', label: 'Privacy / Data Deletion Request' },
-    { value: 'General Inquiry', label: 'General Inquiry' }
-  ];
   const [submitted, setSubmitted] = useState(false);
 
   return (
     <section className={styles.section}>
+      <SEO title="Contact" description="Get in touch with the Whofy team. Questions about your matches, resume parsing, or account support." />
       <div className="container">
         <div className={styles.grid}>
 
@@ -32,19 +24,12 @@ export default function Contacts() {
                   <p><a href="mailto:whofyteam@gmail.com">whofyteam@gmail.com</a></p>
                 </div>
               </div>
-              <div className={styles.item}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                <div>
-                  <h4>Corporate office</h4>
-                  <p>123 Startup Hub<br />Bangalore, India 560001</p>
-                </div>
-              </div>
             </div>
 
             <div className={styles.helpCallout}>
               <h4>Looking for quick answers?</h4>
-              <p>90% of questions about resume parsing and match scores are answered in our Help Center.</p>
-              <Link to="/faq">Visit Help Center &rarr;</Link>
+              <p>90% of questions about resume parsing and match scores are answered in our FAQ.</p>
+              <Link to="/faq">Visit FAQ &rarr;</Link>
             </div>
           </div>
 

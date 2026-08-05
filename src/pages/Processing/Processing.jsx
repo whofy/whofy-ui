@@ -29,7 +29,7 @@ export default function Processing() {
   const info = location.state || {};
 
   const [pct, setPct] = useState(0);
-  const [scanned, setScanned] = useState(0);
+  const [scanning, setScanning] = useState(true);
   const [stepStates, setStepStates] = useState(['', '', '']);
   const [finished, setFinished] = useState(false);
   const [upload, setUpload] = useState({ status: 'pending', resume: null, error: null });
@@ -58,7 +58,6 @@ export default function Processing() {
         ? (elapsed / TOTAL_MS) * CAP
         : CREEP_CEILING - (CREEP_CEILING - CAP) * Math.exp(-(elapsed - TOTAL_MS) / CREEP_DECAY_MS);
       setPct(Math.round(p * 100));
-      setScanned(Math.round(p * 12400));
       rafRef.current = requestAnimationFrame(tick);
     }
     rafRef.current = requestAnimationFrame(tick);
@@ -103,7 +102,7 @@ export default function Processing() {
     if (upload.status !== 'done') return;
     const timeoutId = setTimeout(() => {
       setPct(100);
-      setScanned(12400);
+      setScanning(false);
       setStepStates(prev => { const next = [...prev]; next[next.length - 1] = 'done'; return next; });
       setFinished(true);
     }, FINISH_MS);
@@ -132,7 +131,7 @@ export default function Processing() {
     }
     
     setPct(0);
-    setScanned(0);
+    setScanning(true);
     setStepStates(['', '', '']);
     setFinished(false);
     setUpload({ status: 'pending', resume: null, error: null });
@@ -186,7 +185,7 @@ export default function Processing() {
 
         <div className={styles.body}>
           <h2 className={styles.title}>Analyzing your resume</h2>
-          <p className={styles.subtitle}>Hang tight — we're building your personalized shortlist.</p>
+          <p className={styles.subtitle}>Hang tight, we're building your personalized shortlist.</p>
 
           <div className={styles.fileRow}>
             <div className={styles.fileIcon}>
@@ -202,7 +201,7 @@ export default function Processing() {
           <div className={styles.progress}>
             <div className={styles.progressHeader}>
               <span><b>{pct}</b>% complete</span>
-              <span><b>{scanned.toLocaleString('en-IN')}</b> live roles scanned</span>
+              {scanning && <span className={styles.scanPulse}>Scanning live jobs...</span>}
             </div>
             <div className={styles.progressBar}>
               <span style={{ width: `${pct}%` }}></span>

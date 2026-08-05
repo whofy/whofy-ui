@@ -126,9 +126,9 @@
 
 .split {
   display: grid;
-  grid-template-columns: 388px 1fr;
-  gap: 18px;
-  margin-top: 18px;
+  grid-template-columns: clamp(280px, 30vw, 388px) 1fr;
+  gap: 1.125rem;
+  margin-top: 1.125rem;
   flex: 1;
   min-height: 0;
   overflow: hidden;
@@ -152,7 +152,7 @@
 
 /* --- Empty / loading ----------------------------------------------------- */
 .loading {
-  padding: 60px var(--space-5);
+  padding: clamp(2rem, 5vw, 3.75rem) var(--space-5);
   text-align: center;
   color: var(--text-muted);
   font-size: var(--fs-body);
@@ -161,7 +161,7 @@
 .emptyPage {
   composes: card from '../../styles/shared/surface.module.css';
   text-align: center;
-  padding: 60px var(--space-5);
+  padding: clamp(2rem, 5vw, 3.75rem) var(--space-5);
   color: var(--text-muted);
   margin-top: var(--space-4);
 }
@@ -208,6 +208,47 @@
   width: 60%;
 }
 
+/* --- Bottom sheet (mobile) ----------------------------------------------- */
+.sheetOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  display: none;
+}
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 85vh;
+  background: var(--surface);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+  z-index: 101;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sheetHandle {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 4px;
+  cursor: grab;
+  flex-shrink: 0;
+}
+.sheetHandle span {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-strong);
+}
+.sheetBody {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 @media (max-width: 900px) {
   .page {
     height: auto;
@@ -232,7 +273,9 @@
     overflow: visible;
   }
   .listPane { padding-right: 0; overflow-y: visible; }
-  .detailPane { min-height: 420px; overflow-y: visible; }
+  .detailPane { display: none; }
+  .sheetOverlay { display: block; }
+  .sheet { display: flex; }
 }
 .pagination {
   display: flex;

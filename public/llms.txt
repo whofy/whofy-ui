@@ -1,0 +1,32 @@
+# Whofy
+
+> Whofy is a resume-first job matching platform. Users upload their resume and get a ranked shortlist of live job openings matched to their skills, experience, and location in under a minute.
+
+## How it works
+1. Upload a PDF or DOCX resume
+2. Whofy parses skills, experience, and education using AI (Groq)
+3. Matches against 20,000+ live job openings from 9 sources
+4. Delivers a ranked shortlist with match scores and skill explanations
+
+## Key features
+- No sign-up required to find jobs
+- Resume is parsed in-memory and never stored
+- Supports freshers and senior professionals
+- Job listings refreshed daily, full database updated every 28 days
+- Save jobs for later with a free account (Google sign-in)
+
+## Data sources
+Greenhouse, Lever, RemoteOK, Adzuna, Ashby, Workday, Hacker News, Himalayas, We Work Remotely
+
+## Pages
+- / — Homepage with resume upload
+- /about — About Whofy and our values
+- /faq — Frequently asked questions
+- /careers — Open positions at Whofy
+- /contacts — Contact form and support
+- /terms — Terms of service
+- /privacy — Privacy policy
+- /cookies — Cookie policy
+
+## Contact
+Email: whofyteam@gmail.com

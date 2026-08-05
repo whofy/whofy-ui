@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { SignIn, SignUp, UserProfile } from '@clerk/clerk-react';
 import Navbar from './components/Navbar/Navbar.jsx';
@@ -6,18 +6,19 @@ import Footer from './components/Footer/Footer.jsx';
 import Chatbot from './chatbot/Chatbot.jsx';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop.jsx';
 import ResumeGate from './components/ResumeGate/ResumeGate.jsx';
-import Home from './pages/Home/Home.jsx';
-import Results from './pages/Results/Results.jsx';
-import Processing from './pages/Processing/Processing.jsx';
-import Careers from './pages/Careers/Careers.jsx';
-import Contacts from './pages/Contacts/Contacts.jsx';
-import FAQ from './pages/FAQ/FAQ.jsx';
-import About from './pages/About/About.jsx';
-import Terms from './pages/Legal/Terms.jsx';
-import Privacy from './pages/Legal/Privacy.jsx';
-import Cookies from './pages/Legal/Cookies.jsx';
-import SavedJobs from './pages/SavedJobs/SavedJobs.jsx';
-import NotFound from './pages/NotFound/NotFound.jsx';
+
+const Home = lazy(() => import('./pages/Home/Home.jsx'));
+const Results = lazy(() => import('./pages/Results/Results.jsx'));
+const Processing = lazy(() => import('./pages/Processing/Processing.jsx'));
+const Careers = lazy(() => import('./pages/Careers/Careers.jsx'));
+const Contacts = lazy(() => import('./pages/Contacts/Contacts.jsx'));
+const FAQ = lazy(() => import('./pages/FAQ/FAQ.jsx'));
+const About = lazy(() => import('./pages/About/About.jsx'));
+const Terms = lazy(() => import('./pages/Legal/Terms.jsx'));
+const Privacy = lazy(() => import('./pages/Legal/Privacy.jsx'));
+const Cookies = lazy(() => import('./pages/Legal/Cookies.jsx'));
+const SavedJobs = lazy(() => import('./pages/SavedJobs/SavedJobs.jsx'));
+const NotFound = lazy(() => import('./pages/NotFound/NotFound.jsx'));
 
 const clerkAppearance = {
   variables: {
@@ -43,6 +44,7 @@ const clerkAppearance = {
 export default function App() {
   const location = useLocation();
   const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isProcessing = location.pathname === '/processing';
   const isAuth = location.pathname.startsWith('/auth');
   const hideChrome = isProcessing || isAuth;
@@ -55,7 +57,8 @@ export default function App() {
     <div className="fade-in app-content">
       <ScrollToTop />
       {!isAuth && <ResumeGate />}
-      {!hideChrome && <Navbar onProfileToggle={setProfileOpen} />}
+      {!hideChrome && <Navbar onProfileToggle={setProfileOpen} onMenuToggle={setMobileMenuOpen} />}
+      <Suspense fallback={null}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/results" element={<Results />} />
@@ -107,8 +110,9 @@ export default function App() {
         <Route path="/saved-jobs" element={<SavedJobs />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </Suspense>
       {!hideFooter && <Footer />}
-      {!hideChrome && !profileOpen && <Chatbot />}
+      {!hideChrome && !profileOpen && !mobileMenuOpen && <Chatbot />}
     </div>
   );
 }

@@ -36,3 +36,24 @@
   .grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-5); }
   .stat { border-left: none; }
 }
+
+@media (max-width: 480px) {
+  .band { padding: var(--space-3) 0; border-bottom: none; }
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .stat {
+    border-left: 1px solid var(--border);
+    padding: var(--space-1) var(--space-1);
+  }
+  .stat:first-child { border-left: none; }
+  .num {
+    font-size: var(--fs-lg);
+    letter-spacing: -0.02em;
+  }
+  .cap {
+    font-size: 0.5625rem;
+    letter-spacing: 0.04em;
+  }
+}

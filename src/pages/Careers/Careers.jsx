@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import SEO from '../../components/SEO/SEO.jsx';
 import styles from './Careers.module.css';
 import Dropdown from '../../components/Dropdown/Dropdown';
 
@@ -15,8 +16,8 @@ const VALUES = [
 ];
 
 const ROLES = [
-  { value: 'Senior Full-Stack Engineer', title: 'Senior Full-Stack Engineer', meta: 'Engineering • Remote (India) or Bangalore' },
-  { value: 'Machine Learning Engineer (NLP)', title: 'Machine Learning Engineer (NLP)', meta: 'Data • Bangalore' }
+  { value: 'Full-Stack Developer', title: 'Full-Stack Developer', meta: 'Engineering • Remote' },
+  { value: 'Backend Developer', title: 'Backend Developer', meta: 'Engineering • Remote' }
 ];
 
 function Arrow() {
@@ -45,9 +46,10 @@ export default function Careers() {
 
   return (
     <>
+      <SEO title="Careers" description="Join the Whofy team. Open positions for Full-Stack and Backend developers." />
       <section className={styles.hero}>
-        <h1 className={styles.pageHeader}>Join the mission to hunt opportunity.</h1>
-        <p>We're building the infrastructure that connects India's next generation of engineers, designers, and analysts with roles where they truly belong.</p>
+        <h1 className={styles.pageHeader}>Join the mission to hunt opportunities.</h1>
+        <p>We're building the infrastructure that connects the next generation of engineers, designers, and analysts with roles where they truly belong.</p>
       </section>
 
       <section className={styles.values}>
@@ -94,7 +96,7 @@ export default function Careers() {
           <div className={styles.applyHead}>
             <div className={styles.eyebrow}>Apply now</div>
             <h2>Tell us about yourself.</h2>
-            <p>We read every application. Don't see a perfect fit? Pick "General / Other" below and drop your resume — we'll reach out if something matches.</p>
+            <p>We read every application. Don't see a perfect fit? Pick "General / Other" below and drop your resume, we'll reach out if something matches.</p>
           </div>
 
           {submitted ? (
@@ -120,7 +122,7 @@ export default function Careers() {
             >
               {/* Sign up at web3forms.com and paste your access key here */}
               <input type="hidden" name="access_key" value="47664644-0a17-4f2e-b9c2-51c50b2ed539" />
-              <input type="hidden" name="subject" value="Whofy — New Job Application" />
+              <input type="hidden" name="subject" value="Whofy - New Job Application" />
               <input type="hidden" name="from_name" value="Whofy Careers" />
               {/* Web3Forms delivers submissions to the address on the account,
                   which you'll configure as whofyteam@gmail.com. */}

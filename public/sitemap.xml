@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://whofy.com/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://whofy.com/about</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://whofy.com/faq</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://whofy.com/careers</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://whofy.com/contacts</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://whofy.com/terms</loc><priority>0.4</priority><changefreq>yearly</changefreq></url>
+  <url><loc>https://whofy.com/privacy</loc><priority>0.4</priority><changefreq>yearly</changefreq></url>
+  <url><loc>https://whofy.com/cookies</loc><priority>0.3</priority><changefreq>yearly</changefreq></url>
+</urlset>
