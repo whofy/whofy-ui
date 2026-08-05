@@ -76,5 +76,9 @@
 .legal a:hover { color: var(--primary); }
 
 @media (max-width: 720px) {
-  .grid { grid-template-columns: 1fr; gap: var(--space-7); }
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7);
+  }
+  .brandCol { grid-column: 1 / -1; }
 }

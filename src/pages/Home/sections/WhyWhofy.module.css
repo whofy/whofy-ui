@@ -1,5 +1,5 @@
 .section {
-  padding: var(--space-24) 0 100px;
+  padding: var(--space-24) 0 clamp(3rem, 6vw, 6.25rem);
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
@@ -17,7 +17,7 @@
 
 .left {
   flex: 1;
-  min-width: 280px;
+  min-width: 17.5rem;
   position: sticky;
   top: calc(var(--header-h) + var(--space-8));
 }
@@ -36,7 +36,7 @@
   color: var(--text-muted);
   line-height: var(--lh-relaxed);
   margin: 0;
-  max-width: 420px;
+  max-width: 26.25rem;
 }
 
 .right {
@@ -94,12 +94,58 @@
 }
 
 @media (max-width: 768px) {
+  .section {
+    padding: var(--space-16) 0 var(--space-12);
+  }
   .split {
     flex-direction: column;
-    gap: var(--space-10);
+    gap: var(--space-8);
   }
-
   .left {
     position: static;
+    min-width: 0;
+  }
+  .left p {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: var(--space-12) 0 var(--space-10);
+  }
+  .split {
+    gap: var(--space-6);
+  }
+  .left h2 {
+    font-size: var(--fs-subsection);
+  }
+  .left p {
+    font-size: var(--fs-body);
+  }
+  .item {
+    flex-direction: row;
+    padding: var(--space-4);
+    border: none;
+    border-left: 3px solid var(--primary);
+    border-radius: var(--radius);
+    background: var(--bg-subtle);
+    gap: var(--space-3);
+  }
+  .item:hover {
+    border-left-color: var(--primary-hover);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  .num {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: var(--fs-caption);
+    flex-shrink: 0;
+  }
+  .content h3 {
+    font-size: var(--fs-md);
+  }
+  .content p {
+    font-size: var(--fs-sm);
   }
 }

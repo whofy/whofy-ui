@@ -169,8 +169,43 @@
   margin-left: var(--space-1);
 }
 
+/* --- Selected chips inside dropdown -------------------------------------- */
+.selectedChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 6px 6px 0;
+}
+.selectedChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fs-tiny);
+  font-weight: var(--fw-medium);
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid var(--primary-tint);
+  cursor: pointer;
+  transition: background var(--dur-quick) var(--ease);
+}
+.selectedChip:hover {
+  background: var(--primary-tint);
+}
+.selectedChip svg {
+  width: 12px;
+  height: 12px;
+  opacity: 0.6;
+}
+.selectedChip:hover svg {
+  opacity: 1;
+}
+
 @media (max-width: 640px) {
   .bar { gap: var(--space-1); }
   .btn { --btn-fs: var(--fs-tiny); --btn-pad: 6px 10px; }
-  .menu { --menu-min-w: 160px; }
+  .menu { --menu-min-w: 160px; left: auto; right: 0; }
+  .skillTag { display: none; }
+  .viewMoreBtn { display: none; }
 }

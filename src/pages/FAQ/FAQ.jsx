@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SEO from '../../components/SEO/SEO.jsx';
 import styles from './FAQ.module.css';
 
 const FAQS = [
@@ -9,9 +10,9 @@ const FAQS = [
   { q: 'Do you store my resume or personal data?',
     a: 'No. Your resume is parsed in-memory securely via our API, matched against our jobs database, and then completely forgotten once your session ends. We do not store your PDF or sell your personal data to third parties.' },
   { q: 'Do I need to create an account?',
-    a: "Not to find jobs! Just drag and drop your resume and you'll get your shortlist immediately — no sign-up needed. If you want to save jobs for later, you can create a free account, but it's completely optional." },
+    a: "Not to find jobs! Just drag and drop your resume and you'll get your shortlist immediately, no sign-up needed. If you want to save jobs for later, you can create a free account, but it's completely optional." },
   { q: 'Are the job roles actually active?',
-    a: "Yes. We specifically focus on the 0-2 years (freshers and early-career) track. Every partner company on Whofy maintains active pipelines for these roles, meaning you aren't applying to ghost postings." }
+    a: "Yes. Every role on Whofy is refreshed daily and verified as active. Whether you're a fresher or a senior professional, you won't find ghost postings here, only live openings from companies that are actually hiring." }
 ];
 
 export default function FAQ() {
@@ -19,6 +20,7 @@ export default function FAQ() {
 
   return (
     <section className={styles.section}>
+      <SEO title="FAQ" description="Frequently asked questions about resume parsing, match scoring, file formats, and how Whofy helps you find the right job." />
       <div className="container">
         <div className={styles.header}>
           <h1 className={styles.pageHeader}>FAQ</h1>

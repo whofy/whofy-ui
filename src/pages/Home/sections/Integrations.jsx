@@ -76,7 +76,7 @@ export default function Integrations() {
       <div className="container">
         <div className={styles.head}>
           <h2>Connects with your favorite data sources.</h2>
-          <p>Whofy pulls in your applications and job descriptions directly from the platforms you already use.</p>
+          <p>Whofy pulls live job listings directly from the platforms companies use to hire.</p>
         </div>
       </div>
       <div className={styles.marquee}>
