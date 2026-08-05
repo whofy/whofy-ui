@@ -53,7 +53,7 @@ export default function EmptyState({ jobs, onPick }) {
       <div className={styles.featured} onClick={() => onPick(topPick.id)}>
         <div className={styles.badge}>
           {byMatch
-            ? `Top pick — ${topPick.matchedSkills.length} skill${topPick.matchedSkills.length === 1 ? '' : 's'} matched`
+            ? `Top pick, ${topPick.matchedSkills.length} skill${topPick.matchedSkills.length === 1 ? '' : 's'} matched`
             : 'Most recently posted'}
         </div>
         <div className={styles.featuredBody}>

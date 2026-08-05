@@ -37,7 +37,7 @@ const STEPS = [
       </svg>
     ),
     title: 'Rank the openings',
-    body: (<>Every live role is ranked against your <span className={styles.highlight}>profile fit</span> — considering skill overlap, seniority, and location.</>)
+    body: (<>Every live role is ranked against your <span className={styles.highlight}>profile fit</span> considering skill overlap, seniority, and location.</>)
   },
   {
     num: '04',
@@ -51,7 +51,7 @@ const STEPS = [
         <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" />
       </svg>
     ),
-    title: 'Rank and explain',
+    title: 'Deliver your shortlist',
     body: (<>Your shortlist is sorted best-first with the <span className={styles.highlight}>exact skills that matched</span> highlighted on every job card.</>)
   }
 ];
@@ -63,7 +63,7 @@ export default function Process() {
         <div className={styles.head}>
           <div className={styles.eyebrow}>How matching works</div>
           <h2>From resume to ranked shortlist, in four steps.</h2>
-          <p>Whofy replaces manual keyword hunting with an engine that reads your resume like a senior recruiter would — and shows you exactly why every match is on your list.</p>
+          <p>Whofy replaces manual keyword hunting with an engine that reads your resume like a senior recruiter would and shows you exactly why every match is on your list.</p>
         </div>
 
         <div className={styles.pipeline}>

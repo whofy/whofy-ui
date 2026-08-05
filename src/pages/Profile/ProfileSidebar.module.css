@@ -11,7 +11,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 300px;
+  width: min(300px, 85vw);
   background: var(--surface);
   border-left: 1px solid var(--border);
   z-index: calc(var(--z-header) + 2);
@@ -225,6 +225,6 @@
 
 @media (max-width: 480px) {
   .sidebar {
-    width: 100%;
+    width: 70%;
   }
 }

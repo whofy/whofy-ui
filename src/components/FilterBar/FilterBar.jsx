@@ -81,16 +81,23 @@ export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll,
       className={styles.bar}
       ref={tagsRef}
     >
-      <TagSearchDropdown 
+      <TagSearchDropdown
           label="Location"
           placeholder="City, State or Country"
           emptyText="Type to search locations..."
-          options={toOptions(allLocations)} 
+          options={toOptions(allLocations)}
+          selectedCount={filterState.location?.size || 0}
+          selectedValues={filterState.location}
           onAdd={v => {
             const next = new Set(filterState.location || []);
             next.add(v);
             onApplyGroup('location', Array.from(next));
-          }} 
+          }}
+          onRemove={v => {
+            const next = new Set(filterState.location || []);
+            next.delete(v);
+            onApplyGroup('location', Array.from(next));
+          }}
         />
 
         <FilterDropdown label="Company"    options={toOptions(companies)}      selected={filterState.company}    onApply={v => onApplyGroup('company', v)} />
@@ -99,16 +106,23 @@ export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll,
         <FilterDropdown label="Experience" options={EXPERIENCE_OPTIONS}        selected={filterState.experience} onApply={v => onApplyGroup('experience', v)} />
         <FilterDropdown label="Posted"     options={STATIC_FILTERS[0].options} selected={filterState.posted}     onApply={v => onApplyGroup('posted', v)} singleSelect />
         
-        <TagSearchDropdown 
+        <TagSearchDropdown
           label="Skills"
           placeholder="Search or add skills..."
           emptyText="Type to search skills..."
-          options={skills} 
+          options={skills}
+          selectedCount={filterState.skills?.size || 0}
+          selectedValues={filterState.skills}
           onAdd={v => {
             const next = new Set(filterState.skills || []);
             next.add(v);
             onApplyGroup('skills', Array.from(next));
-          }} 
+          }}
+          onRemove={v => {
+            const next = new Set(filterState.skills || []);
+            next.delete(v);
+            onApplyGroup('skills', Array.from(next));
+          }}
         />
 
         {visibleTags.map(tag => (
@@ -127,20 +141,16 @@ export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll,
           </button>
         ))}
 
-        {showActions && (
-          <div className={styles.barActions}>
-            {naturalOverflow && (
-              <button 
-                className={styles.viewMoreBtn}
-                onClick={() => setIsExpanded(!isExpanded)}
-              >
-                {isExpanded ? 'Hide' : 'View more'}
-              </button>
-            )}
-            {totalSelected > 0 && (
-              <button className={styles.clearBtn} onClick={onClearAll}>Clear all</button>
-            )}
-          </div>
+        {naturalOverflow && (
+          <button
+            className={styles.viewMoreBtn}
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? 'Hide' : 'View more'}
+          </button>
+        )}
+        {totalSelected > 0 && (
+          <button className={styles.clearBtn} onClick={onClearAll}>Clear all</button>
         )}
       </div>
   );

@@ -9,7 +9,7 @@ export default function Footer() {
         <div className={styles.grid}>
           <div className={styles.brandCol}>
             <Brand />
-            <p>The resume-first jobs platform for India's next generation of engineers, designers, and analysts.</p>
+            <p>The resume-first jobs platform for the next generation of engineers, designers, and analysts.</p>
           </div>
           <div className={styles.nav}>
             <h4>Explore</h4>
@@ -39,7 +39,7 @@ export default function Footer() {
           </div>
         </div>
         <div className={styles.bottom}>
-          <div>&copy; 2026 Whofy Technologies Pvt. Ltd. All rights reserved.</div>
+          <div>&copy; 2026 Whofy. All rights reserved.</div>
           <div className={styles.legal}>
             <Link to="/terms">Terms</Link>
             <Link to="/privacy">Privacy</Link>

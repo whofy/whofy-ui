@@ -92,6 +92,51 @@ export default function SavedJobs() {
     refresh();
   };
 
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const sheetRef = useRef(null);
+  const dragRef = useRef({ startY: 0, currentY: 0, dragging: false });
+
+  const isMobile = () => window.innerWidth <= 900;
+
+  const openSheet = (id) => {
+    setSelectedId(id);
+    if (isMobile()) setSheetOpen(true);
+  };
+
+  const closeSheet = () => setSheetOpen(false);
+
+  useEffect(() => {
+    if (!sheetOpen) return;
+    const onKey = (e) => { if (e.key === 'Escape') closeSheet(); };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [sheetOpen]);
+
+  const handleTouchStart = (e) => {
+    const body = sheetRef.current?.querySelector('[class*="sheetBody"]');
+    if (!body || body.scrollTop > 0) return;
+    dragRef.current = { startY: e.touches[0].clientY, currentY: e.touches[0].clientY, dragging: true };
+  };
+  const handleTouchMove = (e) => {
+    const d = dragRef.current;
+    if (!d.dragging) return;
+    d.currentY = e.touches[0].clientY;
+    const dy = d.currentY - d.startY;
+    if (dy > 0 && sheetRef.current) sheetRef.current.style.transform = `translateY(${dy}px)`;
+  };
+  const handleTouchEnd = () => {
+    const d = dragRef.current;
+    if (!d.dragging) return;
+    d.dragging = false;
+    const dy = d.currentY - d.startY;
+    if (sheetRef.current) sheetRef.current.style.transform = '';
+    if (dy > 120) closeSheet();
+  };
+
   const selected = jobs.find(j => j.id === selectedId) || null;
 
   if (!isSignedIn) {
@@ -153,7 +198,7 @@ export default function SavedJobs() {
                   key={job.id}
                   job={job}
                   active={job.id === selectedId}
-                  onClick={() => setSelectedId(job.id)}
+                  onClick={() => openSheet(job.id)}
                 />
               ))}
             </div>
@@ -163,6 +208,24 @@ export default function SavedJobs() {
           </div>
         )}
       </div>
+
+      {sheetOpen && selected && (
+        <>
+          <div className={styles.sheetOverlay} onClick={closeSheet} />
+          <div
+            className={styles.sheet}
+            ref={sheetRef}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div className={styles.sheetHandle}><span /></div>
+            <div className={styles.sheetBody}>
+              <DetailPane job={selected} onUnsave={onRemoved} />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

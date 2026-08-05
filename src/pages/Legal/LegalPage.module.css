@@ -27,7 +27,11 @@
 .body {
   composes: card from '../../styles/shared/surface.module.css';
   composes: prose from '../../styles/shared/typography.module.css';
-  padding: var(--space-10) 44px;
+  padding: var(--space-10) clamp(1.25rem, 3vw, 2.75rem);
+  transition: box-shadow 0.3s ease;
+}
+.body:hover {
+  box-shadow: var(--shadow);
 }
 
 .body :global(.callout) {
