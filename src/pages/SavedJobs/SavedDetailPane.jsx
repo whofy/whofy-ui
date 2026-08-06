@@ -1,4 +1,3 @@
-import { useUser } from '@clerk/clerk-react';
 import { useSavedJobs } from '../../context/SavedJobsContext.jsx';
 import styles from './SavedDetailPane.module.css';
 

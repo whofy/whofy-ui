@@ -116,7 +116,7 @@ export default function FilterDropdown({ label, options, selected, onApply, sing
                     name={singleSelect ? label : undefined}
                     value={opt.value}
                     checked={pending.has(opt.value)}
-                    onClick={(e) => {
+                    onClick={() => {
                       if (singleSelect && pending.has(opt.value)) {
                         setPending(new Set());
                       }

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './Stats.module.css';
 
 const STATS = [
-  { target: 20000, suffix: '+', cap: 'Live openings' },
+  { target: 100000, suffix: '+', cap: 'Live openings' },
   { target: 500, suffix: '+', cap: 'Hiring companies' },
   { text: '<1min', cap: 'Avg. match time' },
   { target: 0, suffix: '', cap: 'Resumes stored' }

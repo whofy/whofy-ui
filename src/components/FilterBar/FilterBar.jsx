@@ -9,7 +9,7 @@ function toOptions(values) {
   return values.map(v => ({ value: v, label: v }));
 }
 
-export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll, sortMode, onSortChange }) {
+export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll }) {
   const [locations, setLocations] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [sources, setSources] = useState([]);
@@ -31,7 +31,6 @@ export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll,
   const allLocations = [...new Set([...locationFromResults, ...locations])].sort();
 
   const totalSelected = Object.values(filterState).reduce((a, s) => a + s.size, 0);
-  const hasTags = (filterState.location?.size > 0) || (filterState.skills?.size > 0);
 
   const allTags = useMemo(() => [
     ...Array.from(filterState.location || []).map(loc => ({ type: 'location', value: loc })),
@@ -74,7 +73,6 @@ export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll,
   }, [isExpanded, allTags.length]);
 
   const visibleTags = isExpanded ? allTags : allTags.slice(0, visibleCount);
-  const showActions = naturalOverflow || totalSelected > 0;
 
   return (
     <div 
