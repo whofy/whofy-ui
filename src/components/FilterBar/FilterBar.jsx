@@ -9,7 +9,7 @@ function toOptions(values) {
   return values.map(v => ({ value: v, label: v }));
 }
 
-export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll }) {
+export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll, sortMode, onSortChange }) {
   const [locations, setLocations] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [sources, setSources] = useState([]);
@@ -31,6 +31,50 @@ export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll 
   const allLocations = [...new Set([...locationFromResults, ...locations])].sort();
 
   const totalSelected = Object.values(filterState).reduce((a, s) => a + s.size, 0);
+  const hasTags = (filterState.location?.size > 0) || (filterState.skills?.size > 0);
+
+  const allTags = useMemo(() => [
+    ...Array.from(filterState.location || []).map(loc => ({ type: 'location', value: loc })),
+    ...Array.from(filterState.skills || []).map(skill => ({ type: 'skills', value: skill }))
+  ], [filterState.location, filterState.skills]);
+
+  const tagsRef = useRef(null);
+  const [visibleCount, setVisibleCount] = useState(allTags.length);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [naturalOverflow, setNaturalOverflow] = useState(false);
+
+  useEffect(() => {
+    setVisibleCount(allTags.length);
+    setNaturalOverflow(false);
+  }, [allTags]);
+
+  useLayoutEffect(() => {
+    const el = tagsRef.current;
+    if (!el) return;
+
+    if (isExpanded) {
+      setNaturalOverflow(el.clientHeight > 80);
+      return;
+    }
+
+    if (el.clientHeight > 80 && visibleCount > 0) {
+      setNaturalOverflow(true);
+      setVisibleCount(prev => prev - 1);
+    }
+  }, [visibleCount, isExpanded, allTags]);
+
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      if (!isExpanded) {
+        setVisibleCount(allTags.length);
+      }
+    });
+    if (tagsRef.current) observer.observe(tagsRef.current);
+    return () => observer.disconnect();
+  }, [isExpanded, allTags.length]);
+
+  const visibleTags = isExpanded ? allTags : allTags.slice(0, visibleCount);
+  const showActions = naturalOverflow || totalSelected > 0;
 
   const allTags = useMemo(() => [
     ...Array.from(filterState.location || []).map(loc => ({ type: 'location', value: loc })),
