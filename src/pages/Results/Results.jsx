@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { getMatches, searchJobs } from '../../api/jobs.js';
 import { useJobFilters } from '../../hooks/useJobFilters.js';
 import { sortJobs } from '../../utils/sortJobs.js';
@@ -15,7 +14,6 @@ import styles from './Results.module.css';
 const PAGE_SIZE = 15;
 
 export default function Results() {
-  const routeLocation = useLocation();
   const [prefs] = useState(() => readResumePrefs());
 
   const [jobs, setJobs] = useState([]);

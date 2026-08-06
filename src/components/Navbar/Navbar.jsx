@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import Brand from '../Brand/Brand.jsx';
 import ProfileSidebar from '../../pages/Profile/ProfileSidebar.jsx';
+import { useFocusTrap } from '../../hooks/useFocusTrap.js';
 import styles from './Navbar.module.css';
 
 export default function Navbar({ onProfileToggle, onMenuToggle }) {
@@ -10,8 +11,10 @@ export default function Navbar({ onProfileToggle, onMenuToggle }) {
   const [profileOpen, setProfileOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const mobileMenuRef = useRef(null);
+  useFocusTrap(mobileMenuRef, menuOpen);
 
-  useEffect(() => { setMenuOpen(false); onMenuToggle?.(false); }, [location]);
+  useEffect(() => { setMenuOpen(false); onMenuToggle?.(false); }, [location, onMenuToggle]);
 
   const toggleMenu = () => {
     setMenuOpen(v => {
@@ -82,7 +85,7 @@ export default function Navbar({ onProfileToggle, onMenuToggle }) {
       {!isSignedIn && menuOpen && (
         <>
           <div className={styles.overlay} onClick={closeMenu} />
-          <div className={styles.mobileMenu}>
+          <div className={styles.mobileMenu} ref={mobileMenuRef}>
             <div className={styles.menuHeader}>
               <Brand />
               <button className={styles.menuClose} onClick={closeMenu} aria-label="Close menu">

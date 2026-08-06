@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { useSavedJobs } from '../../context/SavedJobsContext.jsx';
 import { logoColor, initial } from '../../utils/logoColor.js';
 import { postedLabel } from '../../utils/match.js';
 import styles from './JobCard.module.css';
 
-export default function JobCard({ job, active, onClick }) {
+export default memo(function JobCard({ job, active, onClick }) {
   const posted = postedLabel(job.postedAt);
   const [logoFailed, setLogoFailed] = useState(false);
   const showLogo = job.logoUrl && !logoFailed;
@@ -29,7 +29,7 @@ export default function JobCard({ job, active, onClick }) {
           <img
             className={styles.logoImg}
             src={job.logoUrl}
-            alt=""
+            alt={`${job.company} logo`}
             onError={() => setLogoFailed(true)}
           />
         ) : (
@@ -56,4 +56,4 @@ export default function JobCard({ job, active, onClick }) {
       </div>
     </div>
   );
-}
+})

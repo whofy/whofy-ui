@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser, useClerk } from '@clerk/clerk-react';
 import { useSavedJobs } from '../../context/SavedJobsContext.jsx';
+import { useFocusTrap } from '../../hooks/useFocusTrap.js';
 import styles from './ProfileSidebar.module.css';
 
 function MyInfoView({ user, onOpenSettings }) {
@@ -29,6 +30,9 @@ export default function ProfileSidebar({ open, onClose }) {
   const { signOut } = useClerk();
   const { savedIds } = useSavedJobs();
   const navigate = useNavigate();
+
+  const sidebarRef = useRef(null);
+  useFocusTrap(sidebarRef, open);
 
   if (!open || !user) return null;
 
@@ -62,7 +66,7 @@ export default function ProfileSidebar({ open, onClose }) {
   return (
     <>
       <div className={styles.overlay} onClick={handleClose} />
-      <aside className={styles.sidebar}>
+      <aside className={styles.sidebar} ref={sidebarRef}>
         <div className={styles.head}>
           <div className={styles.headRow}>
             {activeView && (

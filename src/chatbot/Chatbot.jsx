@@ -1,16 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
+import { useFocusTrap } from '../hooks/useFocusTrap.js';
+import DOMPurify from 'dompurify';
 import { sendChatMessage } from './chat.js';
 import styles from './Chatbot.module.css';
 
 function formatMarkdown(text) {
   const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  return escaped
+  const html = escaped
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/`(.+?)`/g, '<code>$1</code>')
     .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
     .replace(/(^|\n)• /g, '$1\n• ')
     .replace(/\n/g, '<br/>');
+  return DOMPurify.sanitize(html, { ALLOWED_TAGS: ['strong', 'em', 'code', 'a', 'br'], ALLOWED_ATTR: ['href', 'target', 'rel'] });
 }
 
 export default function Chatbot() {
@@ -22,6 +25,8 @@ export default function Chatbot() {
   const [sending, setSending] = useState(false);
   const bodyRef = useRef(null);
   const containerRef = useRef(null);
+  const panelRef = useRef(null);
+  useFocusTrap(panelRef, open);
 
   useEffect(() => {
     if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
@@ -50,7 +55,7 @@ export default function Chatbot() {
     try {
       const { reply } = await sendChatMessage(text, messages);
       setMessages(m => [...m, { from: 'bot', text: reply }]);
-    } catch (e) {
+    } catch {
       setMessages(m => [...m, { from: 'bot', text: "Sorry, I couldn't reach the server. Try again in a moment." }]);
     } finally {
       setSending(false);
@@ -67,7 +72,7 @@ export default function Chatbot() {
   return (
     <div ref={containerRef}>
       {open && (
-        <div className={styles.panel} role="dialog" aria-label="Whofy assistant">
+        <div className={styles.panel} role="dialog" aria-label="Whofy assistant" ref={panelRef}>
           <div className={styles.header}>
             <div className={styles.hInfo}>
               <div className={styles.avatar}>W</div>

@@ -15,6 +15,10 @@ export default function Dropzone() {
       alert('Please upload a PDF or DOCX file.');
       return;
     }
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File is too large. Maximum size is 5 MB.');
+      return;
+    }
     navigate('/processing', { state: { file, filename: file.name, size: file.size } });
   }
 

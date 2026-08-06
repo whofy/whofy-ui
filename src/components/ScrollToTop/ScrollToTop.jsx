@@ -33,7 +33,7 @@ export default function ScrollToTop() {
           // effect fires above. Force scroll after the current click settles.
           setTimeout(() => window.scrollTo(0, 0), 0);
         }
-      } catch (_) { /* ignore */ }
+      } catch { /* ignore */ }
     }
     // Capture phase so we run before React's synthetic click handling
     document.addEventListener('click', handleClick, true);

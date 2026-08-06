@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import { useSavedJobs } from '../../context/SavedJobsContext.jsx';
@@ -31,7 +32,7 @@ function renderDescription(description) {
   );
 }
 
-export default function DetailPane({ job, onClose }) {
+export default memo(function DetailPane({ job }) {
   const posted = postedLabel(job.postedAt);
   const [logoFailed, setLogoFailed] = useState(false);
   const showLogo = job.logoUrl && !logoFailed;
@@ -45,12 +46,34 @@ export default function DetailPane({ job, onClose }) {
     toggle(job.id);
   };
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: job.title,
+    description: job.description || '',
+    datePosted: job.postedAt || undefined,
+    hiringOrganization: {
+      '@type': 'Organization',
+      name: job.company,
+      ...(job.logoUrl ? { logo: job.logoUrl } : {}),
+    },
+    jobLocation: {
+      '@type': 'Place',
+      address: job.location,
+    },
+    ...(job.workType ? { employmentType: job.workType } : {}),
+    ...(job.applyUrl ? { directApply: true } : {}),
+  };
+
   return (
     <>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      </Helmet>
       <div className={styles.header}>
         <div className={styles.top}>
           {showLogo ? (
-            <img className={styles.logoImg} src={job.logoUrl} alt="" onError={() => setLogoFailed(true)} />
+            <img className={styles.logoImg} src={job.logoUrl} alt={`${job.company} logo`} onError={() => setLogoFailed(true)} />
           ) : (
             <div className={styles.logo} style={{ background: logoColor(job.company) }}>{initial(job.company)}</div>
           )}
@@ -127,4 +150,4 @@ export default function DetailPane({ job, onClose }) {
       </div>
     </>
   );
-}
+})
