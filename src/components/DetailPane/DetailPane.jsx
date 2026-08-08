@@ -1,4 +1,8 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useUser } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
+import { useSavedJobs } from '../../context/SavedJobsContext.jsx';
 import { logoColor, initial } from '../../utils/logoColor.js';
 import { postedLabel } from '../../utils/match.js';
 import styles from './DetailPane.module.css';
@@ -28,17 +32,48 @@ function renderDescription(description) {
   );
 }
 
-export default function DetailPane({ job, onClose }) {
+export default memo(function DetailPane({ job }) {
   const posted = postedLabel(job.postedAt);
   const [logoFailed, setLogoFailed] = useState(false);
   const showLogo = job.logoUrl && !logoFailed;
+  const { isSignedIn } = useUser();
+  const navigate = useNavigate();
+  const { savedIds, toggle, saving } = useSavedJobs();
+  const isSaved = savedIds.has(job.id);
+
+  const handleSaveToggle = () => {
+    if (!isSignedIn) { navigate('/auth/login'); return; }
+    toggle(job.id);
+  };
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: job.title,
+    description: job.description || '',
+    datePosted: job.postedAt || undefined,
+    hiringOrganization: {
+      '@type': 'Organization',
+      name: job.company,
+      ...(job.logoUrl ? { logo: job.logoUrl } : {}),
+    },
+    jobLocation: {
+      '@type': 'Place',
+      address: job.location,
+    },
+    ...(job.workType ? { employmentType: job.workType } : {}),
+    ...(job.applyUrl ? { directApply: true } : {}),
+  };
 
   return (
     <>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      </Helmet>
       <div className={styles.header}>
         <div className={styles.top}>
           {showLogo ? (
-            <img className={styles.logoImg} src={job.logoUrl} alt="" onError={() => setLogoFailed(true)} />
+            <img className={styles.logoImg} src={job.logoUrl} alt={`${job.company} logo`} onError={() => setLogoFailed(true)} />
           ) : (
             <div className={styles.logo} style={{ background: logoColor(job.company) }}>{initial(job.company)}</div>
           )}
@@ -46,9 +81,6 @@ export default function DetailPane({ job, onClose }) {
             <div className={styles.role}>{job.title}</div>
             <div className={styles.co}>{job.company}</div>
           </div>
-          <button className={styles.close} onClick={onClose} aria-label="Close">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-          </button>
         </div>
         <div className={styles.metaRow}>
           {job.workType && (
@@ -81,9 +113,9 @@ export default function DetailPane({ job, onClose }) {
             Apply now
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>
           </a>
-          <button className={styles.ghost}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></svg>
-            Save
+          <button className={`${styles.ghost} ${isSaved ? styles.saved : ''}`} onClick={handleSaveToggle} disabled={saving}>
+            <svg viewBox="0 0 24 24" fill={isSaved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></svg>
+            {isSaved ? 'Saved' : 'Save'}
           </button>
         </div>
       </div>
@@ -118,4 +150,4 @@ export default function DetailPane({ job, onClose }) {
       </div>
     </>
   );
-}
+})

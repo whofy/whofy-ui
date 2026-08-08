@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-12) var(--space-6);
+  padding: var(--space-12) var(--space-6) clamp(3rem, 10vh, 15vh);
 }
 
 .card {
@@ -144,6 +144,25 @@
   background: var(--primary);
   border-radius: 3px;
   transition: width var(--dur-base) linear;
+}
+
+.scanPulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: scanFade 1.4s ease-in-out infinite;
+}
+.scanPulse::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-circle);
+  background: var(--primary);
+  animation: pulseDot 1.2s ease-in-out infinite;
+}
+@keyframes scanFade {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
 /* --- Extracted skills ---------------------------------------------------- */

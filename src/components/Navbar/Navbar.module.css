@@ -24,8 +24,8 @@
 }
 
 .signIn {
-  padding: 8px 18px;
-  font-size: 13.5px;
+  padding: 0.5rem 1.125rem;
+  font-size: 0.84375rem;
   font-weight: 600;
   color: var(--text);
   text-decoration: none;
@@ -38,8 +38,8 @@
 }
 
 .signUp {
-  padding: 8px 20px;
-  font-size: 13.5px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.84375rem;
   font-weight: 600;
   color: #fff;
   background: var(--primary);
@@ -54,5 +54,164 @@
 }
 .signUp:active {
   transform: translateY(1px);
+}
+
+.avatarBtn {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow var(--dur-quick) var(--ease), transform 0.05s var(--ease);
+}
+.avatarBtn:hover {
+  box-shadow: 0 0 0 3px var(--primary-tint);
+}
+.avatarBtn:active {
+  transform: scale(0.95);
+}
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatarSkeleton {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--border-subtle);
+  animation: skeletonPulse 1.2s ease-in-out infinite;
+}
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* --- Hamburger button (hidden on desktop) -------------------------------- */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+}
+.burger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.burger[data-open] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.burger[data-open] span:nth-child(2) {
+  opacity: 0;
+}
+.burger[data-open] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* --- Mobile menu --------------------------------------------------------- */
+.mobileMenu {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(280px, 75vw);
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  padding: 0 var(--space-5) var(--space-5);
+  gap: var(--space-3);
+  z-index: calc(var(--z-header) + 1);
+}
+.menuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-3);
+}
+.menuClose {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  border-radius: var(--radius);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.menuClose:hover {
+  background: var(--bg-subtle);
+  color: var(--text);
+}
+
+.mobileSignIn {
+  display: block;
+  text-align: center;
+  padding: var(--space-3);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: background 0.2s ease;
+}
+.mobileSignIn:hover {
+  background: var(--bg-subtle);
+}
+.mobileSignUp {
+  display: block;
+  text-align: center;
+  padding: var(--space-3);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  text-decoration: none;
+  border: 1px solid var(--primary-hover);
+  border-radius: var(--radius-md);
+  transition: background 0.2s ease;
+}
+.mobileSignUp:hover {
+  background: var(--primary-hover);
+}
+
+/* --- Overlay ------------------------------------------------------------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: var(--z-header);
+}
+
+/* --- Mobile breakpoint --------------------------------------------------- */
+@media (max-width: 640px) {
+  .signIn, .signUp { display: none; }
+  .burger { display: flex; }
 }
 

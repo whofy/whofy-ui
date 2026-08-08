@@ -26,7 +26,7 @@ function computeSnapshot(jobs) {
 function FeaturedLogo({ job }) {
   const [logoFailed, setLogoFailed] = useState(false);
   if (job.logoUrl && !logoFailed) {
-    return <img className={styles.logoImg} src={job.logoUrl} alt="" onError={() => setLogoFailed(true)} />;
+    return <img className={styles.logoImg} src={job.logoUrl} alt={`${job.company} logo`} onError={() => setLogoFailed(true)} />;
   }
   return <div className={styles.logo} style={{ background: logoColor(job.company) }}>{initial(job.company)}</div>;
 }
@@ -53,7 +53,7 @@ export default function EmptyState({ jobs, onPick }) {
       <div className={styles.featured} onClick={() => onPick(topPick.id)}>
         <div className={styles.badge}>
           {byMatch
-            ? `Top pick — ${topPick.matchedSkills.length} skill${topPick.matchedSkills.length === 1 ? '' : 's'} matched`
+            ? `Top pick, ${topPick.matchedSkills.length} skill${topPick.matchedSkills.length === 1 ? '' : 's'} matched`
             : 'Most recently posted'}
         </div>
         <div className={styles.featuredBody}>

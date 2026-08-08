@@ -1,21 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
 
-const DAY_MS = 24 * 60 * 60 * 1000;
-
-function matchesPosted(job, values) {
-  if (!job.postedAt) return false;
-  const posted = new Date(job.postedAt);
-  if (Number.isNaN(posted.getTime())) return false;
-  const days = Math.floor((Date.now() - posted.getTime()) / DAY_MS);
-
-  for (const v of values) {
-    if (v === 'today' && days <= 0) return true;
-    if (v === 'week' && days <= 7) return true;
-    if (v === 'month' && days <= 30) return true;
-  }
-  return false;
-}
-
 function emptyState() {
   return { location: new Set(), posted: new Set(), skills: new Set(), company: new Set(), source: new Set(), type: new Set(), experience: new Set() };
 }
@@ -55,8 +39,12 @@ export function useJobFilters(jobs, query = '') {
   const visible = useMemo(() => {
     const tokens = query.trim().toLowerCase().split(/[\s.]+/).filter(Boolean);
     return jobs.filter(j => {
-      if (filterState.location.size && !filterState.location.has(j.location)) return false;
-      if (filterState.posted.size && !matchesPosted(j, filterState.posted)) return false;
+      if (filterState.location.size) {
+        const loc = (j.location || '').toLowerCase();
+        const match = [...filterState.location].some(v => loc.includes(v.toLowerCase()));
+        if (!match) return false;
+      }
+      // posted filter is handled server-side
       if (filterState.skills.size) {
         const hasSkill = (j.matchedSkills || []).some(sk => filterState.skills.has(sk));
         if (!hasSkill) return false;

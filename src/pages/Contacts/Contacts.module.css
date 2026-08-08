@@ -36,6 +36,10 @@
   display: flex;
   align-items: flex-start;
   gap: var(--space-4);
+  transition: transform 0.3s ease;
+}
+.item:hover {
+  transform: translateX(4px);
 }
 .item svg {
   width: var(--space-6);
@@ -43,6 +47,10 @@
   color: var(--primary);
   flex-shrink: 0;
   margin-top: 2px;
+  transition: transform 0.3s ease;
+}
+.item:hover svg {
+  transform: scale(1.2);
 }
 .item h4 {
   font-size: var(--fs-lg);
@@ -59,6 +67,10 @@
 .formCard {
   composes: cardSoft from '../../styles/shared/surface.module.css';
   padding: var(--space-8);
+  transition: box-shadow 0.3s ease;
+}
+.formCard:hover {
+  box-shadow: var(--shadow);
 }
 
 .form {
@@ -87,6 +99,11 @@
   composes: well from '../../styles/shared/surface.module.css';
   margin-top: var(--space-10);
   padding: var(--space-6);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.helpCallout:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
 }
 .helpCallout h4 {
   font-size: var(--fs-md);

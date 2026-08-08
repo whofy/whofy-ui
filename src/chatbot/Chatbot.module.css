@@ -28,10 +28,10 @@
   position: fixed;
   bottom: var(--space-24);
   right: var(--space-6);
-  width: 360px;
+  width: min(360px, calc(100vw - var(--space-12)));
   max-width: calc(100vw - var(--space-12));
-  height: 520px;
-  max-height: calc(100vh - 128px);
+  height: min(520px, calc(100vh - 8rem));
+  max-height: calc(100vh - 8rem);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
@@ -183,8 +183,9 @@
   }
   .bubble_btn {
     right: var(--space-4);
-    bottom: var(--space-4);
-    width: 52px;
-    height: 52px;
+    bottom: calc(var(--space-4) + 52px);
+    width: 44px;
+    height: 44px;
   }
+  .bubble_btn svg { width: var(--space-5); height: var(--space-5); }
 }

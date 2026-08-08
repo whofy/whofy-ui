@@ -12,18 +12,18 @@
 const KEY = 'whofy_resume_prefs';
 
 export function saveResumePrefs(prefs) {
-  try { sessionStorage.setItem(KEY, JSON.stringify(prefs)); } catch (_) {}
+  try { sessionStorage.setItem(KEY, JSON.stringify(prefs)); } catch {}
 }
 
 export function readResumePrefs() {
   try {
     const raw = sessionStorage.getItem(KEY);
     return raw ? JSON.parse(raw) : null;
-  } catch (_) {
+  } catch {
     return null;
   }
 }
 
 export function clearResumePrefs() {
-  try { sessionStorage.removeItem(KEY); } catch (_) {}
+  try { sessionStorage.removeItem(KEY); } catch {}
 }

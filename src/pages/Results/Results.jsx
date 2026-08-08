@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { getMatches, searchJobs } from '../../api/jobs.js';
 import { useJobFilters } from '../../hooks/useJobFilters.js';
 import { sortJobs } from '../../utils/sortJobs.js';
@@ -12,10 +11,9 @@ import SortControl from '../../components/SortControl/SortControl.jsx';
 import { SkeletonList } from '../../components/SkeletonCard/SkeletonCard.jsx';
 import styles from './Results.module.css';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 15;
 
 export default function Results() {
-  const routeLocation = useLocation();
   const [prefs] = useState(() => readResumePrefs());
 
   const [jobs, setJobs] = useState([]);
@@ -28,6 +26,7 @@ export default function Results() {
   const baseJobsRef = useRef(null);
   const debounceRef = useRef(null);
   const listRef = useRef(null);
+  const detailRef = useRef(null);
   const currentFiltersRef = useRef({ skills: [], filters: {} });
 
   const fetchJobs = useCallback(async (skills = [], filters = {}, pageNum = 1) => {
@@ -56,13 +55,15 @@ export default function Results() {
   };
 
   useEffect(() => {
-    fetchJobs(prefs?.skills || [], {}, 1);
+    const initFilters = {};
+    if (prefs?.location) initFilters.location = prefs.location;
+    fetchJobs(prefs?.skills || [], initFilters, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { filterState, clearAll, setGroup, visible } = useJobFilters(jobs, '');
 
-  const SERVER_FILTER_GROUPS = new Set(['source', 'company', 'location', 'type', 'experience']);
+  const SERVER_FILTER_GROUPS = new Set(['source', 'company', 'location', 'type', 'experience', 'posted']);
 
   async function applyGroup(group, values) {
     const arr = [...values];
@@ -119,13 +120,82 @@ export default function Results() {
     autoApplied.current = true;
 
     if (prefs?.location) {
-      const validLocations = new Set(jobs.map(j => j.location));
-      if (validLocations.has(prefs.location)) setGroup('location', [prefs.location]);
+      const prefLoc = prefs.location.toLowerCase();
+      const match = jobs.find(j => (j.location || '').toLowerCase().includes(prefLoc));
+      if (match) setGroup('location', [prefs.location]);
     }
     if (prefs?.skills?.length) setGroup('skills', prefs.skills);
   }, [jobs, prefs, setGroup]);
 
   const sorted = useMemo(() => sortJobs(visible, sortMode), [visible, sortMode]);
+  
+  // Auto-select first job whenever the sorted/filtered list changes
+  useEffect(() => {
+    if (sorted.length > 0) {
+      setSelectedId(sorted[0].id);
+    } else {
+      setSelectedId(null);
+    }
+    // Also reset list scroll position when new jobs load
+    if (listRef.current) {
+      listRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [sorted]);
+
+  // Reset detail pane scroll when a new job is selected
+  useEffect(() => {
+    if (detailRef.current) {
+      detailRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [selectedId]);
+
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const sheetRef = useRef(null);
+  const dragRef = useRef({ startY: 0, currentY: 0, dragging: false });
+
+  const isMobile = () => window.innerWidth <= 900;
+
+  const openSheet = (id) => {
+    setSelectedId(id);
+    if (isMobile()) setSheetOpen(true);
+  };
+
+  const closeSheet = () => setSheetOpen(false);
+
+  useEffect(() => {
+    if (!sheetOpen) return;
+    const onKey = (e) => { if (e.key === 'Escape') closeSheet(); };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [sheetOpen]);
+
+  const handleTouchStart = (e) => {
+    const body = sheetRef.current?.querySelector('[class*="sheetBody"]');
+    if (!body || body.scrollTop > 0) return;
+    dragRef.current = { startY: e.touches[0].clientY, currentY: e.touches[0].clientY, dragging: true };
+  };
+  const handleTouchMove = (e) => {
+    const d = dragRef.current;
+    if (!d.dragging) return;
+    d.currentY = e.touches[0].clientY;
+    const dy = d.currentY - d.startY;
+    if (dy > 0 && sheetRef.current) {
+      sheetRef.current.style.transform = `translateY(${dy}px)`;
+    }
+  };
+  const handleTouchEnd = () => {
+    const d = dragRef.current;
+    if (!d.dragging) return;
+    d.dragging = false;
+    const dy = d.currentY - d.startY;
+    if (sheetRef.current) sheetRef.current.style.transform = '';
+    if (dy > 120) closeSheet();
+  };
+
   const selected = selectedId ? sorted.find(j => j.id === selectedId) : null;
 
   return (
@@ -171,7 +241,7 @@ export default function Results() {
         </div>
       </div>
 
-      <div className="container">
+      <div className={`container ${styles.contentWrapper}`}>
         {loading ? (
           <div className={styles.split}>
             <div className={styles.listPane}>
@@ -202,7 +272,7 @@ export default function Results() {
                   key={job.id}
                   job={job}
                   active={job.id === selectedId}
-                  onClick={() => setSelectedId(job.id)}
+                  onClick={() => openSheet(job.id)}
                 />
               ))}
               
@@ -213,10 +283,11 @@ export default function Results() {
                     onClick={() => handlePageChange(Math.max(1, page - 1))}
                     disabled={page === 1}
                   >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                     Previous
                   </button>
                   <span className={styles.pageText}>
-                    Page {page} of {Math.ceil(total / PAGE_SIZE)}
+                    <strong>{page}</strong> / {Math.ceil(total / PAGE_SIZE)}
                   </span>
                   <button 
                     className={styles.pageBtn} 
@@ -224,11 +295,12 @@ export default function Results() {
                     disabled={page >= Math.ceil(total / PAGE_SIZE)}
                   >
                     Next
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                   </button>
                 </div>
               )}
             </div>
-            <div className={styles.detailPane}>
+            <div className={styles.detailPane} ref={detailRef}>
               {selected ? (
                 <DetailPane key={selected.id} job={selected} onClose={() => setSelectedId(null)} />
               ) : (
@@ -238,6 +310,24 @@ export default function Results() {
           </div>
         )}
       </div>
+
+      {sheetOpen && selected && (
+        <>
+          <div className={styles.sheetOverlay} onClick={closeSheet} />
+          <div
+            className={styles.sheet}
+            ref={sheetRef}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div className={styles.sheetHandle}><span /></div>
+            <div className={styles.sheetBody}>
+              <DetailPane key={selected.id} job={selected} onClose={closeSheet} />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

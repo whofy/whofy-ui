@@ -1,3 +1,4 @@
+import SEO from '../../components/SEO/SEO.jsx';
 import Hero from './sections/Hero.jsx';
 import Stats from './sections/Stats.jsx';
 import WhyWhofy from './sections/WhyWhofy.jsx';
@@ -13,9 +14,10 @@ export default function Home() {
 
   return (
     <>
+      <SEO description="Upload your resume and get a ranked shortlist of live job openings matched to your skills in under a minute. No sign-up required." />
       <Hero onPickFile={scrollToUpload} />
       <Stats />
-      <WhyWhofy />
+      <Process />
       <section id="upload-section" className={styles.uploadSection}>
         <div className="container container-form">
           <div className={styles.uploadHead}>
@@ -26,7 +28,7 @@ export default function Home() {
           <Dropzone />
         </div>
       </section>
-      <Process />
+      <WhyWhofy />
       <Integrations />
     </>
   );

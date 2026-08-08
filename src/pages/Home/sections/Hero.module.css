@@ -54,14 +54,14 @@
   font-size: var(--fs-xl);
   color: var(--text-secondary);
   line-height: 1.55;
-  margin: 0 0 36px;
-  max-width: 480px;
+  margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
+  max-width: 30rem;
 }
 
 .ctaRow {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 0.875rem;
   flex-wrap: wrap;
 }
 
@@ -136,4 +136,9 @@
   .hero { padding: var(--space-12) 0 var(--section-py-sm); }
   .subtitle { font-size: var(--fs-md); }
   .grid { gap: var(--space-8); }
+  .mockup {
+    max-width: none;
+    width: calc(100% + var(--space-4));
+    margin: 0 calc(-1 * var(--space-2));
+  }
 }
