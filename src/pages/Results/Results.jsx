@@ -116,16 +116,12 @@ export default function Results() {
 
   const autoApplied = useRef(false);
   useEffect(() => {
-    if (autoApplied.current || jobs.length === 0) return;
+    if (autoApplied.current) return;
     autoApplied.current = true;
 
-    if (prefs?.location) {
-      const prefLoc = prefs.location.toLowerCase();
-      const match = jobs.find(j => (j.location || '').toLowerCase().includes(prefLoc));
-      if (match) setGroup('location', [prefs.location]);
-    }
+    if (prefs?.location) setGroup('location', [prefs.location]);
     if (prefs?.skills?.length) setGroup('skills', prefs.skills);
-  }, [jobs, prefs, setGroup]);
+  }, [prefs, setGroup]);
 
   const sorted = useMemo(() => sortJobs(visible, sortMode), [visible, sortMode]);
   

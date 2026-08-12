@@ -10,7 +10,7 @@ export default function Dropzone() {
   function handleFiles(files) {
     if (!files || !files.length) return;
     const file = files[0];
-    const okType = /\.(pdf|docx?)$/i.test(file.name);
+    const okType = /\.(pdf|docx)$/i.test(file.name);
     if (!okType) {
       alert('Please upload a PDF or DOCX file.');
       return;
@@ -52,7 +52,7 @@ export default function Dropzone() {
       <input
         ref={inputRef}
         type="file"
-        accept=".pdf,.docx,.doc"
+        accept=".pdf,.docx"
         hidden
         onChange={(e) => handleFiles(e.target.files)}
       />
