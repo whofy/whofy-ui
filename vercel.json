@@ -1,5 +1,7 @@
 {
   "rewrites": [
-    { "source": "/__clerk/(.*)", "destination": "https://clerk.whofy.vercel.app/$1" }
+    { "source": "/__clerk", "destination": "https://clerk.whofy.vercel.app" },
+    { "source": "/__clerk/(.*)", "destination": "https://clerk.whofy.vercel.app/$1" },
+    { "source": "/((?!__clerk).*)", "destination": "/index.html" }
   ]
 }

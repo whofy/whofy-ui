@@ -64,6 +64,7 @@ export default function SavedJobs() {
   const { getToken } = useAuth();
   const { savedIds, refresh } = useSavedJobs();
   const [jobs, setJobs] = useState([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState(null);
   const detailRef = useRef(null);
@@ -74,10 +75,11 @@ export default function SavedJobs() {
     getToken()
       .then(token => getSavedJobs(token))
       .then(data => {
-        setJobs(data);
-        if (data.length > 0) setSelectedId(data[0].id);
+        setJobs(data.jobs);
+        setTotal(data.total);
+        if (data.jobs.length > 0) setSelectedId(data.jobs[0].id);
       })
-      .catch(() => setJobs([]))
+      .catch(() => { setJobs([]); setTotal(0); })
       .finally(() => setLoading(false));
   }, [isSignedIn, getToken, savedIds.size]);
 
@@ -170,7 +172,7 @@ export default function SavedJobs() {
             <h2>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></svg>
               Saved jobs
-              {!loading && <span className={styles.count}>{jobs.length} saved</span>}
+              {!loading && <span className={styles.count}>{total} saved</span>}
             </h2>
             <p className={styles.note}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>

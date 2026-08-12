@@ -6,7 +6,7 @@ const FAQS = [
   { q: 'How does the matching actually work?',
     a: "Whofy doesn't just do simple keyword matching. We use a semantic skill graph to understand your resume contextually. For instance, if you have \"ReactJS\", we know you have \"Front-end\" experience. We score every live opening (0-100) against your parsed profile using overlap, seniority, and location fit." },
   { q: 'What file formats are supported?',
-    a: 'Currently, we support PDF (.pdf) and Microsoft Word (.docx or .doc) formats up to 5MB in size. We highly recommend PDF for the most accurate parsing layout.' },
+    a: 'Currently, we support PDF (.pdf) and Microsoft Word (.docx) formats up to 5MB in size. We highly recommend PDF for the most accurate parsing layout.' },
   { q: 'Do you store my resume or personal data?',
     a: 'No. Your resume is parsed in-memory securely via our API, matched against our jobs database, and then completely forgotten once your session ends. We do not store your PDF or sell your personal data to third parties.' },
   { q: 'Do I need to create an account?',

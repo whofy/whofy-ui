@@ -166,7 +166,7 @@ export default function Processing() {
               type="file" 
               ref={fileInputRef} 
               hidden 
-              accept=".pdf,.docx,.doc" 
+              accept=".pdf,.docx" 
               onChange={handleFileSelect} 
             />
           </div>
