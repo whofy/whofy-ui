@@ -38,8 +38,17 @@ export async function getSources() {
   return res.json();
 }
 
-export async function searchJobs(query) {
-  const res = await fetch(`${API_URL}/api/search?q=${encodeURIComponent(query)}`);
+export async function searchJobs(query, filters = {}, { skip = 0, limit = 15 } = {}) {
+  const params = new URLSearchParams({ q: query });
+  if (filters.source) params.set('source', filters.source);
+  if (filters.company) params.set('company', filters.company);
+  if (filters.location) params.set('location', filters.location);
+  if (filters.type) params.set('type', filters.type);
+  if (filters.experience) params.set('experience', filters.experience);
+  if (filters.posted) params.set('posted', filters.posted);
+  params.set('skip', String(skip));
+  params.set('limit', String(limit));
+  const res = await fetch(`${API_URL}/api/search?${params.toString()}`);
   if (!res.ok) throw new Error('Search failed');
   return res.json();
 }

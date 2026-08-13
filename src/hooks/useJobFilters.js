@@ -36,30 +36,22 @@ export function useJobFilters(jobs, query = '') {
     setFilterState(prev => ({ ...prev, [group]: new Set(values) }));
   }, []);
 
+  // Server-side pagination requires the client to display exactly what the
+  // API returned. Filtering here would re-apply filters the server already
+  // ran, but only over the 15 rows in the current page — the surviving 3
+  // would render as page 1 and page 2 would look empty even though the
+  // server said "35 results".
+  //
+  // The remaining client-side use case is the in-results free-text `query`
+  // (a quick way to narrow the visible page without a new API call).
   const visible = useMemo(() => {
     const tokens = query.trim().toLowerCase().split(/[\s.]+/).filter(Boolean);
+    if (!tokens.length) return jobs;
     return jobs.filter(j => {
-      if (filterState.location.size) {
-        const loc = (j.location || '').toLowerCase();
-        const match = [...filterState.location].some(v => loc.includes(v.toLowerCase()));
-        if (!match) return false;
-      }
-      // posted filter is handled server-side
-      if (filterState.skills.size) {
-        const hasSkill = (j.matchedSkills || []).some(sk => filterState.skills.has(sk));
-        if (!hasSkill) return false;
-      }
-      if (filterState.company.size && !filterState.company.has(j.company)) return false;
-      if (filterState.source.size && !filterState.source.has(j.source)) return false;
-      if (filterState.type.size && !filterState.type.has(j.workType)) return false;
-      if (filterState.experience.size && !filterState.experience.has(j.experience)) return false;
-      if (tokens.length) {
-        const text = jobText(j);
-        if (!tokens.every(t => text.includes(t))) return false;
-      }
-      return true;
+      const text = jobText(j);
+      return tokens.every(t => text.includes(t));
     });
-  }, [jobs, filterState, query]);
+  }, [jobs, query]);
 
   return { filterState, toggle, clearAll, resetGroup, setGroup, visible };
 }
