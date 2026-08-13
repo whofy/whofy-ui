@@ -28,6 +28,7 @@ export default function Results() {
   const listRef = useRef(null);
   const detailRef = useRef(null);
   const currentFiltersRef = useRef({ skills: [], filters: {} });
+  const activeSearchRef = useRef({ query: '', filters: {} });
 
   const fetchJobs = useCallback(async (skills = [], filters = {}, pageNum = 1) => {
     setLoading(true);
@@ -47,10 +48,30 @@ export default function Results() {
     }
   }, []);
 
+  const fetchSearchPage = useCallback(async (queryStr, filters, pageNum) => {
+    setLoading(true);
+    try {
+      const skip = (pageNum - 1) * PAGE_SIZE;
+      const data = await searchJobs(queryStr, filters, { skip, limit: PAGE_SIZE });
+      setJobs(data.jobs || []);
+      setTotal(data.total || 0);
+      setSortMode('relevance');
+    } catch {
+      setJobs([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const handlePageChange = (newPage) => {
     setPage(newPage);
-    const { skills, filters } = currentFiltersRef.current;
-    fetchJobs(skills, filters, newPage);
+    if (activeSearchRef.current.query) {
+      const { query: qStr, filters } = activeSearchRef.current;
+      fetchSearchPage(qStr, filters, newPage);
+    } else {
+      const { skills, filters } = currentFiltersRef.current;
+      fetchJobs(skills, filters, newPage);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -96,21 +117,28 @@ export default function Results() {
 
     const trimmed = val.trim();
     if (trimmed.length < 2) {
-      if (baseJobsRef.current) setJobs(baseJobsRef.current);
+      activeSearchRef.current = { query: '', filters: {} };
+      if (baseJobsRef.current) {
+        setJobs(baseJobsRef.current);
+        // Restore the total from the last filter/matches fetch so pagination reflects it.
+        const { skills, filters } = currentFiltersRef.current;
+        fetchJobs(skills, filters, 1);
+        setPage(1);
+      }
       return;
     }
 
     debounceRef.current = setTimeout(async () => {
-      setLoading(true);
-      try {
-        const results = await searchJobs(trimmed);
-        setJobs(results);
-        setSortMode('relevance');
-      } catch {
-        // keep current jobs on search failure
-      } finally {
-        setLoading(false);
+      // Respect the filter chips the user has already set so search
+      // doesn't ignore their Junior/Company/Location selections.
+      const searchFilters = {};
+      for (const key of SERVER_FILTER_GROUPS) {
+        const vals = [...(filterState[key] || [])];
+        if (vals.length) searchFilters[key] = vals.join('|');
       }
+      activeSearchRef.current = { query: trimmed, filters: searchFilters };
+      setPage(1);
+      await fetchSearchPage(trimmed, searchFilters, 1);
     }, 400);
   }
 

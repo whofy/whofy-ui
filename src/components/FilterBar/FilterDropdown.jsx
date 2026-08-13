@@ -17,6 +17,10 @@ import styles from './FilterBar.module.css';
  */
 // Below this many options, a search box just adds clutter for no benefit.
 const SEARCH_THRESHOLD = 8;
+// Above this many options, rendering every <label> at once causes a noticeable
+// open delay. When there's no active search, cap the visible list and prompt
+// the user to type to narrow it — the search box is already there.
+const INITIAL_RENDER_CAP = 50;
 
 export default function FilterDropdown({ label, options, selected, onApply, singleSelect }) {
   const [open, setOpen] = useState(false);
@@ -30,9 +34,13 @@ export default function FilterDropdown({ label, options, selected, onApply, sing
     if (open) { setPending(new Set(selected)); setSearch(''); }
   }, [open, selected]);
 
-  const visibleOptions = search.trim()
+  const filteredOptions = search.trim()
     ? options.filter(o => o.label.toLowerCase().includes(search.trim().toLowerCase()))
     : options;
+  const isTruncated = !search.trim() && filteredOptions.length > INITIAL_RENDER_CAP;
+  const visibleOptions = isTruncated
+    ? filteredOptions.slice(0, INITIAL_RENDER_CAP)
+    : filteredOptions;
 
   useEffect(() => {
     function handleClick(e) {
@@ -109,23 +117,30 @@ export default function FilterDropdown({ label, options, selected, onApply, sing
             {visibleOptions.length === 0 ? (
               <div className={styles.menuEmpty}>{options.length === 0 ? 'No options available' : 'No matches'}</div>
             ) : (
-              visibleOptions.map(opt => (
-                <label key={opt.value} className={styles.option}>
-                  <input
-                    type={singleSelect ? "radio" : "checkbox"}
-                    name={singleSelect ? label : undefined}
-                    value={opt.value}
-                    checked={pending.has(opt.value)}
-                    onClick={() => {
-                      if (singleSelect && pending.has(opt.value)) {
-                        setPending(new Set());
-                      }
-                    }}
-                    onChange={() => togglePending(opt.value)}
-                  />
-                  <span>{opt.label}</span>
-                </label>
-              ))
+              <>
+                {visibleOptions.map(opt => (
+                  <label key={opt.value} className={styles.option}>
+                    <input
+                      type={singleSelect ? "radio" : "checkbox"}
+                      name={singleSelect ? label : undefined}
+                      value={opt.value}
+                      checked={pending.has(opt.value)}
+                      onClick={() => {
+                        if (singleSelect && pending.has(opt.value)) {
+                          setPending(new Set());
+                        }
+                      }}
+                      onChange={() => togglePending(opt.value)}
+                    />
+                    <span>{opt.label}</span>
+                  </label>
+                ))}
+                {isTruncated && (
+                  <div className={styles.menuEmpty}>
+                    Showing first {INITIAL_RENDER_CAP} of {filteredOptions.length} — type to search
+                  </div>
+                )}
+              </>
             )}
           </div>
           <div className={styles.menuFooter}>
