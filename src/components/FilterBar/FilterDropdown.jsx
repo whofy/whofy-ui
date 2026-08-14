@@ -79,6 +79,7 @@ export default function FilterDropdown({ label, options, selected, onApply, sing
     // should be visible right away, not require a separate "Show results".
     setPending(new Set());
     onApply(new Set());
+    setOpen(false);
   }
 
   function showResults() {
