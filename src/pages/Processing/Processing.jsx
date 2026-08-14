@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { uploadResume, getMatches } from '../../api/jobs.js';
+import { uploadResume } from '../../api/jobs.js';
 import { saveResumePrefs } from '../../utils/resumePreferences.js';
 import styles from './Processing.module.css';
 
@@ -37,7 +37,6 @@ export default function Processing() {
   const rafRef = useRef(null);
   const navigated = useRef(false);
   const uploadStatusRef = useRef('pending');
-  const prefetchedJobs = useRef(null);
   const fileInputRef = useRef(null);
 
   useEffect(() => { uploadStatusRef.current = upload.status; }, [upload.status]);
@@ -88,11 +87,8 @@ export default function Processing() {
   useEffect(() => {
     if (!info.file) return;
     uploadResume(info.file)
-      .then(async ({ resume }) => {
-        const skills = resume.skills || [];
-        setParsedSkills(skills);
-        const data = await getMatches(skills).catch(() => null);
-        prefetchedJobs.current = data ? data.jobs : null;
+      .then(({ resume }) => {
+        setParsedSkills(resume.skills || []);
         setUpload({ status: 'done', resume, error: null });
       })
       .catch(err => setUpload({ status: 'error', resume: null, error: err.message }));
@@ -114,8 +110,7 @@ export default function Processing() {
     navigated.current = true;
     saveResumePrefs({
       location: upload.resume.location || '',
-      skills: upload.resume.skills || [],
-      experienceLevel: upload.resume.experienceLevel || ''
+      skills: upload.resume.skills || []
     });
     setTimeout(() => navigate('/results'), 500);
   }, [finished, upload, navigate]);

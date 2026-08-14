@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 
 function emptyState() {
-  return { location: new Set(), posted: new Set(), skills: new Set(), company: new Set(), source: new Set(), type: new Set(), experience: new Set() };
+  return { location: new Set(), posted: new Set(), skills: new Set(), source: new Set(), type: new Set(), experience: new Set() };
 }
 
 function jobText(j) {
