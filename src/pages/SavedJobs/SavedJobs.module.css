@@ -235,6 +235,26 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.loadMore {
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.loadMore:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+.loadMore:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 @media (max-width: 900px) {
   .page {
     height: auto;

@@ -3,6 +3,7 @@
   flex-wrap: wrap;
   gap: 6px;
   width: 100%;
+  position: relative;
 }
 
 .barActions {
@@ -84,6 +85,7 @@
   display: flex;
   flex-direction: column;
 }
+.menuWide { --menu-min-w: 280px; }
 
 .searchWrap {
   position: relative;
@@ -174,7 +176,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  padding: 6px 6px 0;
+  padding: 8px 8px 10px;
+}
+.selectedChipsMobileOnly { display: none; }
+@media (max-width: 640px) {
+  .selectedChipsMobileOnly { display: flex; }
 }
 .selectedChip {
   display: inline-flex;
@@ -202,10 +208,19 @@
   opacity: 1;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .bar { gap: var(--space-1); }
   .btn { --btn-fs: var(--fs-tiny); --btn-pad: 6px 10px; }
-  .menu { --menu-min-w: 160px; left: auto; right: 0; }
-  .skillTag { display: none; }
-  .viewMoreBtn { display: none; }
+  .dropdown { position: static; }
+  .menu,
+  .menuWide {
+    left: 8px;
+    right: 8px;
+    top: calc(100% + 6px);
+    min-width: 0;
+    max-width: none;
+    width: auto;
+  }
+  .bar .skillTag { display: none; }
+  .bar .viewMoreBtn { display: none; }
 }

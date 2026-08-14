@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import styles from './FilterBar.module.css';
 
-export default function TagSearchDropdown({ label, placeholder, emptyText, options, onAdd, onRemove, selectedCount = 0, selectedValues }) {
+export default function TagSearchDropdown({ label, placeholder, emptyText, options, onAdd, onRemove, selectedCount = 0, selectedValues, hideSelectedOnDesktop = false }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const ref = useRef(null);
@@ -78,9 +78,9 @@ export default function TagSearchDropdown({ label, placeholder, emptyText, optio
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
       </button>
       {open && (
-        <div className={styles.menu} style={{ minWidth: '280px' }}>
+        <div className={`${styles.menu} ${styles.menuWide}`}>
           {selected.length > 0 && (
-            <div className={styles.selectedChips}>
+            <div className={`${styles.selectedChips} ${hideSelectedOnDesktop ? styles.selectedChipsMobileOnly : ''}`}>
               {selected.map(val => (
                 <button
                   key={val}

@@ -269,7 +269,7 @@ export default function Results() {
                   value={query}
                   onChange={handleSearch}
                   className={styles.searchInput}
-                  placeholder="Search by role, company or skill..."
+                  placeholder="Search by role or skill..."
                 />
                 {query && (
                   <button 

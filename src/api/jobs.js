@@ -53,7 +53,7 @@ export async function getJob(id) {
   return res.json();
 }
 
-export async function getSavedJobs(token, { skip = 0, limit = 200 } = {}) {
+export async function getSavedJobs(token, { skip = 0, limit = 50 } = {}) {
   const params = new URLSearchParams({ skip, limit });
   const res = await fetch(`${API_URL}/api/saved-jobs?${params}`, {
     headers: { 'Authorization': `Bearer ${token}` },
