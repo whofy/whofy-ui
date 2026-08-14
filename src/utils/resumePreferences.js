@@ -4,9 +4,8 @@
  *
  * Shape:
  *   {
- *     location:        string,   // maps to Location filter
- *     skills:          string[], // not filtered on yet, kept for the future matcher
- *     experienceLevel: string    // not filtered on yet, kept for the future matcher
+ *     location: string,   // maps to Location filter
+ *     skills:   string[]  // maps to Skills filter and drives /api/matches ranking
  *   }
  */
 const KEY = 'whofy_resume_prefs';

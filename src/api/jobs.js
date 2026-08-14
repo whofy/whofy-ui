@@ -3,15 +3,15 @@
  */
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-export async function getMatches(skills = [], filters = {}, { skip = 0, limit = 50 } = {}) {
+export async function getMatches(skills = [], filters = {}, { skip = 0, limit = 50, sort } = {}) {
   const params = new URLSearchParams();
   if (skills.length) params.set('skills', skills.join(','));
   if (filters.source) params.set('source', filters.source);
-  if (filters.company) params.set('company', filters.company);
   if (filters.location) params.set('location', filters.location);
   if (filters.type) params.set('type', filters.type);
   if (filters.experience) params.set('experience', filters.experience);
   if (filters.posted) params.set('posted', filters.posted);
+  if (sort) params.set('sort', sort);
   params.set('skip', String(skip));
   params.set('limit', String(limit));
   const qs = params.toString();
@@ -26,26 +26,20 @@ export async function getLocations() {
   return res.json();
 }
 
-export async function getCompanies() {
-  const res = await fetch(`${API_URL}/api/companies`);
-  if (!res.ok) throw new Error('Failed to load companies');
-  return res.json();
-}
-
 export async function getSources() {
   const res = await fetch(`${API_URL}/api/sources`);
   if (!res.ok) throw new Error('Failed to load sources');
   return res.json();
 }
 
-export async function searchJobs(query, filters = {}, { skip = 0, limit = 15 } = {}) {
+export async function searchJobs(query, filters = {}, { skip = 0, limit = 15, sort } = {}) {
   const params = new URLSearchParams({ q: query });
   if (filters.source) params.set('source', filters.source);
-  if (filters.company) params.set('company', filters.company);
   if (filters.location) params.set('location', filters.location);
   if (filters.type) params.set('type', filters.type);
   if (filters.experience) params.set('experience', filters.experience);
   if (filters.posted) params.set('posted', filters.posted);
+  if (sort) params.set('sort', sort);
   params.set('skip', String(skip));
   params.set('limit', String(limit));
   const res = await fetch(`${API_URL}/api/search?${params.toString()}`);

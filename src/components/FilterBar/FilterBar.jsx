@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useMemo, useLayoutEffect } from 'react';
-import { getCompanies, getLocations, getSources } from '../../api/jobs.js';
+import { getLocations, getSources } from '../../api/jobs.js';
 import FilterDropdown from './FilterDropdown.jsx';
 import TagSearchDropdown from './TagSearchDropdown.jsx';
 import { SKILL_OPTIONS, STATIC_FILTERS, TYPE_OPTIONS, EXPERIENCE_OPTIONS } from './filterConfig.js';
@@ -11,13 +11,11 @@ function toOptions(values) {
 
 export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll, sortMode, onSortChange }) {
   const [locations, setLocations] = useState([]);
-  const [companies, setCompanies] = useState([]);
   const [sources, setSources] = useState([]);
 
 
   useEffect(() => {
     getLocations().then(setLocations).catch(() => setLocations([]));
-    getCompanies().then(setCompanies).catch(() => setCompanies([]));
     getSources().then(setSources).catch(() => setSources([]));
   }, []);
 
@@ -100,7 +98,6 @@ export default function FilterBar({ jobs, filterState, onApplyGroup, onClearAll,
           }}
         />
 
-        <FilterDropdown label="Company"    options={toOptions(companies)}      selected={filterState.company}    onApply={v => onApplyGroup('company', v)} />
         <FilterDropdown label="Source"     options={toOptions(sources)}        selected={filterState.source}     onApply={v => onApplyGroup('source', v)} />
         <FilterDropdown label="Type"       options={TYPE_OPTIONS}              selected={filterState.type}       onApply={v => onApplyGroup('type', v)} />
         <FilterDropdown label="Experience" options={EXPERIENCE_OPTIONS}        selected={filterState.experience} onApply={v => onApplyGroup('experience', v)} />

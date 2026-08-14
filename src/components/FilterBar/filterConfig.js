@@ -12,12 +12,14 @@ export const TYPE_OPTIONS = [
   { value: 'On-site', label: 'On-site' },
 ];
 
+// Year ranges match the classifier in whofy-api/listings/shared/enrich.py
+// (_YEARS_RE branches). If those buckets change, update these labels too.
 export const EXPERIENCE_OPTIONS = [
-  { value: 'Internship', label: 'Internship' },
-  { value: 'Entry Level', label: 'Entry Level' },
-  { value: 'Junior', label: 'Junior' },
-  { value: 'Mid Level', label: 'Mid Level' },
-  { value: 'Senior', label: 'Senior' },
+  { value: 'Internship',  label: 'Internship (0 yrs)' },
+  { value: 'Entry Level', label: 'Entry Level (< 1 yr)' },
+  { value: 'Junior',      label: 'Junior (1–3 yrs)' },
+  { value: 'Mid Level',   label: 'Mid Level (3–6 yrs)' },
+  { value: 'Senior',      label: 'Senior (6+ yrs)' },
 ];
 
 export const DYNAMIC_FILTERS = ['location'];
