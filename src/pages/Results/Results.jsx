@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getMatches, searchJobs } from '../../api/jobs.js';
 import { useJobFilters } from '../../hooks/useJobFilters.js';
-import { sortJobs } from '../../utils/sortJobs.js';
 import { readResumePrefs } from '../../utils/resumePreferences.js';
 import FilterBar from '../../components/FilterBar/FilterBar.jsx';
 import JobCard from '../../components/JobCard/JobCard.jsx';
@@ -28,16 +27,19 @@ export default function Results() {
   const listRef = useRef(null);
   const detailRef = useRef(null);
   const currentFiltersRef = useRef({ skills: [], filters: {} });
+  const activeSearchRef = useRef({ query: '', filters: {} });
 
-  const fetchJobs = useCallback(async (skills = [], filters = {}, pageNum = 1) => {
+  // Server-side sort — `sort` is passed through to /api/matches and
+  // /api/search so pagination stays consistent (page 2 of "Company A–Z"
+  // continues the alphabet from where page 1 left off, not restarts it).
+  const fetchJobs = useCallback(async (skills = [], filters = {}, pageNum = 1, sort) => {
     setLoading(true);
     try {
       const skip = (pageNum - 1) * PAGE_SIZE;
-      const data = await getMatches(skills, filters, { skip, limit: PAGE_SIZE });
+      const data = await getMatches(skills, filters, { skip, limit: PAGE_SIZE, sort });
       const newJobs = data.jobs || [];
       setJobs(newJobs);
       baseJobsRef.current = newJobs;
-      setSortMode(skills.length ? 'relevance' : 'newest');
       setTotal(data.total || 0);
       currentFiltersRef.current = { skills, filters };
     } catch {
@@ -47,45 +49,95 @@ export default function Results() {
     }
   }, []);
 
+  const fetchSearchPage = useCallback(async (queryStr, filters, pageNum, sort) => {
+    setLoading(true);
+    try {
+      const skip = (pageNum - 1) * PAGE_SIZE;
+      const data = await searchJobs(queryStr, filters, { skip, limit: PAGE_SIZE, sort });
+      setJobs(data.jobs || []);
+      setTotal(data.total || 0);
+    } catch {
+      setJobs([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const handlePageChange = (newPage) => {
     setPage(newPage);
-    const { skills, filters } = currentFiltersRef.current;
-    fetchJobs(skills, filters, newPage);
+    if (activeSearchRef.current.query) {
+      const { query: qStr, filters } = activeSearchRef.current;
+      fetchSearchPage(qStr, filters, newPage, sortMode);
+    } else {
+      const { skills, filters } = currentFiltersRef.current;
+      fetchJobs(skills, filters, newPage, sortMode);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
     const initFilters = {};
     if (prefs?.location) initFilters.location = prefs.location;
-    fetchJobs(prefs?.skills || [], initFilters, 1);
+    fetchJobs(prefs?.skills || [], initFilters, 1, sortMode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Refetch page 1 whenever the user changes the sort. Skips the initial
+  // mount so we don't double-fetch alongside the effect above.
+  const sortInitRef = useRef(true);
+  useEffect(() => {
+    if (sortInitRef.current) { sortInitRef.current = false; return; }
+    setPage(1);
+    const activeQuery = activeSearchRef.current.query;
+    if (activeQuery) {
+      fetchSearchPage(activeQuery, activeSearchRef.current.filters, 1, sortMode);
+    } else {
+      const { skills, filters } = currentFiltersRef.current;
+      fetchJobs(skills, filters, 1, sortMode);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortMode]);
+
   const { filterState, clearAll, setGroup, visible } = useJobFilters(jobs, '');
 
-  const SERVER_FILTER_GROUPS = new Set(['source', 'company', 'location', 'type', 'experience', 'posted']);
+  const SERVER_FILTER_GROUPS = new Set(['source', 'location', 'type', 'experience', 'posted']);
 
   async function applyGroup(group, values) {
     const arr = [...values];
     setGroup(group, arr);
 
-    if (group === 'skills' || SERVER_FILTER_GROUPS.has(group)) {
-      const nextState = { ...filterState, [group]: new Set(arr) };
-      const skills = group === 'skills' ? arr : [...(nextState.skills || [])];
-      const filters = {};
-      for (const key of SERVER_FILTER_GROUPS) {
-        const vals = key === group ? arr : [...(nextState[key] || [])];
-        if (vals.length) filters[key] = vals.join('|');
-      }
-      await fetchJobs(skills, filters, 1);
-      setPage(1);
+    if (group !== 'skills' && !SERVER_FILTER_GROUPS.has(group)) return;
+
+    const nextState = { ...filterState, [group]: new Set(arr) };
+    const filters = {};
+    for (const key of SERVER_FILTER_GROUPS) {
+      const vals = key === group ? arr : [...(nextState[key] || [])];
+      if (vals.length) filters[key] = vals.join('|');
     }
+    setPage(1);
+
+    // When a search is active, re-run the SEARCH with the new filters rather
+    // than falling through to /api/matches. Otherwise the query silently
+    // vanishes from the results while activeSearchRef still holds it — so
+    // page 1 comes from /api/matches and page 2 from /api/search.
+    const activeQuery = activeSearchRef.current.query;
+    if (activeQuery) {
+      activeSearchRef.current = { query: activeQuery, filters };
+      await fetchSearchPage(activeQuery, filters, 1, sortMode);
+      return;
+    }
+
+    const skills = group === 'skills' ? arr : [...(nextState.skills || [])];
+    await fetchJobs(skills, filters, 1, sortMode);
   }
 
   function handleClearAll() {
     clearAll();
     setQuery('');
-    fetchJobs([], {}, 1);
+    // Without this, a stale query here would send the next page click to
+    // /api/search even though the list came from /api/matches.
+    activeSearchRef.current = { query: '', filters: {} };
+    fetchJobs([], {}, 1, sortMode);
     setPage(1);
   }
 
@@ -96,38 +148,44 @@ export default function Results() {
 
     const trimmed = val.trim();
     if (trimmed.length < 2) {
-      if (baseJobsRef.current) setJobs(baseJobsRef.current);
+      activeSearchRef.current = { query: '', filters: {} };
+      if (baseJobsRef.current) {
+        setJobs(baseJobsRef.current);
+        // Restore the total from the last filter/matches fetch so pagination reflects it.
+        const { skills, filters } = currentFiltersRef.current;
+        fetchJobs(skills, filters, 1, sortMode);
+        setPage(1);
+      }
       return;
     }
 
     debounceRef.current = setTimeout(async () => {
-      setLoading(true);
-      try {
-        const results = await searchJobs(trimmed);
-        setJobs(results);
-        setSortMode('relevance');
-      } catch {
-        // keep current jobs on search failure
-      } finally {
-        setLoading(false);
+      // Respect the filter chips the user has already set so search
+      // doesn't ignore their Junior/Location selections.
+      const searchFilters = {};
+      for (const key of SERVER_FILTER_GROUPS) {
+        const vals = [...(filterState[key] || [])];
+        if (vals.length) searchFilters[key] = vals.join('|');
       }
+      activeSearchRef.current = { query: trimmed, filters: searchFilters };
+      setPage(1);
+      await fetchSearchPage(trimmed, searchFilters, 1, sortMode);
     }, 400);
   }
 
   const autoApplied = useRef(false);
   useEffect(() => {
-    if (autoApplied.current || jobs.length === 0) return;
+    if (autoApplied.current) return;
     autoApplied.current = true;
 
-    if (prefs?.location) {
-      const prefLoc = prefs.location.toLowerCase();
-      const match = jobs.find(j => (j.location || '').toLowerCase().includes(prefLoc));
-      if (match) setGroup('location', [prefs.location]);
-    }
+    if (prefs?.location) setGroup('location', [prefs.location]);
     if (prefs?.skills?.length) setGroup('skills', prefs.skills);
-  }, [jobs, prefs, setGroup]);
+  }, [prefs, setGroup]);
 
-  const sorted = useMemo(() => sortJobs(visible, sortMode), [visible, sortMode]);
+  // Server already applied the sort (relevance / newest / company). The
+  // previous client-side sortJobs() was broken under pagination — it only
+  // sorted the 15 rows on the current page, so page 2 restarted the alphabet.
+  const sorted = visible;
   
   // Auto-select first job whenever the sorted/filtered list changes
   useEffect(() => {
@@ -211,7 +269,7 @@ export default function Results() {
                   value={query}
                   onChange={handleSearch}
                   className={styles.searchInput}
-                  placeholder="Search by role, company or skill..."
+                  placeholder="Search by role or skill..."
                 />
                 {query && (
                   <button 

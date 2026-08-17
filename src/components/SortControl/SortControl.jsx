@@ -4,7 +4,7 @@ import styles from './SortControl.module.css';
 export const SORT_OPTIONS = [
   { value: 'relevance', label: 'Best match' },
   { value: 'newest',    label: 'Newest first' },
-  { value: 'companyAZ', label: 'Company (A-Z)' }
+  { value: 'company',   label: 'Company (A-Z)' }
 ];
 
 export default function SortControl({ value, onChange }) {

@@ -2,15 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useUser, useAuth } from '@clerk/clerk-react';
 import { getSavedJobs } from '../../api/jobs.js';
 import { useSavedJobs } from '../../context/SavedJobsContext.jsx';
+import { logoColor } from '../../utils/logoColor.js';
 import DetailPane from './SavedDetailPane.jsx';
 import styles from './SavedJobs.module.css';
-
-function logoColor(name) {
-  const colors = ['#1F47E0', '#059669', '#D97706', '#7C3AED', '#DC2626', '#0891B2'];
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  return colors[Math.abs(hash) % colors.length];
-}
 
 function timeAgo(isoStr) {
   if (!isoStr) return '';
@@ -64,22 +58,36 @@ export default function SavedJobs() {
   const { getToken } = useAuth();
   const { savedIds, refresh } = useSavedJobs();
   const [jobs, setJobs] = useState([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const detailRef = useRef(null);
+  const PAGE_SIZE = 50;
 
   useEffect(() => {
     if (!isSignedIn) { setLoading(false); return; }
     setLoading(true);
     getToken()
-      .then(token => getSavedJobs(token))
+      .then(token => getSavedJobs(token, { skip: 0, limit: PAGE_SIZE }))
       .then(data => {
-        setJobs(data);
-        if (data.length > 0) setSelectedId(data[0].id);
+        setJobs(data.jobs);
+        setTotal(data.total);
+        if (data.jobs.length > 0) setSelectedId(data.jobs[0].id);
       })
-      .catch(() => setJobs([]))
+      .catch(() => { setJobs([]); setTotal(0); })
       .finally(() => setLoading(false));
   }, [isSignedIn, getToken, savedIds.size]);
+
+  const loadMore = () => {
+    if (loadingMore || jobs.length >= total) return;
+    setLoadingMore(true);
+    getToken()
+      .then(token => getSavedJobs(token, { skip: jobs.length, limit: PAGE_SIZE }))
+      .then(data => setJobs(prev => [...prev, ...data.jobs]))
+      .catch(() => {})
+      .finally(() => setLoadingMore(false));
+  };
 
   useEffect(() => {
     if (detailRef.current) detailRef.current.scrollTo({ top: 0, behavior: 'smooth' });
@@ -170,7 +178,7 @@ export default function SavedJobs() {
             <h2>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></svg>
               Saved jobs
-              {!loading && <span className={styles.count}>{jobs.length} saved</span>}
+              {!loading && <span className={styles.count}>{total} saved</span>}
             </h2>
             <p className={styles.note}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>
@@ -201,6 +209,15 @@ export default function SavedJobs() {
                   onClick={() => openSheet(job.id)}
                 />
               ))}
+              {jobs.length < total && (
+                <button
+                  className={styles.loadMore}
+                  onClick={loadMore}
+                  disabled={loadingMore}
+                >
+                  {loadingMore ? 'Loading...' : `Load more (${total - jobs.length} left)`}
+                </button>
+              )}
             </div>
             <div className={styles.detailPane} ref={detailRef}>
               {selected && <DetailPane job={selected} onUnsave={onRemoved} />}

@@ -177,13 +177,13 @@
   .panel {
     right: var(--space-3);
     left: var(--space-3);
-    bottom: 84px;
+    bottom: 130px;
     width: auto;
     max-width: none;
   }
   .bubble_btn {
     right: var(--space-4);
-    bottom: calc(var(--space-4) + 52px);
+    bottom: 72px;
     width: 44px;
     height: 44px;
   }
