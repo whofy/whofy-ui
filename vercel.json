@@ -1,7 +1,5 @@
 {
   "rewrites": [
-    { "source": "/__clerk", "destination": "https://frontend-api.clerk.services" },
-    { "source": "/__clerk/(.*)", "destination": "https://frontend-api.clerk.services/$1" },
     { "source": "/((?!__clerk).*)", "destination": "/index.html" }
   ]
 }
