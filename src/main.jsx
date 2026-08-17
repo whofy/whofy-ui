@@ -14,7 +14,10 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HelmetProvider>
       <ErrorBoundary>
-        <ClerkProvider publishableKey={clerkKey}>
+        <ClerkProvider
+          publishableKey={clerkKey}
+          proxyUrl={import.meta.env.VITE_CLERK_PROXY_URL}
+        >
           <SavedJobsProvider>
             <BrowserRouter>
               <App />
