@@ -89,6 +89,34 @@
   box-shadow: none;
 }
 
+/* Re-upload resume — sits with the search/sort controls, pill-matched. */
+.newResumeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--dur-quick) var(--ease),
+              background var(--dur-quick) var(--ease),
+              box-shadow var(--dur-quick) var(--ease);
+}
+.newResumeBtn svg { width: 15px; height: 15px; color: var(--text-muted); }
+.newResumeBtn:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-subtle);
+  box-shadow: var(--shadow-sm);
+}
+
 .clearSearchBtn {
   position: absolute;
   right: 12px;

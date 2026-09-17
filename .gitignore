@@ -23,3 +23,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code local tooling (kept locally, not committed)
+.claude/
+
+# Internal docs / audits (kept locally, not committed)
+PROJECT_OVERVIEW.md
+systemDesign.md
+audit/

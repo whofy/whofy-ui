@@ -63,7 +63,8 @@
   background: var(--primary);
   color: #fff;
   border: none;
-  font-size: 13px;
+  font-family: var(--font-serif);
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   display: flex;

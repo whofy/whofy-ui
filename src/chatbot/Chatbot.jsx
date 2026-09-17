@@ -54,7 +54,10 @@ export default function Chatbot() {
     setSending(true);
     try {
       const { reply } = await sendChatMessage(text, messages);
-      setMessages(m => [...m, { from: 'bot', text: reply }]);
+      // Safety net: strip any em/en dashes so no dash symbol reaches the UI,
+      // even if the response wasn't cleaned server-side.
+      const clean = (reply || '').replace(/[—–―]/g, '-');
+      setMessages(m => [...m, { from: 'bot', text: clean }]);
     } catch {
       setMessages(m => [...m, { from: 'bot', text: "Sorry, I couldn't reach the server. Try again in a moment." }]);
     } finally {

@@ -86,6 +86,14 @@ export default function Processing() {
 
   useEffect(() => {
     if (!info.file) return;
+    // Validate here so an invalid file (from anywhere) lands on the error
+    // screen below instead of a toast, and we skip the wasted upload.
+    const okType = /\.(pdf|docx?)$/i.test(info.file.name);
+    const okSize = info.file.size <= 5 * 1024 * 1024;
+    if (!okType || !okSize) {
+      setUpload({ status: 'error', resume: null, error: 'invalid_file' });
+      return;
+    }
     uploadResume(info.file)
       .then(({ resume }) => {
         setParsedSkills(resume.skills || []);
@@ -121,7 +129,8 @@ export default function Processing() {
     const file = files[0];
     const okType = /\.(pdf|docx?)$/i.test(file.name);
     if (!okType) {
-      alert('Please upload a PDF or DOCX file.');
+      // No toast here: the error screen already shows "Please upload a PDF or
+      // DOCX file under 5 MB", so a notification would just duplicate it.
       return;
     }
     

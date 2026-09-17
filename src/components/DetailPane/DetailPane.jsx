@@ -1,6 +1,7 @@
 import { memo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useUser } from '@clerk/clerk-react';
+import { useAuth } from '../../context/AuthContext.jsx';
+import { useToast } from '../../components/Toast/ToastContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useSavedJobs } from '../../context/SavedJobsContext.jsx';
 import { logoColor, initial } from '../../utils/logoColor.js';
@@ -36,13 +37,18 @@ export default memo(function DetailPane({ job }) {
   const posted = postedLabel(job.postedAt);
   const [logoFailed, setLogoFailed] = useState(false);
   const showLogo = job.logoUrl && !logoFailed;
-  const { isSignedIn } = useUser();
+  const { isSignedIn } = useAuth();
+  const toast = useToast();
   const navigate = useNavigate();
   const { savedIds, toggle, saving } = useSavedJobs();
   const isSaved = savedIds.has(job.id);
 
   const handleSaveToggle = () => {
-    if (!isSignedIn) { navigate('/auth/login'); return; }
+    if (!isSignedIn) {
+      toast.info('Sign in to save jobs');
+      navigate('/auth/login');
+      return;
+    }
     toggle(job.id);
   };
 
