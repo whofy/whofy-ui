@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useUser } from '@clerk/clerk-react';
+import { useAuth } from '../../context/AuthContext.jsx';
+import { userInitials } from '../../utils/userDisplay.js';
 import Brand from '../Brand/Brand.jsx';
 import ProfileSidebar from '../../pages/Profile/ProfileSidebar.jsx';
 import { useFocusTrap } from '../../hooks/useFocusTrap.js';
 import styles from './Navbar.module.css';
 
 export default function Navbar({ onProfileToggle, onMenuToggle }) {
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isLoaded, isSignedIn, user } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
@@ -28,9 +29,7 @@ export default function Navbar({ onProfileToggle, onMenuToggle }) {
     onMenuToggle?.(false);
   };
 
-  const initials = user
-    ? `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase() || user.username?.[0]?.toUpperCase() || 'U'
-    : '';
+  const initials = user ? userInitials(user) : '';
 
   const openProfile = () => {
     setProfileOpen(true);

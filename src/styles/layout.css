@@ -18,8 +18,13 @@
     .container { padding-inline: var(--space-4); }
   }
 
-  /* Offsets the fixed header. */
+  /* Offsets the fixed header. Pages that hide the header (auth, processing)
+     opt out via .no-header so the offset doesn't become dead scroll space. */
   .app-content { padding-top: var(--header-h); }
+  /* Full-screen pages (auth, processing) hide the header and center their own
+     content; drop the header offset AND the entry-fade translate, whose 6px
+     residual would otherwise push the page just past the viewport into scroll. */
+  .app-content.no-header { padding-top: 0; animation: none !important; transform: none !important; }
 
   /* Full-bleed horizontal band. `section-*` modifiers set the surface so a
      route composes bands rather than restating background + borders. */

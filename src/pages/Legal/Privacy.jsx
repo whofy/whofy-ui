@@ -36,7 +36,7 @@ export default function Privacy() {
       <ul>
         <li><strong>Groq</strong>, for reading resume text and extracting skills</li>
         <li><strong>MongoDB Atlas (Mumbai region)</strong>, where the jobs database lives</li>
-        <li><strong>Clerk</strong>, for authentication when you sign in</li>
+        <li><strong>Supabase</strong>, for authentication when you sign in</li>
       </ul>
       <p>We do not sell or rent your data to anyone.</p>
 

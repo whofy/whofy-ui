@@ -2,17 +2,20 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { getMatches, searchJobs } from '../../api/jobs.js';
 import { useJobFilters } from '../../hooks/useJobFilters.js';
 import { readResumePrefs } from '../../utils/resumePreferences.js';
+import { useToast } from '../../components/Toast/ToastContext.jsx';
 import FilterBar from '../../components/FilterBar/FilterBar.jsx';
 import JobCard from '../../components/JobCard/JobCard.jsx';
 import DetailPane from '../../components/DetailPane/DetailPane.jsx';
 import EmptyState from '../../components/EmptyState/EmptyState.jsx';
 import SortControl from '../../components/SortControl/SortControl.jsx';
 import { SkeletonList } from '../../components/SkeletonCard/SkeletonCard.jsx';
+import ResumeUploadButton from '../../components/ResumeUploadButton/ResumeUploadButton.jsx';
 import styles from './Results.module.css';
 
 const PAGE_SIZE = 15;
 
 export default function Results() {
+  const toast = useToast();
   const [prefs] = useState(() => readResumePrefs());
 
   const [jobs, setJobs] = useState([]);
@@ -44,10 +47,11 @@ export default function Results() {
       currentFiltersRef.current = { skills, filters };
     } catch {
       setJobs([]);
+      toast.error("Couldn't load jobs. Please try again.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [toast]);
 
   const fetchSearchPage = useCallback(async (queryStr, filters, pageNum, sort) => {
     setLoading(true);
@@ -58,10 +62,11 @@ export default function Results() {
       setTotal(data.total || 0);
     } catch {
       setJobs([]);
+      toast.error("Search failed. Please try again.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [toast]);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -200,11 +205,13 @@ export default function Results() {
     }
   }, [sorted]);
 
-  // Reset detail pane scroll when a new job is selected
+  // Reset detail pane scroll when a new job is selected, and keep the selected
+  // card visible in the list (matters for keyboard ↑/↓ navigation).
   useEffect(() => {
     if (detailRef.current) {
       detailRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    listRef.current?.querySelector('[data-active]')?.scrollIntoView({ block: 'nearest' });
   }, [selectedId]);
 
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -219,6 +226,32 @@ export default function Results() {
   };
 
   const closeSheet = () => setSheetOpen(false);
+
+  // Keyboard navigation: ↑/↓ move selection through the list, Enter opens the
+  // detail sheet on mobile. Ignored while typing in the search box or when the
+  // mobile sheet is already open.
+  useEffect(() => {
+    function onKey(e) {
+      const t = e.target;
+      if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable) return;
+      if (sheetOpen || sorted.length === 0) return;
+
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const idx = sorted.findIndex(j => j.id === selectedId);
+        const next = idx === -1
+          ? 0
+          : e.key === 'ArrowDown'
+            ? Math.min(sorted.length - 1, idx + 1)
+            : Math.max(0, idx - 1);
+        setSelectedId(sorted[next].id);
+      } else if (e.key === 'Enter' && selectedId && isMobile()) {
+        setSheetOpen(true);
+      }
+    }
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [sorted, selectedId, sheetOpen]);
 
   useEffect(() => {
     if (!sheetOpen) return;
@@ -282,6 +315,10 @@ export default function Results() {
                 )}
               </div>
               <SortControl value={sortMode} onChange={setSortMode} />
+              <ResumeUploadButton className={styles.newResumeBtn}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
+                <span>New resume</span>
+              </ResumeUploadButton>
             </div>
             <div className={styles.headerRight}>
               <h2>

@@ -15,11 +15,7 @@ export default function Brand({ compact = false }) {
       ) : (
         <>
           <div className={styles.mark}>W</div>
-          {!compact && (
-            <div className={styles.name}>
-              Who<b>fy</b>
-            </div>
-          )}
+          {!compact && <div className={styles.name}>Whofy</div>}
         </>
       )}
     </Link>

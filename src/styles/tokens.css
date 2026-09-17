@@ -108,6 +108,8 @@
   --ls-wider: 0.14em;
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Brand serif — logo wordmark, monogram, and avatar initials. */
+  --font-serif: 'Spectral', Georgia, 'Times New Roman', serif;
 
   /* --- Spacing (4px base) ------------------------------------------------
      Values that genuinely fall off the scale (6, 14, 18, 22…) stay literal
