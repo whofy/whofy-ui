@@ -51,17 +51,17 @@ Upload your resume once. Whofy reads your skills with AI and returns a ranked sh
 
 ```mermaid
 flowchart LR
-    U[User] -->|upload resume| FE[Whofy Frontend<br/>React + Vite]
-    FE -->|POST /api/upload-resume| API[Whofy API<br/>FastAPI]
-    API -->|extract skills| LLM[Groq LLM]
-    FE -->|GET /api/matches?skills=...| API
-    API -->|rank & score| DB[(MongoDB<br/>50k+ live jobs)]
-    FE -->|save job + JWT| API
-    FE <-->|sign in| SB[Supabase Auth]
+    U[User] -->|upload resume| FE["Whofy Frontend<br/>React + Vite"]
+    FE -->|POST /api/upload-resume| API["Whofy API<br/>FastAPI"]
+    API -->|extract skills| LLM["Groq LLM"]
+    FE -->|GET /api/matches| API
+    API -->|rank and score| DB[("MongoDB<br/>50k+ live jobs")]
+    FE -->|save job with JWT| API
+    FE <-->|sign in| SB["Supabase Auth"]
     API -->|verify JWT via JWKS| SB
 
-    subgraph Ingestion pipeline (backend, daily)
-      SRC[Greenhouse · Lever · Ashby<br/>RemoteOK · Adzuna · more] --> NORM[normalize + dedupe] --> DB
+    subgraph ingest ["Ingestion pipeline (daily)"]
+      SRC["Greenhouse, Lever, Ashby,<br/>RemoteOK, Adzuna, and more"] --> NORM["normalize + dedupe"] --> DB
     end
 ```
 
