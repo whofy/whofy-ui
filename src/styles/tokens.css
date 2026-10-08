@@ -194,3 +194,46 @@
   /* Consumed by the shared avatar/logo recipe; components override it. */
   --logo-size: 2.5rem;
 }
+
+/* --- Dark theme -----------------------------------------------------------
+   Opt-in via <html data-theme="dark">, set before first paint by the inline
+   script in index.html. Only colour and elevation change; everything else
+   inherits from :root. The primary is lifted so it keeps contrast on navy. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --hc-primary: #4F6EF7;
+  --hc-primary-dark: #6B86F9;
+  --hc-primary-light: #18203D;
+  --hc-primary-tint: #243163;
+
+  --hc-accent: #F4B73B;
+  --hc-accent-dark: #F7C766;
+  --hc-accent-light: #2B2414;
+
+  --hc-bg: #0B1120;
+  --hc-surface: #111827;
+  --hc-surface-2: #161F31;
+  --hc-border: #243049;
+
+  --hc-text: #E5E9F0;
+  --hc-text-muted: #94A3B8;
+  --hc-text-faint: #64748B;
+
+  --primary-rgb: 79, 110, 247;
+  --shadow-rgb: 0, 0, 0;
+
+  --border-strong: #334155;
+  --border-subtle: #1C2638;
+
+  --success-text: #34D399;
+  --success-border: rgba(52, 211, 153, 0.35);
+
+  /* Shadows read as smudges on dark surfaces; deepen them instead. */
+  --shadow-sm: 0 1px 3px rgba(var(--shadow-rgb), 0.4);
+  --shadow: 0 2px 8px rgba(var(--shadow-rgb), 0.45);
+  --shadow-lg: 0 12px 32px rgba(var(--shadow-rgb), 0.5);
+  --shadow-float: 0 12px 40px rgba(var(--shadow-rgb), 0.6);
+  --shadow-theme-hover: 0 2px 4px rgba(var(--primary-rgb), 0.25);
+  --focus-ring: 0 0 0 3px rgba(var(--primary-rgb), 0.35);
+}
