@@ -14,6 +14,7 @@ export default memo(function JobCard({ job, active, onClick }) {
   return (
     <div
       className={`${styles.card} ${active ? styles.active : ''}`}
+      data-active={active || undefined}
       onClick={onClick}
       role="button"
       tabIndex={0}

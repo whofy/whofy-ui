@@ -10,15 +10,8 @@ export default function Dropzone() {
   function handleFiles(files) {
     if (!files || !files.length) return;
     const file = files[0];
-    const okType = /\.(pdf|docx)$/i.test(file.name);
-    if (!okType) {
-      alert('Please upload a PDF or DOCX file.');
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      alert('File is too large. Maximum size is 5 MB.');
-      return;
-    }
+    // Let the Processing page validate and show its error screen for an
+    // invalid file (wrong type or too large) rather than a toast here.
     navigate('/processing', { state: { file, filename: file.name, size: file.size } });
   }
 

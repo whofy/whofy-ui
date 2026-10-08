@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { useUser, useAuth } from '@clerk/clerk-react';
+import { useAuth } from '../../context/AuthContext.jsx';
+import { useToast } from '../../components/Toast/ToastContext.jsx';
 import { getSavedJobs } from '../../api/jobs.js';
 import { useSavedJobs } from '../../context/SavedJobsContext.jsx';
 import { logoColor } from '../../utils/logoColor.js';
@@ -54,8 +55,8 @@ function SavedJobCard({ job, active, onClick }) {
 }
 
 export default function SavedJobs() {
-  const { isSignedIn } = useUser();
-  const { getToken } = useAuth();
+  const { isSignedIn, getToken } = useAuth();
+  const toast = useToast();
   const { savedIds, refresh } = useSavedJobs();
   const [jobs, setJobs] = useState([]);
   const [total, setTotal] = useState(0);
@@ -75,9 +76,12 @@ export default function SavedJobs() {
         setTotal(data.total);
         if (data.jobs.length > 0) setSelectedId(data.jobs[0].id);
       })
-      .catch(() => { setJobs([]); setTotal(0); })
+      .catch(() => {
+        setJobs([]); setTotal(0);
+        toast.error("Couldn't load your saved jobs. Please try again.");
+      })
       .finally(() => setLoading(false));
-  }, [isSignedIn, getToken, savedIds.size]);
+  }, [isSignedIn, getToken, savedIds.size, toast]);
 
   const loadMore = () => {
     if (loadingMore || jobs.length >= total) return;

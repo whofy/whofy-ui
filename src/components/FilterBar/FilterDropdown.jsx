@@ -138,7 +138,7 @@ export default function FilterDropdown({ label, options, selected, onApply, sing
                 ))}
                 {isTruncated && (
                   <div className={styles.menuEmpty}>
-                    Showing first {INITIAL_RENDER_CAP} of {filteredOptions.length} — type to search
+                    Showing first {INITIAL_RENDER_CAP} of {filteredOptions.length}, type to search
                   </div>
                 )}
               </>

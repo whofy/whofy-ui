@@ -26,21 +26,24 @@
 .brandMark {
   width: var(--space-7);
   height: var(--space-7);
-  font-size: var(--fs-sm);
-  border-radius: 5px;
-  background: var(--primary);
-  color: var(--text-on-primary);
+  font-family: var(--font-serif);
+  font-size: var(--fs-md);
+  border-radius: 50%;
+  background: var(--primary-light);
+  border: 1.5px solid var(--primary-tint);
+  color: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-semibold);
 }
 .brandName {
+  font-family: var(--font-serif);
   font-size: var(--fs-lg);
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-semibold);
   letter-spacing: var(--ls-snug);
 }
-.brandName b { font-weight: var(--fw-bold); }
+.brandName b { font-weight: var(--fw-semibold); }
 
 .body { padding: var(--space-8) var(--space-8) var(--space-7); }
 

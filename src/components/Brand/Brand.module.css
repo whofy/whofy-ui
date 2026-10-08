@@ -9,22 +9,25 @@
 .mark {
   width: var(--space-8);
   height: var(--space-8);
-  border-radius: var(--radius-md);
-  background: var(--primary);
-  color: var(--text-on-primary);
+  border-radius: 50%;
+  background: var(--primary-light);
+  border: 1.5px solid var(--primary-tint);
+  color: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: var(--fw-bold);
-  font-size: var(--fs-md);
+  font-family: var(--font-serif);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xl);
+  line-height: 1;
 }
 
 .name {
+  font-family: var(--font-serif);
   font-size: var(--fs-2xl);
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-semibold);
   letter-spacing: var(--ls-snug);
 }
-.name b { font-weight: var(--fw-bold); }
 
 .logoImg {
   height: var(--space-8);

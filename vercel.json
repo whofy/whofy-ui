@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/((?!__clerk).*)", "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
