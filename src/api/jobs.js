@@ -1,7 +1,8 @@
 /**
  * Jobs API. Talks to the real whofy-api backend.
  */
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const RAW_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = RAW_API_URL.trim().replace(/%20/g, '').replace(/\/+$/, '');
 
 export async function getMatches(skills = [], filters = {}, { skip = 0, limit = 50, sort } = {}) {
   const params = new URLSearchParams();
