@@ -244,12 +244,12 @@
 }
 .banner svg { flex-shrink: 0; width: 18px; height: 18px; margin-top: 1px; }
 .bannerError {
-  background: #fef2f2;
-  color: #b42318;
-  border: 1px solid #fecdca;
+  background: var(--danger-light);
+  color: var(--danger-text);
+  border: 1px solid var(--danger-border);
 }
 .bannerSuccess {
-  background: #ecfdf3;
+  background: var(--success-light);
   color: var(--success-text);
   border: 1px solid var(--success-border);
 }

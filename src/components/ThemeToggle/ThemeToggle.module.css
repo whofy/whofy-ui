@@ -1,0 +1,23 @@
+.toggle {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-circle);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: var(--fs-body);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-colors);
+}
+.toggle:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+.toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}

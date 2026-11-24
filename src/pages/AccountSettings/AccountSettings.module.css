@@ -137,7 +137,7 @@
 
 /* --- Danger zone --------------------------------------------------------- */
 .danger {
-  border-color: #fecdca;
+  border-color: var(--danger-border);
 }
 .danger .cardHead h2 { color: var(--danger); }
 .dangerText {
@@ -153,12 +153,12 @@
   font-weight: var(--fw-semibold);
   color: #fff;
   background: var(--danger);
-  border: 1px solid #dc2626;
+  border: 1px solid var(--danger-hover);
   border-radius: var(--radius);
   cursor: pointer;
   transition: background var(--dur-quick) var(--ease), box-shadow var(--dur-quick) var(--ease);
 }
-.destructive:hover:not(:disabled) { background: #dc2626; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25); }
+.destructive:hover:not(:disabled) { background: var(--danger-hover); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25); }
 .destructive:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* --- Confirm modal ------------------------------------------------------- */
@@ -188,7 +188,7 @@
   display: grid;
   place-items: center;
   border-radius: var(--radius-circle);
-  background: #fef2f2;
+  background: var(--danger-light);
   color: var(--danger);
 }
 .modalIcon svg { width: 22px; height: 22px; }

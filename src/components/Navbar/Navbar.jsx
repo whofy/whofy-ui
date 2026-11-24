@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { userInitials } from '../../utils/userDisplay.js';
 import Brand from '../Brand/Brand.jsx';
+import ThemeToggle from '../ThemeToggle/ThemeToggle.jsx';
 import ProfileSidebar from '../../pages/Profile/ProfileSidebar.jsx';
 import { useFocusTrap } from '../../hooks/useFocusTrap.js';
 import styles from './Navbar.module.css';
@@ -48,6 +49,7 @@ export default function Navbar({ onProfileToggle, onMenuToggle }) {
           <Brand />
 
           <div className={styles.actions}>
+            <ThemeToggle />
             {!isLoaded ? (
               <div className={styles.avatarSkeleton} />
             ) : isSignedIn ? (
