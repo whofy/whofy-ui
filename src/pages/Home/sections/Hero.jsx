@@ -33,17 +33,17 @@ export default function Hero({ onPickFile }) {
                 </linearGradient>
               </defs>
 
-              <rect x="20" y="30" width="580" height="460" rx="24" fill="#ffffff" stroke="var(--border)" strokeWidth="1"/>
+              <rect x="20" y="30" width="580" height="460" rx="24" fill="var(--surface)" stroke="var(--border)" strokeWidth="1"/>
               <rect x="20" y="30" width="580" height="52" rx="24" fill="var(--bg-subtle)"/>
               <rect x="20" y="76" width="580" height="6" fill="var(--border-subtle)"/>
               <circle cx="46" cy="56" r="6" fill="#e11d48" opacity="0.7"/>
               <circle cx="66" cy="56" r="6" fill="#f59e0b" opacity="0.7"/>
               <circle cx="86" cy="56" r="6" fill="#10b981" opacity="0.7"/>
-              <rect x="220" y="47" width="180" height="18" rx="9" fill="#fff" stroke="var(--border)"/>
+              <rect x="220" y="47" width="180" height="18" rx="9" fill="var(--surface)" stroke="var(--border)"/>
               <text x="310" y="61" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="10" fontWeight="500" fill="var(--text-muted)">whofy.app/match</text>
 
               <g transform="translate(50, 108)">
-                <rect width="210" height="350" rx="14" fill="#fff" stroke="var(--border)" strokeWidth="1.5"/>
+                <rect width="210" height="350" rx="14" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5"/>
                 <circle cx="32" cy="36" r="18" fill="var(--primary-tint)"/>
                 <circle cx="32" cy="30" r="7" fill="var(--primary)"/>
                 <path d="M23 43 a 9 9 0 0 1 18 0" fill="var(--primary)"/>
@@ -91,14 +91,14 @@ export default function Hero({ onPickFile }) {
               <g transform="translate(310, 280)">
                 <circle className="mockup-orb-glow" r="36" fill="var(--primary)" opacity="0.06"/>
                 <circle className="mockup-orb" r="28" fill="var(--primary-tint)" filter="url(#orbGlow)"/>
-                <circle r="20" fill="#fff" stroke="var(--primary)" strokeWidth="2"/>
+                <circle r="20" fill="var(--surface)" stroke="var(--primary)" strokeWidth="2"/>
                 <path d="M0 -10 L2.5 -2.5 L10 0 L2.5 2.5 L0 10 L-2.5 2.5 L-10 0 L-2.5 -2.5 Z" fill="var(--primary)"/>
                 <circle className="orb-ring" r="26" fill="none" stroke="var(--primary)" strokeWidth="1" strokeDasharray="4 6" opacity="0.3"/>
               </g>
 
               <g className="mockup-card">
                 <g transform="translate(378, 120)">
-                  <rect width="200" height="100" rx="12" fill="#fff" stroke="var(--border)" strokeWidth="1.5"/>
+                  <rect width="200" height="100" rx="12" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5"/>
                   <rect x="14" y="14" width="34" height="34" rx="8" fill="var(--primary)"/>
                   <text x="31" y="36" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="15" fontWeight="700" fill="#fff">Z</text>
                   <text x="56" y="28" fontFamily="Inter, sans-serif" fontSize="11" fontWeight="600" fill="var(--text)">Frontend Developer</text>
@@ -116,7 +116,7 @@ export default function Hero({ onPickFile }) {
 
               <g className="mockup-card mockup-card-b">
                 <g transform="translate(378, 238)">
-                  <rect width="200" height="100" rx="12" fill="#fff" stroke="var(--border)" strokeWidth="1.5"/>
+                  <rect width="200" height="100" rx="12" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5"/>
                   <rect x="14" y="14" width="34" height="34" rx="8" fill="#057642"/>
                   <text x="31" y="36" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="15" fontWeight="700" fill="#fff">F</text>
                   <text x="56" y="28" fontFamily="Inter, sans-serif" fontSize="11" fontWeight="600" fill="var(--text)">Software Engineer</text>
@@ -134,7 +134,7 @@ export default function Hero({ onPickFile }) {
 
               <g className="mockup-card mockup-card-c">
                 <g transform="translate(378, 356)">
-                  <rect width="200" height="100" rx="12" fill="#fff" stroke="var(--border)" strokeWidth="1.5"/>
+                  <rect width="200" height="100" rx="12" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5"/>
                   <rect x="14" y="14" width="34" height="34" rx="8" fill="#b45309"/>
                   <text x="31" y="36" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="15" fontWeight="700" fill="#fff">R</text>
                   <text x="56" y="28" fontFamily="Inter, sans-serif" fontSize="11" fontWeight="600" fill="var(--text)">Backend Intern</text>

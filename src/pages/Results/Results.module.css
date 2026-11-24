@@ -78,14 +78,14 @@
   font-size: var(--fs-sm);
   height: 34px;
   padding: 0 var(--space-4) 0 34px;
-  background: #ffffff;
+  background: var(--surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
   box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 .searchWrap .searchInput:focus {
   border-color: var(--primary);
-  background: #ffffff;
+  background: var(--surface);
   box-shadow: none;
 }
 
@@ -100,7 +100,7 @@
   font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
   color: var(--text);
-  background: #ffffff;
+  background: var(--surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);

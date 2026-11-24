@@ -170,8 +170,8 @@
 .expiredTag {
   font-size: var(--fs-micro);
   font-weight: var(--fw-semibold);
-  color: #dc2626;
-  background: #fef2f2;
+  color: var(--danger-text);
+  background: var(--danger-light);
   padding: 2px 8px;
   border-radius: var(--radius-sm);
 }

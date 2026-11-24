@@ -44,8 +44,8 @@
   padding: 10px 14px;
   margin-bottom: var(--space-4);
   border-radius: var(--radius-md);
-  background: #fef2f2;
-  color: #dc2626;
+  background: var(--danger-light);
+  color: var(--danger-text);
   font-size: var(--fs-sm);
   font-weight: var(--fw-medium);
 }

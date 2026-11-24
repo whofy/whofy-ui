@@ -64,6 +64,14 @@
   --success-border: rgba(16, 185, 129, 0.3);
   --warning: #f59e0b;
   --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --danger-text: #b42318;
+  --danger-light: #fef2f2;
+  --danger-border: #fecdca;
+  --success-light: #ecfdf3;
+
+  /* Translucent header backdrop (blurred behind the fixed navbar). */
+  --nav-bg: rgba(255, 255, 255, 0.85);
 
   /* --- Type scale --------------------------------------------------------
      Named by role, not by size, so a component asks for "caption" rather
@@ -228,6 +236,13 @@
 
   --success-text: #34D399;
   --success-border: rgba(52, 211, 153, 0.35);
+  --success-light: rgba(16, 185, 129, 0.12);
+
+  --danger-text: #F87171;
+  --danger-light: rgba(239, 68, 68, 0.12);
+  --danger-border: rgba(248, 113, 113, 0.35);
+
+  --nav-bg: rgba(11, 17, 32, 0.8);
 
   /* Shadows read as smudges on dark surfaces; deepen them instead. */
   --shadow-sm: 0 1px 3px rgba(var(--shadow-rgb), 0.4);
